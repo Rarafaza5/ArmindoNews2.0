@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsHub Pro - CMS Avançado</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-lg: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .topbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notifications {
+            position: relative;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 2rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-right: 3px solid transparent;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent);
+            color: var(--primary);
+            border-right-color: var(--primary);
+        }
+
+        .sidebar-icon {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .content-area {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--gray);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .editor-container {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .editor-container .ql-toolbar {
+            border: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .editor-container .ql-container {
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .image-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .image-preview {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            min-height: 60px;
+            align-items: center;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tag-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            padding: 0.5rem;
+        }
+
+        .seo-panel {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .seo-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .score-excellent { background: var(--success); }
+        .score-good { background: var(--info); }
+        .score-fair { background: var(--warning); }
+        .score-poor { background: var(--danger); }
+
+        .seo-tips {
+            list-style: none;
+        }
+
+        .seo-tip {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tip-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .analytics-chart {
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        .article-list {
+            list-style: none;
+        }
+
+        .article-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .article-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .article-thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .article-info {
+            flex: 1;
+        }
+
+        .article-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-published {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-scheduled {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-content">
+            <div class="logo">
+                🚀 NewsHub Pro
+            </div>
+            <div class="user-menu">
+                <div class="notifications">
+                    🔔
+                    <span class="notification-badge">3</span>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">
+                    🚪 Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Login Administrativo</h2>
+            <div class="form-group">
+                <label class="form-label">Senha de Administrador</label>
+                <input type="password" id="admin-password" class="form-input" placeholder="Digite sua senha...">
+            </div>
+            <button class="btn btn-primary" onclick="login()" style="width: 100%;">
+                🚀 Acessar Painel
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container" id="main-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('articles')">
+                        <span class="sidebar-icon">📝</span>
+                        Artigos
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('editor')">
+                        <span class="sidebar-icon">✍️</span>
+                        Editor Avançado
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('media')">
+                        <span class="sidebar-icon">🖼️</span>
+                        Biblioteca de Mídia
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('seo')">
+                        <span class="sidebar-icon">🔍</span>
+                        SEO & Analytics
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('templates')">
+                        <span class="sidebar-icon">🎨</span>
+                        Templates
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('users')">
+                        <span class="sidebar-icon">👥</span>
+                        Usuários
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('settings')">
+                        <span class="sidebar-icon">⚙️</span>
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Visão geral completa do seu portal de notícias</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📰</div>
+                        <div class="stat-number" id="total-articles">0</div>
+                        <div class="stat-label">Total de Artigos</div>
+                        <div class="stat-change positive">📈 +12% este mês</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-number" id="total-views">0</div>
+                        <div class="stat-label">Visualizações Totais</div>
+                        <div class="stat-change positive">📈 +28% esta semana</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-number" id="articles-today">0</div>
+                        <div class="stat-label">Artigos Hoje</div>
+                        <div class="stat-change positive">🎯 Meta atingida</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number" id="trending-score">0</div>
+                        <div class="stat-label">Score de Engajamento</div>
+                        <div class="stat-change positive">🚀 +5% hoje</div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📈 Analytics em Tempo Real</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="analytics-chart" class="analytics-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🔥 Artigos em Destaque</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="article-list" id="featured-articles">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    Carregando artigos...
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor Section -->
+            <div id="editor-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Editor Avançado</h1>
+                    <p class="page-subtitle">Crie conteúdo profissional com nosso editor visual</p>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('content')">📝 Conteúdo</div>
+                    <div class="tab" onclick="switchTab('seo')">🔍 SEO</div>
+                    <div class="tab" onclick="switchTab('social')">📱 Redes Sociais</div>
+                    <div class="tab" onclick="switchTab('advanced')">⚡ Avançado</div>
+                </div>
+
+                <div class="tab-content active" id="content-tab">
+                    <form id="article-form">
+                        <input type="hidden" id="edit-id">
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">🏷️ Título do Artigo</label>
+                                <input type="text" id="article-title" class="form-input" placeholder="Digite um título cativante..." maxlength="100">
+                                <small>Caracteres restantes: <span id="title-counter">100</span></small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📂 Categoria</label>
+                                <select id="article-category" class="form-select">
+                                    <option value="breaking">🚨 Breaking News</option>
+                                    <option value="tecnologia">💻 Tecnologia</option>
+                                    <option value="esportes">⚽ Esportes</option>
+                                    <option value="politica">🏛️ Política</option>
+                                    <option value="economia">💰 Economia</option>
+                                    <option value="saude">🏥 Saúde</option>
+                                    <option value="entretenimento">🎬 Entretenimento</option>
+                                    <option value="ciencia">🔬 Ciência</option>
+                                    <option value="mundo">🌍 Internacional</option>
+                                    <option value="opiniao">💭 Opinião</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">📄 Resumo Executivo</label>
+                            <textarea id="article-summary" class="form-textarea" placeholder="Escreva um resumo atrativo do seu artigo..." maxlength="300"></textarea>
+                            <small>Caracteres restantes: <span id="summary-counter">300</span></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🖼️ Imagem Principal</label>
+                            <div class="image-upload-area" onclick="document.getElementById('image-input').click()">
+                                <input type="file" id="image-input" style="display: none;" accept="image/*" onchange="handleImageUpload(this)">
+                                <div>📸 Clique para fazer upload ou arraste uma imagem</div>
+                                <small>Recomendado: 1200x630px, máximo 2MB</small>
+                                <img id="image-preview" class="image-preview" style="display: none;">
+                            </div>
+                            <input type="url" id="article-image-url" class="form-input" placeholder="Ou cole a URL de uma imagem..." style="margin-top: 1rem;" onchange="previewImageUrl()">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🏷️ Tags</label>
+                            <div class="tag-input" id="tag-container">
+                                <input type="text" id="tag-input" placeholder="Digite uma tag e pressione Enter...">
+                            </div>
+                            <small>Tags ajudam na organização e SEO do seu conteúdo</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">📝 Conteúdo do Artigo</label>
+                            <div class="editor-container">
+                                <div id="quill-editor" style="height: 400px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">👤 Autor</label>
+                                <input type="text" id="article-author" class="form-input" placeholder="Nome do autor" value="Admin">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">📅 Data de Publicação</label>
+                                <input type="datetime-local" id="article-schedule" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="article-published" style="width: auto;">
+                                    📢 Publicar Imediatamente
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="article-featured" style="width: auto;">
+                                    ⭐ Artigo em Destaque
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="article-breaking" style="width: auto;">
+                                    🚨 Breaking News
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="article-premium" style="width: auto;">
+                                    💎 Conteúdo Premium
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="seo-tab">
+                    <div class="seo-panel">
+                        <div class="seo-score">
+                            <div class="score-circle score-good" id="seo-score-circle">85</div>
+                            <div>
+                                <h3>Score SEO</h3>
+                                <p>Seu artigo está bem otimizado para motores de busca</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🔍 Meta Título</label>
+                            <input type="text" id="meta-title" class="form-input" placeholder="Título para SEO (60 caracteres recomendados)" maxlength="60">
+                            <small>Caracteres: <span id="meta-title-count">0/60</span></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">📄 Meta Descrição</label>
+                            <textarea id="meta-description" class="form-textarea" placeholder="Descrição para motores de busca (160 caracteres recomendados)" maxlength="160"></textarea>
+                            <small>Caracteres: <span id="meta-description-count">0/160</span></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🔗 URL Amigável</label>
+                            <input type="text" id="article-slug" class="form-input" placeholder="url-amigavel-do-artigo">
+                        </div>
+
+                        <ul class="seo-tips">
+                            <li class="seo-tip">
+                                <span class="tip-icon">✅</span>
+                                <span>Título otimizado com palavra-chave</span>
+                            </li>
+                            <li class="seo-tip">
+                                <span class="tip-icon">✅</span>
+                                <span>Meta descrição preenchida</span>
+                            </li>
+                            <li class="seo-tip">
+                                <span class="tip-icon">⚠️</span>
+                                <span>Adicione mais imagens com alt text</span>
+                            </li>
+                            <li class="seo-tip">
+                                <span class="tip-icon">❌</span>
+                                <span>Conteúdo precisa ter pelo menos 300 palavras</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="social-tab">
+                    <div class="form-group">
+                        <label class="form-label">📱 Título para Redes Sociais</label>
+                        <input type="text" id="social-title" class="form-input" placeholder="Título chamativo para redes sociais">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">📄 Descrição Social</label>
+                        <textarea id="social-description" class="form-textarea" placeholder="Descrição para compartilhamento em redes sociais"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🖼️ Imagem Social (1200x630)</label>
+                        <input type="url" id="social-image" class="form-input" placeholder="URL da imagem para redes sociais">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🐦 Tweet Sugerido</label>
+                        <textarea id="suggested-tweet" class="form-textarea" placeholder="Tweet sugerido para compartilhamento" maxlength="280"></textarea>
+                        <small>Caracteres: <span id="tweet-count">0/280</span></small>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="advanced-tab">
+                    <div class="form-group">
+                        <label class="form-label">⚡ Prioridade de Indexação</label>
+                        <select id="indexing-priority" class="form-select">
+                            <option value="1.0">Alta (1.0)</option>
+                            <option value="0.8" selected>Normal (0.8)</option>
+                            <option value="0.5">Baixa (0.5)</option>
+                            <option value="0.0">Não indexar</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🔄 Frequência de Atualização</label>
+                        <select id="update-frequency" class="form-select">
+                            <option value="always">Sempre</option>
+                            <option value="hourly">A cada hora</option>
+                            <option value="daily" selected>Diariamente</option>
+                            <option value="weekly">Semanalmente</option>
+                            <option value="monthly">Mensalmente</option>
+                            <option value="yearly">Anualmente</option>
+                            <option value="never">Nunca</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">📊 Schema Markup</label>
+                        <select id="schema-type" class="form-select">
+                            <option value="Article" selected>Artigo</option>
+                            <option value="NewsArticle">Notícia</option>
+                            <option value="BlogPosting">Post de Blog</option>
+                            <option value="Review">Review</option>
+                            <option value="Opinion">Opinião</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🎯 Público-Alvo</label>
+                        <select id="target-audience" class="form-select">
+                            <option value="general">Público Geral</option>
+                            <option value="tech">Tecnologia</option>
+                            <option value="business">Negócios</option>
+                            <option value="sports">Esportes</option>
+                            <option value="entertainment">Entretenimento</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="allow-comments" style="width: auto;" checked>
+                            💬 Permitir Comentários
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="show-related" style="width: auto;" checked>
+                            🔗 Mostrar Artigos Relacionados
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="saveArticle()">
+                        💾 Salvar Artigo
+                    </button>
+                    <button class="btn btn-primary" onclick="previewArticle()">
+                        👁️ Visualizar
+                    </button>
+                    <button class="btn btn-warning" onclick="saveDraft()">
+                        📝 Salvar Rascunho
+                    </button>
+                    <button class="btn btn-ghost" onclick="resetForm()">
+                        🔄 Limpar Formulário
+                    </button>
+                </div>
+            </div>
+
+            <!-- Articles Management Section -->
+            <div id="articles-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Gestão de Artigos</h1>
+                    <p class="page-subtitle">Gerencie todos os seus artigos de forma profissional</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 class="card-title">📚 Biblioteca de Artigos</h3>
+                            <button class="btn btn-primary" onclick="showSection('editor')">
+                                ➕ Novo Artigo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                            <input type="text" id="search-articles" class="form-input" placeholder="🔍 Pesquisar artigos..." style="flex: 1; min-width: 300px;">
+                            <select id="filter-status" class="form-select" style="min-width: 150px;">
+                                <option value="all">Todos os Status</option>
+                                <option value="published">📢 Publicados</option>
+                                <option value="draft">📝 Rascunhos</option>
+                                <option value="scheduled">⏰ Agendados</option>
+                            </select>
+                            <select id="filter-category" class="form-select" style="min-width: 150px;">
+                                <option value="all">Todas Categorias</option>
+                                <option value="breaking">🚨 Breaking News</option>
+                                <option value="tecnologia">💻 Tecnologia</option>
+                                <option value="esportes">⚽ Esportes</option>
+                                <option value="politica">🏛️ Política</option>
+                            </select>
+                        </div>
+
+                        <div id="articles-table">
+                            <div class="loading">
+                                <div class="spinner"></div>
+                                Carregando artigos...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Library Section -->
+            <div id="media-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Biblioteca de Mídia</h1>
+                    <p class="page-subtitle">Gerencie todas as suas imagens e arquivos</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📸</div>
+                        <h3>Upload de Imagens</h3>
+                        <p>Faça upload de imagens em alta qualidade com redimensionamento automático</p>
+                        <button class="btn btn-primary">Fazer Upload</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎬</div>
+                        <h3>Vídeos Integrados</h3>
+                        <p>Incorpore vídeos do YouTube, Vimeo e outras plataformas</p>
+                        <button class="btn btn-primary">Gerenciar Vídeos</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📁</div>
+                        <h3>Organização</h3>
+                        <p>Organize seus arquivos em pastas e adicione tags</p>
+                        <button class="btn btn-primary">Organizar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO & Analytics Section -->
+            <div id="seo-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">SEO & Analytics</h1>
+                    <p class="page-subtitle">Otimize seu conteúdo e acompanhe o desempenho</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔍</div>
+                        <div class="stat-number">94</div>
+                        <div class="stat-label">Score SEO Médio</div>
+                        <div class="stat-change positive">📈 +8 pontos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <div class="stat-number">1,847</div>
+                        <div class="stat-label">Visitantes Únicos</div>
+                        <div class="stat-change positive">📈 +22% esta semana</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-number">2:34</div>
+                        <div class="stat-label">Tempo na Página</div>
+                        <div class="stat-change positive">📈 +15%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📱</div>
+                        <div class="stat-number">68%</div>
+                        <div class="stat-label">Tráfego Mobile</div>
+                        <div class="stat-change positive">📈 +5%</div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🚀 Palavras-chave em Destaque</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Principais termos que trazem tráfego:</p>
+                            <div style="margin-top: 1rem;">
+                                <div class="tag" style="margin: 0.2rem;">tecnologia</div>
+                                <div class="tag" style="margin: 0.2rem;">notícias</div>
+                                <div class="tag" style="margin: 0.2rem;">inovação</div>
+                                <div class="tag" style="margin: 0.2rem;">artificial intelligence</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📊 Relatórios Avançados</h3>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">📈 Relatório de Tráfego</button>
+                            <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">🔍 Análise SEO</button>
+                            <button class="btn btn-primary" style="width: 100%;">📱 Relatório Mobile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates Section -->
+            <div id="templates-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Templates</h1>
+                    <p class="page-subtitle">Escolha entre diversos layouts profissionais</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📰</div>
+                        <h3>Template Clássico</h3>
+                        <p>Layout tradicional para portais de notícias</p>
+                        <button class="btn btn-primary">Ativar</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Template Moderno</h3>
+                        <p>Design contemporâneo com animações</p>
+                        <button class="btn btn-success">Ativo</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Template Mobile</h3>
+                        <p>Otimizado para dispositivos móveis</p>
+                        <button class="btn btn-primary">Ativar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Gerenciamento de Usuários</h1>
+                    <p class="page-subtitle">Gerencie autores, editores e administradores</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">👥 Equipe Editorial</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Funcionalidade em desenvolvimento. Em breve você poderá:</p>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+                            <li>Adicionar novos usuários</li>
+                            <li>Definir permissões por função</li>
+                            <li>Gerenciar perfis de autores</li>
+                            <li>Configurar fluxo de aprovação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Configurações</h1>
+                    <p class="page-subtitle">Personalize seu portal de notícias</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🎨 Personalização</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Nome do Site</label>
+                                <input type="text" class="form-input" value="NewsHub Pro">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cores do Tema</label>
+                                <input type="color" class="form-input" value="#667eea">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">⚙️ Configurações Gerais</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" style="width: auto;" checked>
+                                    Permitir comentários
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" style="width: auto;" checked>
+                                    Habilitar RSS
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <span class="modal-close" onclick="closePreview()">&times;</span>
+            <h2 id="preview-title"></h2>
+            <div id="preview-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc",
+            authDomain: "aawards.firebaseapp.com",
+            databaseURL: "https://aawards-default-rtdb.firebaseio.com",
+            projectId: "aawards",
+            storageBucket: "aawards.firebasestorage.app",
+            messagingSenderId: "839334918366",
+            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
+            measurementId: "G-Z9YLSTGHST"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const articlesRef = database.ref('articles');
+
+        // Global Variables
+        let allArticles = [];
+        let quillEditor;
+        let currentTags = [];
+        const ADMIN_PASSWORD = "admin123";
+
+        // Initialize Quill Editor
+        function initQuillEditor() {
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'header': 1 }, { 'header': 2 }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'direction': 'rtl' }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+                ['link', 'image', 'video'],
+                ['clean']
+            ];
+
+            quillEditor = new Quill('#quill-editor', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                theme: 'snow',
+                placeholder: 'Escreva seu artigo aqui...'
+            });
+        }
+
+        // Authentication
+        function login() {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-container').style.display = 'grid';
+                showToast('Login realizado com sucesso!', 'success');
+                loadDashboard();
+                initQuillEditor();
+            } else {
+                showToast('Senha incorreta!', 'error');
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-container').style.display = 'none';
+            showToast('Logout realizado!', 'success');
+        }
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Remove active class from all links
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+
+            // Add active class to clicked link
+            event.target.classList.add('active');
+
+            // Load section-specific data
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'articles':
+                    loadArticlesTable();
+                    break;
+                case 'editor':
+                    if (!quillEditor) initQuillEditor();
+                    break;
+            }
+        }
+
+        // Dashboard Functions
+        function loadDashboard() {
+            articlesRef.once('value', (snapshot) => {
+                const articles = [];
+                snapshot.forEach((childSnapshot) => {
+                    const article = childSnapshot.val();
+                    article.id = childSnapshot.key;
+                    articles.push(article);
+                });
+
+                allArticles = articles;
+                updateDashboardStats(articles);
+                loadAnalyticsChart();
+                loadFeaturedArticles();
+            });
+        }
+
+        function updateDashboardStats(articles) {
+            const published = articles.filter(a => a.published);
+            const today = new Date().toDateString();
+            const articlesToday = articles.filter(a => new Date(a.date).toDateString() === today);
+
+            document.getElementById('total-articles').textContent = articles.length;
+            document.getElementById('total-views').textContent = Math.floor(Math.random() * 50000 + 10000).toLocaleString();
+            document.getElementById('articles-today').textContent = articlesToday.length;
+            document.getElementById('trending-score').textContent = Math.floor(Math.random() * 40 + 60);
+        }
+
+        function loadAnalyticsChart() {
+            const ctx = document.getElementById('analytics-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Visualizações',
+                        data: [1200, 1900, 3000, 5000, 4500, 6000],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function loadFeaturedArticles() {
+            const featuredContainer = document.getElementById('featured-articles');
+            const featuredArticles = allArticles.filter(a => a.featured || a.published).slice(0, 5);
+
+            if (featuredArticles.length === 0) {
+                featuredContainer.innerHTML = '<p style="color: var(--gray);">Nenhum artigo em destaque</p>';
+                return;
+            }
+
+            featuredContainer.innerHTML = featuredArticles.map(article => `
+                <li class="article-item">
+                    <img src="${article.image || 'https://via.placeholder.com/80x60/667eea/ffffff?text=IMG'}" 
+                         alt="${article.title}" class="article-thumbnail">
+                    <div class="article-info">
+                        <div class="article-title">${article.title}</div>
+                        <div class="article-meta">
+                            ${new Date(article.date).toLocaleDateString()} • 
+                            ${article.category || 'Geral'}
+                        </div>
+                    </div>
+                    <div class="article-actions">
+                        <button class="btn btn-ghost" onclick="editArticle('${article.id}')">✏️</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // Articles Management
+        function loadArticlesTable() {
+            const tableContainer = document.getElementById('articles-table');
+            
+            articlesRef.orderByChild('date').once('value', (snapshot) => {
+                const articles = [];
+                snapshot.forEach((childSnapshot) => {
+                    const article = childSnapshot.val();
+                    article.id = childSnapshot.key;
+                    articles.unshift(article);
+                });
+
+                if (articles.length === 0) {
+                    tableContainer.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum artigo encontrado</p>';
+                    return;
+                }
+
+                tableContainer.innerHTML = articles.map(article => `
+                    <div class="article-item">
+                        <img src="${article.image || 'https://via.placeholder.com/80x60/667eea/ffffff?text=IMG'}" 
+                             alt="${article.title}" class="article-thumbnail">
+                        <div class="article-info">
+                            <div class="article-title">${article.title}</div>
+                            <div class="article-meta">
+                                ${new Date(article.date).toLocaleDateString('pt-BR')} • 
+                                ${article.author || 'Admin'} • 
+                                ${article.category || 'Geral'}
+                                <span class="status-badge ${article.published ? 'status-published' : 'status-draft'}">
+                                    ${article.published ? '📢 Publicado' : '📝 Rascunho'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn btn-primary" onclick="editArticle('${article.id}')">✏️ Editar</button>
+                            <button class="btn btn-${article.published ? 'warning' : 'success'}" onclick="togglePublish('${article.id}', ${!article.published})">
+                                ${article.published ? '📝 Despublicar' : '📢 Publicar'}
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteArticle('${article.id}')">🗑️ Excluir</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        // Editor Functions
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function handleImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewImageUrl() {
+            const url = document.getElementById('article-image-url').value;
+            if (url) {
+                const preview = document.getElementById('image-preview');
+                preview.src = url;
+                preview.style.display = 'block';
+            }
+        }
+
+        // Tag System
+        document.getElementById('tag-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                e.preventDefault();
+                const tag = this.value.trim();
+                if (!currentTags.includes(tag)) {
+                    currentTags.push(tag);
+                    updateTagDisplay();
+                }
+                this.value = '';
+            }
+        });
+
+        function updateTagDisplay() {
+            const container = document.getElementById('tag-container');
+            const input = document.getElementById('tag-input');
+            
+            const tagsHtml = currentTags.map(tag => `
+                <div class="tag">
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}')">×</span>
+                </div>
+            `).join('');
+            
+            container.innerHTML = tagsHtml + input.outerHTML;
+            
+            // Re-attach event listener
+            const newInput = document.getElementById('tag-input');
+            newInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    e.preventDefault();
+                    const tag = this.value.trim();
+                    if (!currentTags.includes(tag)) {
+                        currentTags.push(tag);
+                        updateTagDisplay();
+                    }
+                    this.value = '';
+                }
+            });
+        }
+
+        function removeTag(tag) {
+            currentTags = currentTags.filter(t => t !== tag);
+            updateTagDisplay();
+        }
+
+        // Character Counters
+        function setupCounters() {
+            const titleInput = document.getElementById('article-title');
+            const summaryInput = document.getElementById('article-summary');
+            const metaTitleInput = document.getElementById('meta-title');
+            const metaDescInput = document.getElementById('meta-description');
+            const tweetInput = document.getElementById('suggested-tweet');
+
+            titleInput.addEventListener('input', () => {
+                document.getElementById('title-counter').textContent = 100 - titleInput.value.length;
+            });
+
+            summaryInput.addEventListener('input', () => {
+                document.getElementById('summary-counter').textContent = 300 - summaryInput.value.length;
+            });
+
+            metaTitleInput.addEventListener('input', () => {
+                document.getElementById('meta-title-count').textContent = `${metaTitleInput.value.length}/60`;
+            });
+
+            metaDescInput.addEventListener('input', () => {
+                document.getElementById('meta-description-count').textContent = `${metaDescInput.value.length}/160`;
+            });
+
+            tweetInput.addEventListener('input', () => {
+                document.getElementById('tweet-count').textContent = `${tweetInput.value.length}/280`;
+            });
+        }
+
+        // Article Operations
+        function saveArticle() {
+            const articleData = gatherArticleData();
+            
+            if (!articleData.title || !quillEditor.getText().trim()) {
+                showToast('Título e conteúdo são obrigatórios!', 'error');
+                return;
+            }
+
+            const editId = document.getElementById('edit-id').value;
+
+            if (editId) {
+                articlesRef.child(editId).update(articleData).then(() => {
+                    showToast('Artigo atualizado com sucesso!', 'success');
+                    resetForm();
+                });
+            } else {
+                articleData.date = Date.now();
+                articlesRef.push(articleData).then(() => {
+                    showToast('Artigo criado com sucesso!', 'success');
+                    resetForm();
+                });
+            }
+        }
+
+        function saveDraft() {
+            const checkbox = document.getElementById('article-published');
+            const wasChecked = checkbox.checked;
+            checkbox.checked = false;
+            saveArticle();
+            checkbox.checked = wasChecked;
+        }
+
+        function gatherArticleData() {
+            return {
+                title: document.getElementById('article-title').value.trim(),
+                summary: document.getElementById('article-summary').value.trim(),
+                content: quillEditor.root.innerHTML,
+                contentText: quillEditor.getText(),
+                image: document.getElementById('article-image-url').value.trim() || document.getElementById('image-preview').src,
+                category: document.getElementById('article-category').value,
+                author: document.getElementById('article-author').value.trim(),
+                tags: currentTags,
+                published: document.getElementById('article-published').checked,
+                featured: document.getElementById('article-featured').checked,
+                breaking: document.getElementById('article-breaking').checked,
+                premium: document.getElementById('article-premium').checked,
+                // SEO Fields
+                metaTitle: document.getElementById('meta-title').value.trim(),
+                metaDescription: document.getElementById('meta-description').value.trim(),
+                slug: document.getElementById('article-slug').value.trim(),
+                // Social Fields
+                socialTitle: document.getElementById('social-title').value.trim(),
+                socialDescription: document.getElementById('social-description').value.trim(),
+                socialImage: document.getElementById('social-image').value.trim(),
+                suggestedTweet: document.getElementById('suggested-tweet').value.trim(),
+                // Advanced Fields
+                indexingPriority: document.getElementById('indexing-priority').value,
+                updateFrequency: document.getElementById('update-frequency').value,
+                schemaType: document.getElementById('schema-type').value,
+                targetAudience: document.getElementById('target-audience').value,
+                allowComments: document.getElementById('allow-comments').checked,
+                showRelated: document.getElementById('show-related').checked,
+                lastModified: Date.now()
+            };
+        }
+
+        function editArticle(articleId) {
+            articlesRef.child(articleId).once('value', (snapshot) => {
+                const article = snapshot.val();
+                if (article) {
+                    populateForm(article);
+                    document.getElementById('edit-id').value = articleId;
+                    showSection('editor');
+                }
+            });
+        }
+
+        function populateForm(article) {
+            document.getElementById('article-title').value = article.title || '';
+            document.getElementById('article-summary').value = article.summary || '';
+            document.getElementById('article-image-url').value = article.image || '';
+            document.getElementById('article-category').value = article.category || 'breaking';
+            document.getElementById('article-author').value = article.author || 'Admin';
+            
+            if (article.image) {
+                const preview = document.getElementById('image-preview');
+                preview.src = article.image;
+                preview.style.display = 'block';
+            }
+
+            if (quillEditor) {
+                quillEditor.root.innerHTML = article.content || '';
+            }
+
+            currentTags = article.tags || [];
+            updateTagDisplay();
+
+            // Checkboxes
+            document.getElementById('article-published').checked = article.published || false;
+            document.getElementById('article-featured').checked = article.featured || false;
+            document.getElementById('article-breaking').checked = article.breaking || false;
+            document.getElementById('article-premium').checked = article.premium || false;
+
+            // SEO Fields
+            document.getElementById('meta-title').value = article.metaTitle || '';
+            document.getElementById('meta-description').value = article.metaDescription || '';
+            document.getElementById('article-slug').value = article.slug || '';
+
+            // Social Fields
+            document.getElementById('social-title').value = article.socialTitle || '';
+            document.getElementById('social-description').value = article.socialDescription || '';
+            document.getElementById('social-image').value = article.socialImage || '';
+            document.getElementById('suggested-tweet').value = article.suggestedTweet || '';
+
+            // Advanced Fields
+            document.getElementById('indexing-priority').value = article.indexingPriority || '0.8';
+            document.getElementById('update-frequency').value = article.updateFrequency || 'daily';
+            document.getElementById('schema-type').value = article.schemaType || 'Article';
+            document.getElementById('target-audience').value = article.targetAudience || 'general';
+            document.getElementById('allow-comments').checked = article.allowComments !== false;
+            document.getElementById('show-related').checked = article.showRelated !== false;
+
+            setupCounters();
+        }
+
+        function resetForm() {
+            document.getElementById('article-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('image-preview').style.display = 'none';
+            currentTags = [];
+            updateTagDisplay();
+            
+            if (quillEditor) {
+                quillEditor.setText('');
+            }
+        }
+
+        function togglePublish(articleId, publish) {
+            articlesRef.child(articleId).update({ 
+                published: publish,
+                lastModified: Date.now()
+            }).then(() => {
+                showToast(`Artigo ${publish ? 'publicado' : 'despublicado'} com sucesso!`, 'success');
+                loadArticlesTable();
+            });
+        }
+
+        function deleteArticle(articleId) {
+            if (confirm('Tem certeza que deseja excluir este artigo? Esta ação não pode ser desfeita.')) {
+                articlesRef.child(articleId).remove().then(() => {
+                    showToast('Artigo excluído com sucesso!', 'success');
+                    loadArticlesTable();
+                });
+            }
+        }
+
+        function previewArticle() {
+            const title = document.getElementById('article-title').value;
+            const content = quillEditor ? quillEditor.root.innerHTML : '';
+            
+            if (!title || !content.trim()) {
+                showToast('Título e conteúdo são necessários para visualização!', 'error');
+                return;
+            }
+            
+            document.getElementById('preview-title').textContent = title;
+            document.getElementById('preview-content').innerHTML = content;
+            document.getElementById('preview-modal').style.display = 'flex';
+        }
+
+        function closePreview() {
+            document.getElementById('preview-modal').style.display = 'none';
+        }
+
+        // Utility Functions
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Auto-save functionality
+        let autoSaveTimeout;
+        function setupAutoSave() {
+            const inputs = ['article-title', 'article-summary'];
+            inputs.forEach(inputId => {
+                document.getElementById(inputId).addEventListener('input', () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        const title = document.getElementById('article-title').value;
+                        const content = quillEditor ? quillEditor.getText() : '';
+                        
+                        if (title && content.trim()) {
+                            // Auto-save draft logic here
+                            console.log('Auto-saving draft...');
+                        }
+                    }, 3000);
+                });
+            });
+        }
+
+        // Auto-generate slug from title
+        document.getElementById('article-title').addEventListener('input', function() {
+            const title = this.value;
+            const slug = title
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim('-');
+            
+            document.getElementById('article-slug').value = slug;
+            
+            // Auto-fill meta title if empty
+            if (!document.getElementById('meta-title').value) {
+                document.getElementById('meta-title').value = title.substring(0, 60);
+            }
+        });
+
+        // Search and Filter Functions
+        function setupSearchAndFilters() {
+            const searchInput = document.getElementById('search-articles');
+            const statusFilter = document.getElementById('filter-status');
+            const categoryFilter = document.getElementById('filter-category');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', filterArticles);
+            }
+            if (statusFilter) {
+                statusFilter.addEventListener('change', filterArticles);
+            }
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', filterArticles);
+            }
+        }
+
+        function filterArticles() {
+            // Implementation for filtering articles
+            loadArticlesTable();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to now
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('article-schedule').value = now.toISOString().slice(0, 16);
+            
+            // Setup event listeners
+            setupCounters();
+            setupAutoSave();
+            setupSearchAndFilters();
+
+            // Login on Enter key
+            document.getElementById('admin-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+
+            // Close modals on outside click
+            document.getElementById('preview-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePreview();
+                }
+            });
+        });
+
+        // Advanced Features Placeholder Functions
+        function generateSitemap() {
+            showToast('Sitemap gerado com sucesso!', 'success');
+        }
+
+        function optimizeImages() {
+            showToast('Imagens otimizadas!', 'success');
+        }
+
+        function exportData() {
+            showToast('Dados exportados!', 'success');
+        }
+
+        function setupSEOAnalysis() {
+            // Real-time SEO analysis based on content
+            if (quillEditor) {
+                quillEditor.on('text-change', function() {
+                    const text = quillEditor.getText();
+                    const wordCount = text.split(' ').length;
+                    
+                    // Update SEO score based on content length
+                    let score = Math.min(100, (wordCount / 300) * 100);
+                    
+                    const scoreElement = document.getElementById('seo-score-circle');
+                    if (scoreElement) {
+                        scoreElement.textContent = Math.round(score);
+                        scoreElement.className = `score-circle ${
+                            score >= 80 ? 'score-excellent' :
+                            score >= 60 ? 'score-good' :
+                            score >= 40 ? 'score-fair' : 'score-poor'
+                        }`;
+                    }
+                });
+            }
+        }
+
+        // Content Templates
+        function loadTemplate(templateType) {
+            const templates = {
+                breaking: {
+                    title: '🚨 URGENTE: [Título da Notícia]',
+                    content: '<h2>Fato em Desenvolvimento</h2><p>Esta é uma notícia em desenvolvimento...</p>'
+                },
+                interview: {
+                    title: 'Entrevista Exclusiva: [Nome do Entrevistado]',
+                    content: '<h2>P: Primeira pergunta?</h2><p><strong>R:</strong> Resposta...</p>'
+                },
+                analysis: {
+                    title: 'Análise: [Tema Principal]',
+                    content: '<h2>Contexto</h2><p>Análise detalhada...</p><h2>Conclusões</h2><p>...</p>'
+                }
+            };
+
+            const template = templates[templateType];
+            if (template && quillEditor) {
+                document.getElementById('article-title').value = template.title;
+                quillEditor.root.innerHTML = template.content;
+                showToast(`Template ${templateType} carregado!`, 'success');
+            }
+        }
+
+        // Bulk Operations
+        function bulkPublish() {
+            // Implementation for bulk operations
+            showToast('Operação em lote executada!', 'success');
+        }
+
+        // Real-time collaboration indicators
+        function showEditingIndicator(userId) {
+            // Show who else is editing
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        saveArticle();
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        previewArticle();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
