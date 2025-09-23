@@ -12,7 +12,7 @@
     <meta property="og:description" content="Fique por dentro das últimas notícias com análises profundas e reportagens exclusivas">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://via.placeholder.com/1200x630/667eea/ffffff?text=NewsHub+Pro">
-    <title>Armindo News - Portal de Notícias</title>
+    <title>Armindo News</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -20,10 +20,10 @@
     
     <style>
         :root {
-            --primary: #667eea;
-            --primary-dark: #5a6fd8;
-            --secondary: #764ba2;
-            --accent: #f093fb;
+            --primary: #1e1e1e;
+            --primary-dark: #676767;
+            --secondary: #1e1e1e;
+            --accent: #212121;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -32,8 +32,8 @@
             --gray: #64748b;
             --gray-light: #e2e8f0;
             --white: #ffffff;
-            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-primary: linear-gradient(135deg, #676767 0%, #212121 100%);
+            --gradient-hero: linear-gradient(135deg, #676767 0%, #212121 100%);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             --radius: 12px;
@@ -93,17 +93,22 @@
             padding: 1rem 0;
             border-bottom: 1px solid var(--gray-light);
         }
-
+    @font-face {
+      font-family: 'an'; /* O nome que você usará para referenciar a fonte */
+      src: url('/EnglishTowne.woff') format('woff'); /* Caminho para o arquivo da fonte */
+      font-weight: bold; /* Ou 'bold', etc. */
+    }
         .logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 2rem;
+            font-size: 5rem;
             font-weight: 900;
-            background: var(--gradient-primary);
+            background: #0000;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
+            -webkit-text-fill-color: black;
+            text-decoration: black;
+            font-family: 'an',sans-serif;
         }
 
         .nav-utils {
@@ -958,7 +963,7 @@
     <header class="header">
         <div class="nav-container">
             <div class="nav-top">
-                <a href="#" class="logo">🚀 Armindo News</a>
+                <a href="index.html" class="logo">AN</a>
                 
                 <div class="nav-utils">
                     <div class="search-box">
@@ -974,12 +979,12 @@
                 <ul class="nav-menu">
                     <li><a href="#" class="nav-link active" onclick="showCategory('all')">🏠 Home</a></li>
                     <li><a href="#" class="nav-link breaking" onclick="showCategory('breaking')">🚨 Breaking</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('tecnologia')">💻 Tech</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('critica')">✏️ Critica</a></li>
                     <li><a href="#" class="nav-link" onclick="showCategory('politica')">🏛️ Política</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('economia')">💰 Economia</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('Desportes')">⚽ Desportes</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('saude')">🏥 Saúde</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('entretenimento')">🎬 Shows</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('Entrevista')">🎤 Entrevista</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('mundo')">🌍 Mundo</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('edicaoAN')">📰 Edições AN</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('entretenimento')">🎬 Entretenimento</a></li>
                 </ul>
             </nav>
         </div>
@@ -1007,9 +1012,9 @@
             <div class="categories-list">
                 <a href="#" class="category-link active" onclick="showCategory('all')">📰 Todas</a>
                 <a href="#" class="category-link" onclick="showCategory('breaking')">🚨 Breaking News</a>
-                <a href="#" class="category-link" onclick="showCategory('tecnologia')">💻 Tecnologia</a>
+                <a href="#" class="category-link" onclick="showCategory('tecnologia')">✏️ Critica</a>
                 <a href="#" class="category-link" onclick="showCategory('politica')">🏛️ Política</a>
-                <a href="#" class="category-link" onclick="showCategory('economia')">💰 Economia</a>
+                <a href="#" class="category-link" onclick="showCategory('economia')">🎤 Entrevista</a>
                 <a href="#" class="category-link" onclick="showCategory('Desportes')">⚽ Desportes</a>
                 <a href="#" class="category-link" onclick="showCategory('saude')">🏥 Saúde</a>
                 <a href="#" class="category-link" onclick="showCategory('entretenimento')">🎬 Entretenimento</a>
@@ -1044,7 +1049,7 @@
     <div id="fullscreen-modal" class="fullscreen-modal">
         <header class="fullscreen-header">
             <div class="fullscreen-nav">
-                <a href="#" class="logo">🚀 Armindo News</a>
+                <a href="#" class="logo">Armindo News</a>
                 <button class="close-fullscreen" onclick="closeFullscreen()">×</button>
             </div>
         </header>
@@ -1073,7 +1078,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>🚀 Armindo News</h3>
+                    <h3>Armindo News</h3>
                     <p style="color: var(--gray); line-height: 1.6;">
                         Armindo News, um meio de comunicação social independente, fundada no dia 02 de abril de 2024.
 
@@ -1085,9 +1090,9 @@
                     <h3>📰 Seções</h3>
                     <ul class="footer-links">
                         <li><a href="#" onclick="showCategory('breaking')">🚨 Breaking News</a></li>
-                        <li><a href="#" onclick="showCategory('tecnologia')">💻 Tecnologia</a></li>
+                        <li><a href="#" onclick="showCategory('tecnologia')">✏️ Critica</a></li>
                         <li><a href="#" onclick="showCategory('politica')">🏛️ Política</a></li>
-                        <li><a href="#" onclick="showCategory('economia')">💰 Economia</a></li>
+                        <li><a href="#" onclick="showCategory('economia')">🎤 Entrevista</a></li>
                         <li><a href="#" onclick="showCategory('Desportes')">⚽ Desportes</a></li>
                         <li><a href="#" onclick="showCategory('saude')">🏥 Saúde</a></li>
                     </ul>
@@ -1097,8 +1102,8 @@
                     <h3>🔗 Links Úteis</h3>
                     <ul class="footer-links">
                         <li><a href="equipe.html">A Nossa Equipa</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
-                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
                     </ul>
                 </div>
 
@@ -1435,9 +1440,9 @@
             const categoryNames = {
                 'all': '📰 Últimas Notícias',
                 'breaking': '🚨 Breaking News',
-                'tecnologia': '💻 Tecnologia',
+                'tecnologia': '✏️ Critica',
                 'politica': '🏛️ Política',
-                'economia': '💰 Economia',
+                'economia': '🎤 Entrevista',
                 'Desportes': '⚽ Desportes',
                 'saude': '🏥 Saúde',
                 'entretenimento': '🎬 Entretenimento',
