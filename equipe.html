@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root{
-            --primary:#667eea; --dark:#0f172a; --light:#f8fafc; --gray:#64748b; --radius:12px;
+            --primary:#000000; --dark:#000000; --light:#f8fafc; --gray:#64748b; --radius:12px;
         }
         *{box-sizing:border-box;margin:0;padding:0}
         body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);line-height:1.6}
@@ -42,7 +42,7 @@
         .hero p{color:var(--gray)}
         .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
         .card{background:#fff;border-radius:14px;padding:1.3rem;box-shadow:0 6px 18px rgba(0,0,0,.04);display:flex;gap:1rem;align-items:flex-start}
-        .avatar{width:76px;height:76px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.4rem;flex-shrink:0}
+        .avatar{width:76px;height:76px;border-radius:12px;background:#2c2c2d;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.4rem;flex-shrink:0}
         .card-body{flex:1}
         .card-body h3{margin-bottom:.25rem;font-size:1.05rem}
         .role{color:var(--gray);font-size:.9rem;margin-bottom:.6rem}
@@ -51,9 +51,87 @@
         .pill{background:rgba(102,126,234,.08);padding:.35rem .6rem;border-radius:999px;font-weight:600;color:var(--primary);font-size:.85rem}
         .cta{display:flex;gap:1rem;justify-content:center;margin-top:2rem}
         .btn{padding:.9rem 1.3rem;border-radius:12px;font-weight:700;border:none;cursor:pointer}
-        .btn-primary{background:linear-gradient(135deg,var(--primary),#764ba2);color:#fff}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),#000000);color:#fff}
         .btn-outline{background:transparent;border:2px solid #e6e9f6;color:var(--dark)}
-        @media(max-width:620px){.nav-container{padding:1rem}.hero{padding:1.2rem}}
+        
+        /* Mobile Adaptations */
+        @media(max-width:768px){
+            .nav-container{
+                padding:1rem;
+                flex-direction:column;
+                gap:1rem;
+            }
+            .logo{
+                font-size:3rem;
+            }
+            .nav-links{
+                width:100%;
+                justify-content:center;
+            }
+            .container{
+                margin:2rem auto;
+                padding:0 1rem;
+            }
+            .hero{
+                padding:1.5rem;
+                text-align:center;
+            }
+            .hero h1{
+                font-size:1.5rem;
+            }
+            .team-grid{
+                grid-template-columns:1fr;
+                gap:1rem;
+            }
+            .card{
+                padding:1rem;
+                flex-direction:column;
+                align-items:center;
+                text-align:center;
+            }
+            .avatar{
+                margin-bottom:0.5rem;
+            }
+        }
+        
+        @media(max-width:480px){
+            .nav-container{
+                padding:0.5rem;
+            }
+            .logo{
+                font-size:2.5rem;
+            }
+            .nav-link{
+                padding:.4rem .7rem;
+                font-size:.9rem;
+            }
+            .hero{
+                padding:1rem;
+                margin-bottom:1rem;
+            }
+            .hero h1{
+                font-size:1.3rem;
+            }
+            .card{
+                padding:0.8rem;
+            }
+            .avatar{
+                width:60px;
+                height:60px;
+                font-size:1.2rem;
+            }
+            .card-body h3{
+                font-size:1rem;
+            }
+            .role{
+                font-size:.85rem;
+            }
+        }
+        
+        @media(max-width:620px){
+            .nav-container{padding:1rem}
+            .hero{padding:1.2rem}
+        }
     </style>
 </head>
 <body>
@@ -76,7 +154,7 @@
 
             <div class="team-grid">
                 <!-- Card 1 -->
-                <article class="card" role="article" aria-label="Perfil de Carla Mendes — Editora-chefe">
+                <article class="card" role="article" aria-label="Jorge Figueira — Editor-Chefe">
                     <div class="avatar" aria-hidden="true">JF</div>
                     <div class="card-body">
                         <h3>Jorge Figueira</h3>
@@ -86,11 +164,29 @@
                 </article>
 
                 <!-- Card 2 -->
-                <article class="card" role="article" aria-label="Perfil de João Silva — Chefe de Investigação">
+                <article class="card" role="article" aria-label="Perfil de Rafael Diogo — Critico e Entrevistador da Armindo News">
                     <div class="avatar" aria-hidden="true">RD</div>
                     <div class="card-body">
                         <h3>Rafael Diogo</h3>
                         <div class="role">Critico e Entrevistador da Armindo News</div>
+                       
+                    </div>
+                </article>
+
+                <article class="card" role="article" aria-label="Perfil de Cecília Fernández — Entrevistadora da Armindo News">
+                    <div class="avatar" aria-hidden="true">CF</div>
+                    <div class="card-body">
+                        <h3>Cecília Fernández</h3>
+                        <div class="role">Entrevistadora da Armindo News</div>
+                       
+                    </div>
+                </article>
+
+                 <article class="card" role="article" aria-label="Perfil de Cecília Fernández — Entrevistadora da Armindo News">
+                    <div class="avatar" aria-hidden="true">AF</div>
+                    <div class="card-body">
+                        <h3>Ana Ferreira</h3>
+                        <div class="role">Diretora da AN Pit Stop<br>Editora de Automobilismo</div>
                        
                     </div>
                 </article>
