@@ -94,11 +94,13 @@
             padding: 1rem 0;
             border-bottom: 1px solid var(--gray-light);
         }
-    @font-face {
-      font-family: 'an'; /* O nome que você usará para referenciar a fonte */
-      src: url('/EnglishTowne.woff') format('woff'); /* Caminho para o arquivo da fonte */
-      font-weight: bold; /* Ou 'bold', etc. */
-    }
+
+        @font-face {
+            font-family: 'an';
+            src: url('/EnglishTowne.woff') format('woff');
+            font-weight: bold;
+        }
+
         .logo {
             display: flex;
             align-items: center;
@@ -214,6 +216,120 @@
             color: var(--white);
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100%;
+            background: var(--white);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav-content {
+            padding: 1rem;
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 0.75rem;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .mobile-nav-link.breaking {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .mobile-search {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-search-box {
+            display: flex;
+            align-items: center;
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+        }
+
+        .mobile-search-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            margin-left: 0.5rem;
         }
 
         /* Carousel Hero Section */
@@ -891,7 +1007,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive Design */
+        /* Mobile Optimizations */
         @media (max-width: 1024px) {
             .nav-top {
                 flex-direction: column;
@@ -900,11 +1016,18 @@
 
             .search-box {
                 min-width: 100%;
+                order: 3;
+            }
+
+            .nav-utils {
+                width: 100%;
+                justify-content: space-between;
             }
 
             .nav-menu {
                 flex-wrap: wrap;
                 justify-content: center;
+                gap: 1rem;
             }
 
             .articles-grid {
@@ -912,7 +1035,25 @@
             }
 
             .carousel-arrows {
-                display: none;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .carousel-prev {
+                left: 20px;
+            }
+
+            .carousel-next {
+                right: 20px;
+            }
+
+            .hero-carousel {
+                height: 500px;
+            }
+
+            .section-title {
+                font-size: 2rem;
             }
         }
 
@@ -921,6 +1062,30 @@
                 padding: 0 1rem;
             }
 
+            /* Mobile Navigation */
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            .nav-main {
+                display: none;
+            }
+
+            .nav-top {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-utils {
+                display: none;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+
+            /* Main Content Mobile */
             .main-content {
                 padding: 2rem 1rem;
             }
@@ -929,29 +1094,374 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
+                margin-bottom: 2rem;
             }
 
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            /* Categories Mobile */
+            .categories-nav {
+                padding: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .categories-list {
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+
+            .category-link {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            /* Articles Grid Mobile */
             .articles-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1.5rem;
+            }
+
+            .article-card {
+                border-radius: 15px;
+            }
+
+            .article-image {
+                height: 200px;
+            }
+
+            .article-content {
+                padding: 1.5rem;
+            }
+
+            .article-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .article-summary {
+                font-size: 0.9rem;
+            }
+
+            .article-excerpt {
+                font-size: 0.9rem;
+                -webkit-line-clamp: 2;
+            }
+
+            .article-meta {
+                gap: 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .article-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            /* Carousel Mobile */
+            .hero-carousel {
+                height: 400px;
+            }
+
+            .carousel-arrows {
+                display: none;
+            }
+
+            .carousel-content {
+                padding: 0 1rem;
+            }
+
+            .carousel-title {
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .carousel-summary {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .carousel-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .carousel-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .carousel-nav {
+                bottom: 20px;
+                gap: 0.8rem;
+            }
+
+            .carousel-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            /* Newsletter Mobile */
+            .newsletter-section {
+                padding: 2rem 1.5rem;
+                margin-bottom: 3rem;
+            }
+
+            .newsletter-title {
+                font-size: 1.8rem;
+            }
+
+            .newsletter-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
             }
 
             .newsletter-form {
                 flex-direction: column;
+                gap: 1rem;
             }
 
+            .newsletter-input {
+                padding: 0.8rem;
+            }
+
+            .newsletter-btn {
+                padding: 0.8rem 1.5rem;
+            }
+
+            /* Fullscreen Modal Mobile */
             .fullscreen-content {
                 padding: 1rem;
             }
 
             .fullscreen-article-content {
-                padding: 2rem;
+                padding: 1.5rem;
+            }
+
+            .fullscreen-title {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .fullscreen-summary {
+                font-size: 1.1rem;
+            }
+
+            .fullscreen-meta {
+                gap: 1rem;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .meta-item {
+                font-size: 0.8rem;
+            }
+
+            .fullscreen-text {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+
+            .fullscreen-text h2 {
+                font-size: 1.5rem;
+                margin: 2rem 0 1rem;
+            }
+
+            .fullscreen-text h3 {
+                font-size: 1.2rem;
+                margin: 1.5rem 0 0.8rem;
+            }
+
+            .fullscreen-text blockquote {
+                padding: 1rem 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            /* Footer Mobile */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .footer-bottom {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            /* Back to Top Mobile */
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                font-size: 1.1rem;
+            }
+
+            /* Breaking Banner Mobile */
+            .breaking-banner {
+                font-size: 0.9rem;
+                padding: 0.7rem 1rem;
+                cursor: pointer;
+            }
+
+            /* Load More Mobile */
+            .load-more-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+            /* Touch Optimizations */
+            .article-card {
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .nav-link, .category-link, .carousel-btn, .load-more-btn {
+                -webkit-tap-highlight-color: transparent;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Swipe Indicators for Carousel */
+            .carousel-nav {
+                bottom: 15px;
+            }
+
+            /* Mobile Search */
+            .mobile-search-box {
+                border: 1px solid var(--gray-light);
+            }
+
+            .mobile-search-input {
+                font-size: 1rem;
+            }
+        }
+
+        /* Extra Small Mobile Devices */
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 0.8rem;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+
+            .main-content {
+                padding: 1.5rem 0.8rem;
+            }
+
+            .categories-nav {
+                padding: 0.8rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .categories-list {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                min-width: max-content;
+                padding-bottom: 0.5rem;
+            }
+
+            .category-link {
+                flex-shrink: 0;
+            }
+
+            .hero-carousel {
+                height: 350px;
             }
 
             .carousel-title {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                line-height: 1.2;
+            }
+
+            .carousel-summary {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .article-content {
+                padding: 1.2rem;
+            }
+
+            .article-title {
+                font-size: 1.1rem;
+            }
+
+            .newsletter-section {
+                padding: 1.5rem 1rem;
+                border-radius: 15px;
+            }
+
+            .newsletter-title {
+                font-size: 1.5rem;
+            }
+
+            .fullscreen-content {
+                padding: 0.8rem;
+            }
+
+            .fullscreen-article-content {
+                padding: 1.2rem;
+            }
+
+            .fullscreen-title {
+                font-size: 1.5rem;
+            }
+
+            .fullscreen-summary {
+                font-size: 1rem;
+            }
+
+            .mobile-nav {
+                width: 100%;
             }
         }
+
+        /* Landscape Mobile Optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-carousel {
+                height: 300px;
+            }
+
+            .carousel-title {
+                font-size: 1.6rem;
+            }
+
+            .carousel-summary {
+                font-size: 0.9rem;
+                -webkit-line-clamp: 2;
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .article-image, .fullscreen-image {
+                image-rendering: -webkit-optimize-contrast;
+            }
+        }
+
+        /* Dark Mode Support */
+      
     </style>
 </head>
 <body>
@@ -960,19 +1470,53 @@
         🚨 BREAKING: <span id="breaking-text"></span>
     </div>
 
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+            <a href="index.html" class="logo" style="font-size: 2rem;">AN</a>
+            <button class="mobile-nav-close" onclick="closeMobileNav()">×</button>
+        </div>
+        
+        <div class="mobile-nav-content">
+            <!-- Mobile Search -->
+            <div class="mobile-search">
+                <div class="mobile-search-box">
+                    <span>🔍</span>
+                    <input type="text" class="mobile-search-input" id="mobile-search-input" placeholder="Pesquisar notícias...">
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <ul class="mobile-nav-menu">
+                <li><a href="#" class="mobile-nav-link active" onclick="showCategory('all'); closeMobileNav();">🏠 Home</a></li>
+                <li><a href="#" class="mobile-nav-link breaking" onclick="showCategory('breaking'); closeMobileNav();">🚨 Breaking</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('critica'); closeMobileNav();">✏️ Critica</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('politica'); closeMobileNav();">🏛️ Política</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('Entrevista'); closeMobileNav();">🎤 Entrevista</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('mundo'); closeMobileNav();">🌍 Mundo</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('edicaoAN'); closeMobileNav();">📰 Edições AN</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('entretenimento'); closeMobileNav();">🎬 Entretenimento</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <!-- Header -->
     <header class="header">
         <div class="nav-container">
             <div class="nav-top">
                 <a href="index.html" class="logo">AN</a>
                 
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-nav-toggle" onclick="openMobileNav()">☰</button>
+                
                 <div class="nav-utils">
                     <div class="search-box">
                         <span>🔍</span>
                         <input type="text" class="search-input" id="search-input" placeholder="Pesquisar notícias...">
                     </div>
-                    
-                  
                 </div>
             </div>
 
@@ -1026,7 +1570,6 @@
         <section class="articles-section">
             <div class="section-header">
                 <h2 class="section-title" id="section-title">📰 Últimas Notícias</h2>
-               
             </div>
             
             <div id="articles-container" class="articles-grid">
@@ -1042,8 +1585,6 @@
                 </button>
             </div>
         </section>
-
-      
     </main>
 
     <!-- Full Screen Article Modal -->
@@ -1082,9 +1623,7 @@
                     <h3>Armindo News</h3>
                     <p style="color: var(--gray); line-height: 1.6;">
                         Armindo News, um meio de comunicação social independente, fundada no dia 02 de abril de 2024.
-
                     </p>
-                  
                 </div>
 
                 <div class="footer-section">
@@ -1165,11 +1704,38 @@
         const articlesContainer = document.getElementById('articles-container');
         const fullscreenModal = document.getElementById('fullscreen-modal');
         const searchInput = document.getElementById('search-input');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
         const backToTopBtn = document.getElementById('back-to-top');
         const loadMoreSection = document.getElementById('load-more-section');
         const breakingBanner = document.getElementById('breaking-banner');
         const carouselContainer = document.getElementById('carousel-container');
         const carouselNav = document.getElementById('carousel-nav');
+
+        // Mobile Navigation Functions
+        function openMobileNav() {
+            document.getElementById('mobile-nav').classList.add('active');
+            document.getElementById('mobile-nav-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            document.getElementById('mobile-nav').classList.remove('active');
+            document.getElementById('mobile-nav-overlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Touch Events for Mobile Carousel
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleCarouselTouch() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                previousSlide();
+            }
+        }
 
         // Utility Functions
         function formatDate(timestamp) {
@@ -1238,6 +1804,7 @@
 
             displayCarousel();
             startCarouselAutoplay();
+            addCarouselTouchEvents();
         }
 
         function displayCarousel() {
@@ -1263,6 +1830,17 @@
             carouselNav.innerHTML = carouselArticles.map((_, index) => `
                 <div class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
             `).join('');
+        }
+
+        function addCarouselTouchEvents() {
+            carouselContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            carouselContainer.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleCarouselTouch();
+            }, { passive: true });
         }
 
         function nextSlide() {
@@ -1300,9 +1878,13 @@
             clearInterval(carouselInterval);
         }
 
-        // Pause autoplay on hover
+        // Pause autoplay on hover and touch
         carouselContainer.addEventListener('mouseenter', stopCarouselAutoplay);
         carouselContainer.addEventListener('mouseleave', startCarouselAutoplay);
+        carouselContainer.addEventListener('touchstart', stopCarouselAutoplay);
+        carouselContainer.addEventListener('touchend', () => {
+            setTimeout(startCarouselAutoplay, 3000);
+        });
 
         // Load Articles
         function loadArticles() {
@@ -1422,15 +2004,16 @@
             currentCategory = category;
             currentPage = 1;
             searchInput.value = '';
+            mobileSearchInput.value = '';
             searchTerm = '';
 
-            // Update active category links
-            document.querySelectorAll('.category-link, .nav-link').forEach(link => {
+            // Update active category links (both desktop and mobile)
+            document.querySelectorAll('.category-link, .nav-link, .mobile-nav-link').forEach(link => {
                 link.classList.remove('active');
             });
 
             // Add active class to clicked elements
-            const categoryLinks = document.querySelectorAll(`[onclick="showCategory('${category}')"]`);
+            const categoryLinks = document.querySelectorAll(`[onclick*="showCategory('${category}')"]`);
             categoryLinks.forEach(link => link.classList.add('active'));
 
             filterAndDisplayArticles();
@@ -1531,7 +2114,17 @@
 
         // Search Function
         function performSearch() {
-            searchTerm = searchInput.value.trim();
+            const desktopSearch = searchInput.value.trim();
+            const mobileSearch = mobileSearchInput.value.trim();
+            
+            // Sync search inputs
+            searchTerm = desktopSearch || mobileSearch;
+            if (desktopSearch && !mobileSearch) {
+                mobileSearchInput.value = desktopSearch;
+            } else if (mobileSearch && !desktopSearch) {
+                searchInput.value = mobileSearch;
+            }
+            
             currentPage = 1;
             filterAndDisplayArticles();
         }
@@ -1561,36 +2154,109 @@
             }
         });
 
+        mobileSearchInput.addEventListener('input', performSearch);
+        mobileSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+                closeMobileNav();
+            }
+        });
+
         // Close fullscreen on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && fullscreenModal.classList.contains('active')) {
-                closeFullscreen();
+            if (e.key === 'Escape') {
+                if (fullscreenModal.classList.contains('active')) {
+                    closeFullscreen();
+                } else if (document.getElementById('mobile-nav').classList.contains('active')) {
+                    closeMobileNav();
+                }
             }
         });
 
         // Back to top button visibility
-        window.addEventListener('scroll', () => {
+        let ticking = false;
+        function updateBackToTop() {
             if (window.pageYOffset > 300) {
                 backToTopBtn.style.display = 'flex';
             } else {
                 backToTopBtn.style.display = 'none';
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateBackToTop);
+                ticking = true;
+            }
+        });
+
+        // Optimize for mobile: Reduce carousel autoplay speed on mobile
+        function adjustCarouselForDevice() {
+            if (window.innerWidth <= 768) {
+                clearInterval(carouselInterval);
+                carouselInterval = setInterval(nextSlide, 6000); // Slower on mobile
+            }
+        }
+
+        // Handle resize events
+        window.addEventListener('resize', () => {
+            adjustCarouselForDevice();
+            
+            // Close mobile nav on resize to desktop
+            if (window.innerWidth > 768) {
+                closeMobileNav();
             }
         });
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadArticles();
+            adjustCarouselForDevice();
 
             // Performance optimization: Debounce search
             let searchTimeout;
-            searchInput.addEventListener('input', () => {
+            const debouncedSearch = () => {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(performSearch, 300);
-            });
+            };
+
+            searchInput.addEventListener('input', debouncedSearch);
+            mobileSearchInput.addEventListener('input', debouncedSearch);
+
+            // Preload critical images
+            const preloadImages = () => {
+                const imageUrls = [
+                    'https://via.placeholder.com/400x250/667eea/ffffff?text=Noticia',
+                    'https://via.placeholder.com/1200x600/667eea/ffffff?text=NewsHub+Pro'
+                ];
+                
+                imageUrls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            };
+            
+            preloadImages();
         });
+
+        // Add passive listeners for better scroll performance
+        document.addEventListener('touchstart', () => {}, { passive: true });
+        document.addEventListener('touchmove', () => {}, { passive: true });
+        document.addEventListener('wheel', () => {}, { passive: true });
+
+        // Service Worker Registration for PWA (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
     </script>
 </body>
-
 </html>
-
-
