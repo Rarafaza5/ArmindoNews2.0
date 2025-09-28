@@ -39,6 +39,7 @@
         .container{max-width:1100px;margin:3.5rem auto;padding:0 1rem}
         .hero{padding:2.5rem;background:#fff;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:2rem}
         .hero h1{font-size:2rem;margin-bottom:.5rem}
+        .hero h3{font-size:1.3rem;margin-bottom:.5rem;margin-top:1.5rem;color:var(--dark)}
         .hero p{color:var(--gray)}
         .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
         .card{background:#fff;border-radius:14px;padding:1.3rem;box-shadow:0 6px 18px rgba(0,0,0,.04);display:flex;gap:1rem;align-items:flex-start}
@@ -53,7 +54,78 @@
         .btn{padding:.9rem 1.3rem;border-radius:12px;font-weight:700;border:none;cursor:pointer}
         .btn-primary{background:linear-gradient(135deg,var(--primary),#764ba2);color:#fff}
         .btn-outline{background:transparent;border:2px solid #e6e9f6;color:var(--dark)}
-        @media(max-width:620px){.nav-container{padding:1rem}.hero{padding:1.2rem}}
+        
+        /* Mobile Adaptations */
+        @media(max-width:768px){
+            .nav-container{
+                padding:1rem;
+                flex-direction:column;
+                gap:1rem;
+            }
+            .logo{
+                font-size:3rem;
+            }
+            .nav-links{
+                width:100%;
+                justify-content:center;
+            }
+            .container{
+                margin:2rem auto;
+                padding:0 1rem;
+            }
+            .hero{
+                padding:1.5rem;
+                text-align:left;
+            }
+            .hero h1{
+                font-size:1.6rem;
+                line-height:1.3;
+                margin-bottom:1rem;
+            }
+            .hero h3{
+                font-size:1.2rem;
+                margin-top:1.2rem;
+            }
+            .hero p{
+                font-size:.95rem;
+                line-height:1.6;
+                text-align:justify;
+            }
+        }
+        
+        @media(max-width:480px){
+            .nav-container{
+                padding:0.5rem;
+            }
+            .logo{
+                font-size:2.5rem;
+            }
+            .nav-link{
+                padding:.4rem .7rem;
+                font-size:.9rem;
+            }
+            .hero{
+                padding:1rem;
+                margin-bottom:1rem;
+            }
+            .hero h1{
+                font-size:1.4rem;
+                line-height:1.2;
+            }
+            .hero h3{
+                font-size:1.1rem;
+                margin-top:1rem;
+            }
+            .hero p{
+                font-size:.9rem;
+                line-height:1.5;
+            }
+        }
+        
+        @media(max-width:620px){
+            .nav-container{padding:1rem}
+            .hero{padding:1.2rem}
+        }
     </style>
 </head>
 <body>
@@ -69,7 +141,7 @@
     <main class="container" id="main">
         <section class="hero" aria-labelledby="hero-title">
             <h1 id="hero-title">Termos e Condições da Armindo News</h1>
-            <p>Estes Termos e Condições de Uso (doravante “Termos”) regulam o acesso e a utilização do site Armindo News (doravante “Site”), de propriedade de Rafael Diogo e Jorge Figueira (doravante “Nós”, “Nossa Empresa” ou "Grupo Armindo"). Ao aceder à Armindo News, o utilizador (doravante “Você”) concorda integralmente com estes Termos. Se não concordar com qualquer parte destes Termos, por favor, não utilize o nosso Site.</p>
+            <p>Estes Termos e Condições de Uso (doravante "Termos") regulam o acesso e a utilização do site Armindo News (doravante "Site"), de propriedade de Rafael Diogo e Jorge Figueira (doravante "Nós", "Nossa Empresa" ou "Grupo Armindo"). Ao aceder à Armindo News, o utilizador (doravante "Você") concorda integralmente com estes Termos. Se não concordar com qualquer parte destes Termos, por favor, não utilize o nosso Site.</p>
             <br>
             <h3>Conteudos do Site</h3>
             <p>O conteúdo publicado no nosso Site, incluindo artigos, notícias, fotografias, vídeos e outros materiais, é destinado exclusivamente a fins jornalisticos e informativos. Embora nos esforcemos para garantir a precisão e a atualização das informações, não garantimos a sua total exatidão, fiabilidade ou integridade. </p>

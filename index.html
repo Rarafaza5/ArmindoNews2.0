@@ -6,13 +6,13 @@
      crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Armindo News - Portal de notícias profissional com as últimas notícias, análises e reportagens exclusivas">
-    <meta name="keywords" content="notícias, breaking news, tecnologia, política, economia, Desportes">
+    <meta name="description" content="Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024.">
+    <meta name="keywords" content="notícias, breaking news, Alerta AN, Criticas, GrupoArmindo, noticias, news, noticia, alerta">
     <meta name="author" content="Armindo News">
-    <meta property="og:title" content="Armindo News - Portal de Notícias">
-    <meta property="og:description" content="Fique por dentro das últimas notícias com análises profundas e reportagens exclusivas">
+    <meta property="og:title" content="Armindo News by GrupoArmindo">
+    <meta property="og:description" content="Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://via.placeholder.com/1200x630/667eea/ffffff?text=NewsHub+Pro">
+    <meta property="og:image" content="/an.png">
     <title>Armindo News</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -329,6 +329,42 @@
             background: transparent;
             outline: none;
             flex: 1;
+            margin-left: 0.5rem;
+        }
+
+        /* YouTube Video Embed Styles */
+        .youtube-video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .youtube-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: var(--radius);
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #ff0000;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
             margin-left: 0.5rem;
         }
 
@@ -1209,6 +1245,12 @@
                 height: 10px;
             }
 
+            /* YouTube Video Mobile */
+            .youtube-video-container {
+                margin: 1.5rem 0;
+                border-radius: 10px;
+            }
+
             /* Newsletter Mobile */
             .newsletter-section {
                 padding: 2rem 1.5rem;
@@ -1459,15 +1501,12 @@
                 image-rendering: -webkit-optimize-contrast;
             }
         }
-
-        /* Dark Mode Support */
-      
     </style>
 </head>
 <body>
-    <!-- Breaking News Banner -->
+    <!-- Alerta AN Banner -->
     <div class="breaking-banner" id="breaking-banner" style="display: none;">
-        🚨 BREAKING: <span id="breaking-text"></span>
+        🚨 Alerta AN: <span id="breaking-text"></span>
     </div>
 
     <!-- Mobile Navigation Overlay -->
@@ -1492,7 +1531,7 @@
             <!-- Mobile Navigation Menu -->
             <ul class="mobile-nav-menu">
                 <li><a href="#" class="mobile-nav-link active" onclick="showCategory('all'); closeMobileNav();">🏠 Home</a></li>
-                <li><a href="#" class="mobile-nav-link breaking" onclick="showCategory('breaking'); closeMobileNav();">🚨 Breaking</a></li>
+                <li><a href="#" class="mobile-nav-link breaking" onclick="showCategory('breaking'); closeMobileNav();">🚨 Alerta AN</a></li>
                 <li><a href="#" class="mobile-nav-link" onclick="showCategory('critica'); closeMobileNav();">✏️ Critica</a></li>
                 <li><a href="#" class="mobile-nav-link" onclick="showCategory('politica'); closeMobileNav();">🏛️ Política</a></li>
                 <li><a href="#" class="mobile-nav-link" onclick="showCategory('Entrevista'); closeMobileNav();">🎤 Entrevista</a></li>
@@ -1523,7 +1562,7 @@
             <nav class="nav-main">
                 <ul class="nav-menu">
                     <li><a href="#" class="nav-link active" onclick="showCategory('all')">🏠 Home</a></li>
-                    <li><a href="#" class="nav-link breaking" onclick="showCategory('breaking')">🚨 Breaking</a></li>
+                    <li><a href="#" class="nav-link breaking" onclick="showCategory('breaking')">🚨 Alerta AN</a></li>
                     <li><a href="#" class="nav-link" onclick="showCategory('critica')">✏️ Critica</a></li>
                     <li><a href="#" class="nav-link" onclick="showCategory('politica')">🏛️ Política</a></li>
                     <li><a href="#" class="nav-link" onclick="showCategory('Entrevista')">🎤 Entrevista</a></li>
@@ -1556,12 +1595,12 @@
         <section class="categories-nav">
             <div class="categories-list">
                 <a href="#" class="category-link active" onclick="showCategory('all')">📰 Todas</a>
-                <a href="#" class="category-link" onclick="showCategory('breaking')">🚨 Breaking News</a>
-                <a href="#" class="category-link" onclick="showCategory('tecnologia')">✏️ Critica</a>
+                <a href="#" class="category-link" onclick="showCategory('breaking')">🚨 Alerta AN</a>
+                <a href="#" class="category-link" onclick="showCategory('critica')">✏️ Critica</a>
                 <a href="#" class="category-link" onclick="showCategory('politica')">🏛️ Política</a>
-                <a href="#" class="category-link" onclick="showCategory('economia')">🎤 Entrevista</a>
-                <a href="#" class="category-link" onclick="showCategory('Desportes')">⚽ Desportes</a>
-                <a href="#" class="category-link" onclick="showCategory('saude')">🏥 Saúde</a>
+                <a href="#" class="category-link" onclick="showCategory('Entrevista')">🎤 Entrevista</a>
+                <a href="#" class="category-link" onclick="showCategory('mundo')">🌍 Mundo</a>
+                <a href="#" class="category-link" onclick="showCategory('edicaoAN')">📰 Edições AN</a>
                 <a href="#" class="category-link" onclick="showCategory('entretenimento')">🎬 Entretenimento</a>
             </div>
         </section>
@@ -1607,6 +1646,11 @@
                 </header>
 
                 <img id="fullscreen-image" class="fullscreen-image" alt="" style="display: none;">
+                
+                <!-- YouTube Video Container -->
+                <div id="fullscreen-youtube" class="youtube-video-container" style="display: none;">
+                    <iframe id="fullscreen-youtube-iframe" allowfullscreen></iframe>
+                </div>
 
                 <div class="fullscreen-article-content">
                     <div class="fullscreen-text" id="fullscreen-text"></div>
@@ -1629,10 +1673,10 @@
                 <div class="footer-section">
                     <h3>📰 Categorias</h3>
                     <ul class="footer-links">
-                        <li><a href="#" onclick="showCategory('breaking')">🚨 Breaking News</a></li>
+                        <li><a href="#" onclick="showCategory('breaking')">🚨 Alerta AN</a></li>
                         <li><a href="#" onclick="showCategory('critica')">✏️ Critica</a></li>
                         <li><a href="#" onclick="showCategory('politica')">🏛️ Política</a></li>
-                        <li><a href="#" onclick="showCategory('entrevista')">🎤 Entrevista</a></li>
+                        <li><a href="#" onclick="showCategory('Entrevista')">🎤 Entrevista</a></li>
                         <li><a href="#" onclick="showCategory('mundo')">🌍 Mundo</a></li>
                         <li><a href="#" onclick="showCategory('edicaoAN')">📰 Edições AN</a></li>
                         <li><a href="#" onclick="showCategory('entretenimento')">🎬 Entretenimento</a></li>
@@ -1653,7 +1697,8 @@
                     <ul class="footer-links">
                         <p><strong>Armindo News</strong></p>
                         <li>📧 <a href="mailto:armindo.news@grupoarmindo.site">armindo.news@grupoarmindo.site</a></li>
-                        <li>Ig: <a href="https://www.instagram.com/armindo_news/">@Armindo_News</a></li><br>
+                        <li>Ig: <a href="https://www.instagram.com/armindo_news/">@Armindo_News</a></li>
+                         <li>YT: <a href="https://www.youtube.com/@ArmindoNews">@ArmindoNews</a></li><br>
                        <p><strong>Grupo Armindo</strong></p>
                         <li>📧 <a href="mailto:contacto@grupoarmindo.site">contacto@grupoarmindo.site</a></li>
                         <li>🌐 <a href="https://grupoarmindo.site">https://grupoarmindo.site</a></li>
@@ -1675,7 +1720,7 @@
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "%%GOOGLE_API%%",
+            apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc",
             authDomain: "aawards.firebaseapp.com",
             databaseURL: "https://aawards-default-rtdb.firebaseio.com",
             projectId: "aawards",
@@ -1710,6 +1755,37 @@
         const breakingBanner = document.getElementById('breaking-banner');
         const carouselContainer = document.getElementById('carousel-container');
         const carouselNav = document.getElementById('carousel-nav');
+
+        // YouTube Helper Functions
+        function convertYouTubeToEmbed(url) {
+            if (!url) return null;
+            
+            try {
+                const urlObj = new URL(url);
+                
+                if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
+                    const videoId = urlObj.searchParams.get('v');
+                    if (videoId) {
+                        return `https://www.youtube.com/embed/${videoId}`;
+                    }
+                } else if (urlObj.hostname === 'youtu.be') {
+                    const videoId = urlObj.pathname.substring(1);
+                    if (videoId) {
+                        return `https://www.youtube.com/embed/${videoId}`;
+                    }
+                } else if (urlObj.pathname.includes('/embed/')) {
+                    return url;
+                }
+                
+                return null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function hasYouTubeVideo(article) {
+            return article.youtubeUrl || article.youtubeEmbedId;
+        }
 
         // Mobile Navigation Functions
         function openMobileNav() {
@@ -1765,11 +1841,11 @@
         function getCategoryIcon(category) {
             const icons = {
                 'breaking': '🚨',
-                'tecnologia': '💻',
+                'critica': '✏️',
                 'Desportes': '⚽',
                 'politica': '🏛️',
-                'economia': '💰',
-                'saude': '🏥',
+                'Entrevista': '🎤',
+                'edicaoAN': '📰',
                 'entretenimento': '🎬',
                 'ciencia': '🔬',
                 'mundo': '🌍',
@@ -1786,11 +1862,19 @@
 
         // Carousel Functions
         function initCarousel() {
-            // Get featured articles or first 5 articles for carousel
+            // Get carousel articles (prioritize those marked with carousel: true)
             carouselArticles = allArticles
-                .filter(article => article.published && (article.featured || article.breaking))
+                .filter(article => article.published && article.carousel)
                 .slice(0, 5);
             
+            // If no carousel articles, use featured or breaking
+            if (carouselArticles.length === 0) {
+                carouselArticles = allArticles
+                    .filter(article => article.published && (article.featured || article.breaking))
+                    .slice(0, 5);
+            }
+            
+            // If still none, use first 5 published articles
             if (carouselArticles.length === 0) {
                 carouselArticles = allArticles
                     .filter(article => article.published)
@@ -1812,11 +1896,7 @@
                 <div class="carousel-slide ${index === 0 ? 'active' : ''}" 
                      style="background-image: url('${article.image || 'https://via.placeholder.com/1200x600/667eea/ffffff?text=NewsHub+Pro'}')">
                     <div class="carousel-content">
-                        <div class="carousel-badge">
-                            ${getCategoryIcon(article.category || 'geral')} ${(article.category || 'geral').toUpperCase()}
-                            ${article.breaking ? ' • BREAKING' : ''}
-                            ${article.premium ? ' • PREMIUM' : ''}
-                        </div>
+                       
                         <h1 class="carousel-title">${article.title}</h1>
                         ${article.summary ? `<p class="carousel-summary">${article.summary}</p>` : ''}
                         <button class="carousel-btn" onclick="openFullscreen('${article.id}')">
@@ -1965,17 +2045,19 @@
 
         // Create Article Card
         function createArticleCard(article) {
+            const hasVideo = hasYouTubeVideo(article);
+            
             return `
                 <div class="article-card" onclick="openFullscreen('${article.id}')">
                     <img src="${article.image || 'https://via.placeholder.com/400x250/667eea/ffffff?text=Noticia'}" 
                          alt="${article.title}" class="article-image">
                     <div class="article-content">
                         <div class="article-meta">
-                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''} ${article.premium ? 'premium-badge' : ''}">
+                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''}">
                                 ${getCategoryIcon(article.category || 'geral')} ${(article.category || 'geral').toUpperCase()}
                                 ${article.breaking ? ' 🚨' : ''}
-                                ${article.premium ? ' 💎' : ''}
                             </span>
+                            ${hasVideo ? '<span class="video-badge">🎥 Vídeo</span>' : ''}
                             <span class="article-date">📅 ${getRelativeTime(article.date)}</span>
                         </div>
                         <h3 class="article-title">${truncateText(article.title, 80)}</h3>
@@ -2024,15 +2106,14 @@
             const sectionTitle = document.getElementById('section-title');
             const categoryNames = {
                 'all': '📰 Últimas Notícias',
-                'breaking': '🚨 Breaking News',
-                'tecnologia': '✏️ Critica',
+                'breaking': '🚨 Alerta AN',
+                'critica': '✏️ Critica',
                 'politica': '🏛️ Política',
-                'economia': '🎤 Entrevista',
-                'Desportes': '⚽ Desportes',
-                'saude': '🏥 Saúde',
+                'Entrevista': '🎤 Entrevista',
+                'edicaoAN': '📰 Edições AN',
                 'entretenimento': '🎬 Entretenimento',
                 'ciencia': '🔬 Ciência',
-                'mundo': '🌍 Internacional',
+                'mundo': '🌍 Mundo',
                 'opiniao': '💭 Opinião'
             };
 
@@ -2051,16 +2132,18 @@
                     // Populate fullscreen modal
                     document.getElementById('fullscreen-title').textContent = article.title;
                     
+                    const hasVideo = hasYouTubeVideo(article);
+                    
                     document.getElementById('fullscreen-meta').innerHTML = `
                         <div class="meta-item">
-                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''} ${article.premium ? 'premium-badge' : ''}">
+                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''}">
                                 ${getCategoryIcon(article.category || 'geral')} ${(article.category || 'geral').toUpperCase()}
                             </span>
                         </div>
                         <div class="meta-item">📅 <span>${formatDate(article.date)}</span></div>
                         <div class="meta-item">👤 <span>${article.author || 'Admin'}</span></div>
-                        ${article.breaking ? '<div class="meta-item"><span class="category-badge breaking-badge">🚨 BREAKING NEWS</span></div>' : ''}
-                        ${article.premium ? '<div class="meta-item"><span class="category-badge premium-badge">💎 PREMIUM</span></div>' : ''}
+                        ${hasVideo ? '<div class="meta-item"><span class="video-badge">🎥 Vídeo</span></div>' : ''}
+                        ${article.breaking ? '<div class="meta-item"><span class="category-badge breaking-badge">🚨 Alerta AN</span></div>' : ''}
                     `;
                     
                     const summaryElement = document.getElementById('fullscreen-summary');
@@ -2080,6 +2163,22 @@
                         imageElement.style.display = 'none';
                     }
                     
+                    // Handle YouTube video
+                    const youtubeElement = document.getElementById('fullscreen-youtube');
+                    const youtubeIframe = document.getElementById('fullscreen-youtube-iframe');
+                    
+                    if (hasVideo) {
+                        const embedUrl = convertYouTubeToEmbed(article.youtubeUrl);
+                        if (embedUrl) {
+                            youtubeIframe.src = embedUrl;
+                            youtubeElement.style.display = 'block';
+                        } else {
+                            youtubeElement.style.display = 'none';
+                        }
+                    } else {
+                        youtubeElement.style.display = 'none';
+                    }
+                    
                     document.getElementById('fullscreen-text').innerHTML = article.content || article.contentText || '';
                     
                     // Show fullscreen modal
@@ -2093,9 +2192,13 @@
         function closeFullscreen() {
             fullscreenModal.classList.remove('active');
             document.body.style.overflow = 'auto';
+            
+            // Stop any YouTube video that might be playing
+            const youtubeIframe = document.getElementById('fullscreen-youtube-iframe');
+            youtubeIframe.src = '';
         }
 
-        // Check Breaking News
+        // Check Alerta AN
         function checkBreakingNews() {
             const breakingArticles = allArticles.filter(article => 
                 article.published && article.breaking && 
@@ -2260,4 +2363,3 @@
     </script>
 </body>
 </html>
-
