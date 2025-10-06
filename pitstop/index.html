@@ -100,19 +100,28 @@
             border-bottom: 1px solid var(--gray-light);
         }
 
+        /* ESTILOS DO LOGO MODIFICADOS PARA IMAGEM */
         .logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
+            /* Estilos de texto removidos: */
+            /* font-size: 2.5rem; */
+            /* font-weight: 900; */
+            /* background: var(--gradient-primary); */
+            /* -webkit-background-clip: text; */
+            /* -webkit-text-fill-color: transparent; */
+            /* font-family: 'Orbitron', sans-serif; */
+            /* letter-spacing: 2px; */
         }
+
+        .logo img {
+            height: 170px; /* Altura padrão para desktop */
+            max-width: 100%;
+            object-fit: contain;
+        }
+        /* FIM DOS ESTILOS DO LOGO */
 
         .nav-utils {
             display: flex;
@@ -363,6 +372,7 @@
             font-weight: 600;
             margin-bottom: 1.5rem;
             font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
         }
 
         .carousel-title {
@@ -698,8 +708,9 @@
         }
 
         @media (max-width: 600px) {
-            .logo {
-                font-size: 1.8rem;
+            /* .logo { font-size: 1.8rem; } // Estilo de texto removido */
+            .logo img {
+                height: 30px; /* Altura ajustada para mobile */
             }
             .featured-grid {
                 grid-template-columns: 1fr;
@@ -748,7 +759,9 @@
 
     <div id="mobile-nav" class="mobile-nav">
         <div class="mobile-nav-header">
-            <a href="index.html" class="logo" style="font-size: 1.8rem;">AN Pit Stop</a>
+            <a href="index.html" class="logo">
+                <img src="pitstop.png" alt="AN Pit Stop Logo">
+            </a>
             <button class="mobile-nav-close" onclick="closeMobileNav()">
                 <i class="fa fa-times"></i>
             </button>
@@ -780,7 +793,7 @@
         <div class="nav-container">
             <div class="nav-top">
                 <a href="index.html" class="logo">
-                    AN Pit Stop
+                    <img src="pitstop.png" alt="AN Pit Stop Logo">
                 </a>
                 <div class="nav-utils">
                     <div class="search-box">
@@ -863,7 +876,7 @@
     <script>
         // Configuração do Firebase (Substitua com suas credenciais reais)
         const firebaseConfig = {
-  apiKey: "AIzaSyD6hxQ1_eBEr2wsO54UEahZzP-8zjuA7UI",
+  apiKey: "%%GOOGLE_PS%%",
   authDomain: "an-pit-stop.firebaseapp.com",
   databaseURL: "https://an-pit-stop-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId: "an-pit-stop",
