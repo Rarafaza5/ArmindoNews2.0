@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e" type="text/javascript"></script>
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AN Pit Stop - Notícias a toda a velocidade! O seu canal de automobilismo.">
+    <meta name="keywords" content="automobilismo, F1, F1 Academy, F2, F3, motorsport, corridas, notícias">
+    <meta name="author" content="AN Pit Stop">
+    <meta property="og:title" content="AN Pit Stop - Notícias a toda a velocidade!">
+    <meta property="og:description" content="O seu canal de automobilismo com as últimas notícias do mundo das corridas.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="an.png">
+    <title>AN Pit Stop</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary: #8B0000;
+            --primary-light: #A52A2A;
+            --primary-dark: #660000;
+            --secondary: #1a1a1a;
+            --accent: #FF4500;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0a0a0a;
+            --dark-elevated: #1a1a1a;
+            --dark-card: #1f1f1f;
+            --light: #f8fafc;
+            --gray: #9ca3af;
+            --gray-light: #4b5563;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #8B0000 0%, #FF4500 100%);
+            --gradient-hero: linear-gradient(135deg, rgba(139, 0, 0, 0.95) 0%, rgba(255, 69, 0, 0.95) 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--light);
+            background-color: var(--dark);
+            font-feature-settings: 'kern' 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: var(--dark-elevated);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .breaking-banner {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.5rem 0;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            display: none; /* Inicia oculto, aparece com breaking news */
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .nav-utils {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--dark-card);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            min-width: 300px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+        }
+
+        .search-box:focus-within {
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 1rem;
+            color: var(--light);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray);
+        }
+
+        .nav-main {
+            padding: 1rem 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--white);
+            background: rgba(139, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.breaking {
+            background: var(--gradient-primary);
+            color: var(--white);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px var(--primary); }
+            to { box-shadow: 0 0 20px var(--primary), 0 0 30px var(--accent); }
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--light);
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100%;
+            background: var(--dark-elevated);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            border-left: 2px solid var(--primary);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--light);
+        }
+
+        .mobile-nav-content {
+            padding: 1rem;
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 0.75rem;
+            text-decoration: none;
+            color: var(--light);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .mobile-search {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-search-box {
+            display: flex;
+            align-items: center;
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            border: 1px solid var(--gray-light);
+        }
+
+        .mobile-search-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            margin-left: 0.5rem;
+            color: var(--light);
+        }
+
+        .hero-carousel {
+            position: relative;
+            background: var(--gradient-hero);
+            height: 600px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .carousel-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.85), rgba(255, 69, 0, 0.85));
+        }
+
+        .carousel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--white);
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .carousel-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .carousel-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .carousel-summary {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .carousel-btn {
+            background: var(--white);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .carousel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 3;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+
+        .carousel-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(139, 0, 0, 0.5);
+            color: var(--white);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+
+        .carousel-arrows:hover {
+            background: var(--primary);
+            opacity: 1;
+        }
+
+        .carousel-prev {
+            left: 2rem;
+        }
+
+        .carousel-next {
+            right: 2rem;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary);
+            padding-left: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .article-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--primary);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .article-card:hover .article-image {
+            opacity: 0.9;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-category {
+            display: inline-block;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .article-summary {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--gray-light);
+            border-top: 1px solid var(--dark-elevated);
+            padding-top: 0.75rem;
+        }
+
+        .latest-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--dark-card);
+            color: var(--gray);
+            border: 1px solid var(--gray-light);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            background: var(--dark-card);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .load-more-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 900;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .loading-message {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            main {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-top {
+                border-bottom: none;
+                padding-bottom: 0.5rem;
+            }
+            .nav-main {
+                display: none; /* Esconde menu principal em tablets */
+            }
+            .nav-utils {
+                gap: 1rem;
+            }
+            .search-box {
+                display: none; /* Esconde barra de pesquisa desktop */
+            }
+            .mobile-nav-toggle {
+                display: block;
+            }
+            .featured-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero-carousel {
+                height: 450px;
+            }
+            .carousel-content {
+                max-width: 90%;
+            }
+            .carousel-title {
+                font-size: clamp(1.8rem, 4vw, 3rem);
+            }
+            .carousel-summary {
+                font-size: 1rem;
+            }
+            .carousel-arrows {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-carousel {
+                height: 400px;
+            }
+            .carousel-prev {
+                left: 1rem;
+            }
+
+            .carousel-next {
+                right: 1rem;
+            }
+            .carousel-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            .carousel-title {
+                font-size: 2rem;
+            }
+            .carousel-btn {
+                padding: 0.8rem 1.5rem;
+            }
+            main {
+                margin: 2rem auto;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 1rem;
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+            .article-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay" onclick="closeMobileNav()"></div>
+
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="mobile-nav-header">
+            <a href="index.html" class="logo" style="font-size: 1.8rem;">AN Pit Stop</a>
+            <button class="mobile-nav-close" onclick="closeMobileNav()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-content">
+            <div class="mobile-search">
+                <div class="mobile-search-box">
+                    <i class="fa fa-search" style="color: var(--gray);"></i>
+                    <input type="text" id="mobile-search-input" class="mobile-search-input" placeholder="Pesquisar artigos...">
+                </div>
+            </div>
+            <ul class="mobile-nav-menu">
+                <li><a href="index.html" class="mobile-nav-link active"><i class="fa fa-home"></i> Início</a></li>
+                <li><a href="index.html?category=Fórmula 1" class="mobile-nav-link" data-category="Fórmula 1"><i class="fa fa-flag-checkered"></i> Fórmula 1</a></li>
+                <li><a href="index.html?category=F1 Academy" class="mobile-nav-link" data-category="F1 Academy"><i class="fa fa-graduation-cap"></i> F1 Academy</a></li>
+                <li><a href="index.html?category=Fórmula 2" class="mobile-nav-link" data-category="Fórmula 2"><i class="fa fa-car-side"></i> Fórmula 2</a></li>
+                <li><a href="index.html?category=Fórmula 3" class="mobile-nav-link" data-category="Fórmula 3"><i class="fa fa-car"></i> Fórmula 3</a></li>
+            </ul>
+            <a href="admin.html" class="mobile-nav-link" style="background: var(--dark-card); color: var(--primary); border: 1px solid var(--primary);">
+                <i class="fa fa-user-shield"></i> Painel Admin
+            </a>
+        </div>
+    </div>
+
+    <header class="header">
+        <div id="breaking-banner" class="breaking-banner">
+            <span id="breaking-news-title"></span>
+        </div>
+        <div class="nav-container">
+            <div class="nav-top">
+                <a href="index.html" class="logo">
+                    AN Pit Stop
+                </a>
+                <div class="nav-utils">
+                    <div class="search-box">
+                        <i class="fa fa-search" style="color: var(--gray);"></i>
+                        <input type="text" id="search-input" class="search-input" placeholder="Pesquisar artigos...">
+                    </div>
+                    <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <nav class="nav-main">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link active">Início</a></li>
+                    <li><a href="index.html?category=Fórmula 1" class="nav-link" data-category="Fórmula 1">Fórmula 1</a></li>
+                    <li><a href="index.html?category=F1 Academy" class="nav-link" data-category="F1 Academy">F1 Academy</a></li>
+                    <li><a href="index.html?category=Fórmula 2" class="nav-link" data-category="Fórmula 2">Fórmula 2</a></li>
+                    <li><a href="index.html?category=Fórmula 3" class="nav-link" data-category="Fórmula 3">Fórmula 3</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-carousel" id="hero-carousel">
+        <div class="carousel-container" id="carousel-container">
+            </div>
+        <div class="carousel-nav" id="carousel-nav">
+            </div>
+        <button class="carousel-arrows carousel-prev" id="carousel-prev" style="display: none;"><i class="fa fa-chevron-left"></i></button>
+        <button class="carousel-arrows carousel-next" id="carousel-next" style="display: none;"><i class="fa fa-chevron-right"></i></button>
+    </section>
+
+    <main>
+        <section id="featured-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Em Destaque</h2>
+            </div>
+            <div class="featured-grid" id="featured-articles-grid">
+                </div>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <h2 class="section-title">Últimas Notícias</h2>
+            </div>
+            
+            <div class="category-filter" id="category-filter-container">
+                <a href="index.html" class="filter-btn active" data-category="all">Todos</a>
+                <a href="index.html?category=Fórmula 1" class="filter-btn" data-category="Fórmula 1">Fórmula 1</a>
+                <a href="index.html?category=F1 Academy" class="filter-btn" data-category="F1 Academy">F1 Academy</a>
+                <a href="index.html?category=Fórmula 2" class="filter-btn" data-category="Fórmula 2">Fórmula 2</a>
+                <a href="index.html?category=Fórmula 3" class="filter-btn" data-category="Fórmula 3">Fórmula 3</a>
+            </div>
+
+            <div id="articles-loading" class="loading-message">
+                <i class="fa fa-spinner fa-spin"></i> A carregar notícias...
+            </div>
+
+            <div class="latest-grid" id="latest-articles-grid">
+                </div>
+
+            <button class="load-more-btn" id="load-more-btn" style="display: none;">
+                Carregar Mais Notícias
+            </button>
+
+            <div id="no-articles-message" class="loading-message" style="display: none; color: var(--danger);">
+                Nenhum artigo encontrado para o critério de pesquisa.
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 3rem 1rem; text-align: center; background: var(--dark-elevated); border-top: 2px solid var(--primary);">
+        <p style="color: var(--gray); font-size: 0.9rem;">&copy; AN Pit Stop. Todos os direitos reservados. | <a href="admin.html" style="color: var(--primary); text-decoration: none;">Admin</a></p>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top-btn" onclick="scrollToTop()">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Configuração do Firebase (Substitua com suas credenciais reais)
+        const firebaseConfig = {
+  apiKey: "AIzaSyD6hxQ1_eBEr2wsO54UEahZzP-8zjuA7UI",
+  authDomain: "an-pit-stop.firebaseapp.com",
+  databaseURL: "https://an-pit-stop-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId: "an-pit-stop",
+  storageBucket: "an-pit-stop.firebasestorage.app",
+  messagingSenderId: "163520174383",
+  appId: "1:163520174383:web:5e190e74e4b60d71e0e9da"
+};
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Variáveis globais
+        let allArticles = [];
+        let filteredArticles = [];
+        let currentPage = 1;
+        const articlesPerPage = 10;
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        // Referências do DOM
+        const latestArticlesGrid = document.getElementById('latest-articles-grid');
+        const featuredArticlesGrid = document.getElementById('featured-articles-grid');
+        const featuredSection = document.getElementById('featured-section');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const articlesLoading = document.getElementById('articles-loading');
+        const noArticlesMessage = document.getElementById('no-articles-message');
+        const breakingBanner = document.getElementById('breaking-banner');
+        const breakingNewsTitle = document.getElementById('breaking-news-title');
+        const searchInput = document.getElementById('search-input');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+
+        // Carousel DOM elements
+        const carouselContainer = document.getElementById('carousel-container');
+        const carouselNav = document.getElementById('carousel-nav');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+
+        // Categorias fixas para inicialização (usadas para filtros e destaque)
+        const FIXED_CATEGORIES = ["Fórmula 1", "F1 Academy", "Fórmula 2", "Fórmula 3"];
+
+        // --- Utilitários ---
+
+        function getYouTubeThumbnail(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                // Usa a qualidade mqdefault.jpg (medium quality)
+                return `https://img.youtube.com/vi/${match[2]}/mqdefault.jpg`;
+            }
+            return 'placeholder.jpg'; // Imagem de fallback
+        }
+
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+        }
+
+        function truncate(text, limit) {
+            if (text.length > limit) {
+                return text.substring(0, limit) + '...';
+            }
+            return text;
+        }
+
+        // --- Navegação Mobile ---
+
+        function toggleMobileNav() {
+            document.getElementById('mobile-nav').classList.toggle('active');
+            document.getElementById('mobile-nav-overlay').classList.toggle('active');
+        }
+
+        function closeMobileNav() {
+            document.getElementById('mobile-nav').classList.remove('active');
+            document.getElementById('mobile-nav-overlay').classList.remove('active');
+        }
+
+        // --- Funções Principais de Artigos ---
+
+        function loadArticles() {
+            articlesLoading.style.display = 'block';
+            latestArticlesGrid.innerHTML = '';
+            featuredArticlesGrid.innerHTML = '';
+            featuredSection.style.display = 'none';
+
+            database.ref('articles').once('value')
+                .then(snapshot => {
+                    articlesLoading.style.display = 'none';
+                    const articles = snapshot.val();
+                    allArticles = [];
+
+                    if (articles) {
+                        // Converte objeto em array e filtra artigos publicados
+                        for (let key in articles) {
+                            if (articles[key].isPublished) {
+                                allArticles.push({ id: key, ...articles[key] });
+                            }
+                        }
+                    }
+
+                    // Ordena: mais recente primeiro
+                    allArticles.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                    // Aplica filtro inicial (categoria do URL)
+                    applyInitialFilter();
+
+                    // Renderiza o conteúdo da página
+                    renderHeroAndBreaking(allArticles);
+                    renderFeaturedArticles(allArticles);
+                    filterAndDisplayArticles(false);
+                })
+                .catch(error => {
+                    articlesLoading.style.display = 'none';
+                    console.error("Erro ao carregar artigos: ", error);
+                    noArticlesMessage.innerText = 'Erro ao carregar artigos. Tente novamente mais tarde.';
+                    noArticlesMessage.style.display = 'block';
+                });
+        }
+
+        function renderHeroAndBreaking(articles) {
+            // 1. Breaking News
+            const breakingNews = articles.find(a => a.isBreaking && a.isPublished);
+            if (breakingNews) {
+                breakingNewsTitle.innerText = `🚨 BREAKING NEWS: ${truncate(breakingNews.title, 100)}`;
+                breakingBanner.onclick = () => window.location.href = `/pitstop/article.html?id=${breakingNews.id}`;
+                breakingBanner.style.display = 'block';
+            } else {
+                breakingBanner.style.display = 'none';
+            }
+
+            // 2. Carousel
+            const carouselArticles = articles.filter(a => a.isCarousel && a.isPublished).slice(0, 5); // Limita a 5
+
+            if (carouselArticles.length > 0) {
+                carouselContainer.innerHTML = '';
+                carouselNav.innerHTML = '';
+                let carouselHTML = '';
+                let navHTML = '';
+
+                carouselArticles.forEach((article, index) => {
+                    const isActive = index === 0 ? 'active' : '';
+                    const imageOrVideo = article.youtubeUrl
+                        ? getYouTubeThumbnail(article.youtubeUrl)
+                        : article.image || 'placeholder.jpg';
+
+                    carouselHTML += `
+                        <a href="/pitstop/article.html?id=${article.id}" class="carousel-slide ${isActive}" style="background-image: url('${imageOrVideo}');">
+                            <div class="carousel-content">
+                                <span class="carousel-badge">${article.category}</span>
+                                <h2 class="carousel-title">${article.title}</h2>
+                                <p class="carousel-summary">${truncate(article.summary, 150)}</p>
+                                <button class="carousel-btn"><i class="fa fa-play-circle"></i> Ler Agora</button>
+                            </div>
+                        </a>
+                    `;
+                    navHTML += `<div class="carousel-dot ${isActive}" data-slide="${index}"></div>`;
+                });
+
+                carouselContainer.innerHTML = carouselHTML;
+                carouselNav.innerHTML = navHTML;
+                document.getElementById('hero-carousel').style.display = 'block';
+                carouselPrev.style.display = carouselArticles.length > 1 ? 'flex' : 'none';
+                carouselNext.style.display = carouselArticles.length > 1 ? 'flex' : 'none';
+                initCarousel(carouselArticles.length);
+            } else {
+                document.getElementById('hero-carousel').style.display = 'none';
+            }
+        }
+
+        function renderFeaturedArticles(articles) {
+            const featuredArticles = articles.filter(a => a.isFeatured && a.isPublished).slice(0, 3); // Limita a 3
+            featuredArticlesGrid.innerHTML = '';
+
+            if (featuredArticles.length > 0) {
+                featuredSection.style.display = 'block';
+                featuredArticles.forEach(article => {
+                    const card = createCard(article);
+                    featuredArticlesGrid.appendChild(card);
+                });
+            } else {
+                featuredSection.style.display = 'none';
+            }
+        }
+
+        function createCard(article) {
+            const card = document.createElement('a');
+            card.href = `/pitstop/article.html?id=${article.id}`;
+            card.classList.add('article-card');
+
+            const imageSrc = article.youtubeUrl
+                ? getYouTubeThumbnail(article.youtubeUrl)
+                : article.image || 'placeholder.jpg';
+
+            card.innerHTML = `
+                <img src="${imageSrc}" alt="${article.title}" class="article-image">
+                <div class="article-content">
+                    <div class="article-category">${article.category}</div>
+                    <h3 class="article-title">${truncate(article.title, 70)}</h3>
+                    <p class="article-summary">${article.summary}</p>
+                    <div class="article-meta">
+                        <span><i class="fa fa-user"></i> ${article.author}</span>
+                        <span><i class="fa fa-clock"></i> ${formatDate(article.timestamp)}</span>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function filterAndDisplayArticles(isNewFilter = true) {
+            if (isNewFilter) {
+                currentPage = 1;
+                latestArticlesGrid.innerHTML = '';
+            }
+
+            // 1. Filtrar
+            filteredArticles = allArticles.filter(article => {
+                const categoryMatch = currentCategory === 'all' || article.category === currentCategory;
+                const searchMatch = !currentSearchTerm ||
+                                     article.title.toLowerCase().includes(currentSearchTerm) ||
+                                     article.summary.toLowerCase().includes(currentSearchTerm);
+                return categoryMatch && searchMatch;
+            });
+
+            // 2. Paginação
+            const startIndex = (currentPage - 1) * articlesPerPage;
+            const endIndex = startIndex + articlesPerPage;
+            const articlesToDisplay = filteredArticles.slice(startIndex, endIndex);
+
+            // 3. Renderizar
+            if (articlesToDisplay.length > 0) {
+                articlesToDisplay.forEach(article => {
+                    const card = createCard(article);
+                    latestArticlesGrid.appendChild(card);
+                });
+                noArticlesMessage.style.display = 'none';
+            } else if (currentPage === 1) {
+                noArticlesMessage.style.display = 'block';
+                noArticlesMessage.innerText = 'Nenhum artigo encontrado para o critério de pesquisa.';
+            }
+
+            // 4. Botão "Carregar Mais"
+            if (endIndex < filteredArticles.length) {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.onclick = () => {
+                    currentPage++;
+                    filterAndDisplayArticles(false);
+                };
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+
+            // 5. Atualizar filtros ativos
+            updateFilterButtons();
+        }
+
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn, .nav-link, .mobile-nav-link').forEach(btn => {
+                const category = btn.getAttribute('data-category');
+                const isNavCategory = btn.classList.contains('nav-link') || btn.classList.contains('mobile-nav-link');
+                const isFilterBtn = btn.classList.contains('filter-btn');
+
+                btn.classList.remove('active');
+
+                if (currentCategory === 'all' && (category === 'all' || btn.getAttribute('href') === 'index.html')) {
+                    btn.classList.add('active');
+                } else if (category === currentCategory) {
+                    btn.classList.add('active');
+                }
+
+                // Lógica especial para o link 'Início' que é 'all'
+                if (btn.innerText === 'Início' && currentCategory === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function applyInitialFilter() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlCategory = urlParams.get('category');
+            const urlSearch = urlParams.get('search');
+
+            if (urlCategory && FIXED_CATEGORIES.includes(urlCategory)) {
+                currentCategory = urlCategory;
+            } else {
+                currentCategory = 'all';
+            }
+
+            if (urlSearch) {
+                currentSearchTerm = urlSearch.toLowerCase();
+            } else {
+                currentSearchTerm = '';
+            }
+        }
+
+        // --- Event Handlers ---
+
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const newCategory = e.target.getAttribute('data-category');
+                currentCategory = newCategory;
+                // Atualiza o URL (sem recarregar a página)
+                const url = newCategory === 'all' ? 'index.html' : `index.html?category=${newCategory}`;
+                history.pushState(null, '', url);
+                filterAndDisplayArticles(true);
+            });
+        });
+
+        function performSearch(e) {
+            const desktopSearch = searchInput.value.toLowerCase().trim();
+            const mobileSearch = mobileSearchInput.value.toLowerCase().trim();
+
+            // Sincronizar inputs
+            if (desktopSearch && !mobileSearch) {
+                mobileSearchInput.value = desktopSearch;
+            } else if (mobileSearch && !desktopSearch) {
+                searchInput.value = mobileSearch;
+            }
+            
+            currentSearchTerm = desktopSearch || mobileSearch;
+            currentPage = 1;
+            filterAndDisplayArticles();
+
+            // Atualizar URL com o termo de pesquisa (opcional)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (currentSearchTerm) {
+                 urlParams.set('search', currentSearchTerm);
+            } else {
+                 urlParams.delete('search');
+            }
+            history.pushState(null, '', `index.html?${urlParams.toString()}`);
+        }
+
+        // Adiciona um listener para a tecla 'Enter' nos campos de pesquisa
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(e);
+            }
+        });
+        mobileSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(e);
+            }
+        });
+
+
+        // --- Lógica do Carrossel ---
+
+        let currentSlide = 0;
+        let slideInterval;
+        let totalSlides = 0;
+
+        function initCarousel(numSlides) {
+            totalSlides = numSlides;
+            if (totalSlides <= 1) return;
+
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+
+            const showSlide = (index) => {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    dots[i].classList.remove('active');
+                    if (i === index) {
+                        slide.classList.add('active');
+                        dots[i].classList.add('active');
+                    }
+                });
+            };
+
+            const nextSlide = () => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            };
+
+            const prevSlide = () => {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                showSlide(currentSlide);
+            };
+
+            const startInterval = () => {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            };
+
+            carouselNext.onclick = () => {
+                nextSlide();
+                startInterval();
+            };
+            carouselPrev.onclick = () => {
+                prevSlide();
+                startInterval();
+            };
+
+            dots.forEach(dot => {
+                dot.onclick = (e) => {
+                    currentSlide = parseInt(e.target.getAttribute('data-slide'));
+                    showSlide(currentSlide);
+                    startInterval();
+                };
+            });
+
+            startInterval();
+        }
+
+        // --- Inicialização ---
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        let ticking = false;
+        function updateBackToTop() {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateBackToTop);
+                ticking = true;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadArticles();
+        });
+    </script>
+</body>
+</html>

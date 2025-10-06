@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8653418731294447"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armindo News - Admin</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @font-face {
+            font-family: 'an';
+            src: url('/EnglishTowne.woff') format('woff');
+            font-weight: bold;
+            font-display: swap;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .topbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'an', sans-serif;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-right: 3px solid transparent;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent);
+            color: var(--primary);
+            border-right-color: var(--primary);
+        }
+
+        .sidebar-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .content-area {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            min-height: 44px; /* Touch-friendly */
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            min-height: 44px; /* Touch-friendly */
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .editor-container {
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .editor-container .ql-toolbar {
+            border: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .editor-container .ql-container {
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            min-height: 300px;
+        }
+
+        .image-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .youtube-preview {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .youtube-preview iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            background: none;
+            border: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 90px;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+            max-width: calc(100vw - 2rem);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        .article-list {
+            list-style: none;
+        }
+
+        .article-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .article-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .article-thumbnail {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .article-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .article-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-published {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-featured {
+            background: #fbbf24;
+            color: #92400e;
+        }
+
+        .status-carousel {
+            background: #a855f7;
+            color: white;
+        }
+
+        .highlight-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .highlight-options label:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .highlight-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                margin-top: 60px;
+            }
+
+            .topbar {
+                padding: 0.75rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 60px;
+                height: calc(100vh - 60px);
+                width: 280px;
+                transform: translateX(-100%);
+                z-index: 999;
+                background: white;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content-area {
+                padding: 1rem;
+                width: 100%;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .card-header, .card-body {
+                padding: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .article-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+
+            .article-thumbnail {
+                width: 80px;
+                height: 60px;
+            }
+
+            .article-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: auto;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .highlight-options {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+                max-width: none;
+            }
+
+            .editor-container .ql-container {
+                min-height: 250px;
+            }
+
+            .image-upload-area {
+                padding: 1.5rem 1rem;
+                min-height: 100px;
+            }
+
+            .toast {
+                right: 0.5rem;
+                left: 0.5rem;
+                max-width: none;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-actions {
+                flex-direction: column;
+            }
+
+            .article-actions .btn {
+                width: 100%;
+            }
+
+            .form-input, .form-textarea, .form-select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+
+        /* Overlay for mobile menu */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .mobile-overlay.show {
+            display: block;
+        }
+
+        /* Better touch targets */
+        @media (max-width: 768px) {
+            .sidebar-link {
+                padding: 1.25rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .sidebar-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Loading states */
+        .btn.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .btn.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="topbar">
+        <div class="topbar-content">
+            <div class="logo">
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+                Armindo News - Admin
+            </div>
+            <div class="user-menu">
+                <button class="btn btn-danger" onclick="logout()">
+                    🚪 Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-screen" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Login Administrativo</h2>
+            <div class="form-group">
+                <label class="form-label">Senha de Administrador</label>
+                <input type="password" id="admin-password" class="form-input" placeholder="Digite sua senha...">
+            </div>
+            <button class="btn btn-primary" onclick="login()" style="width: 100%;">
+                🚀 Acessar Painel
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-container" style="display: none;">
+        <div class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
+                        <span class="sidebar-icon">📊</span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('articles')">
+                        <span class="sidebar-icon">📄</span> Artigos
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="showSection('new-article')">
+                        <span class="sidebar-icon">📝</span> Novo Artigo
+                    </a>
+                </li>
+                <li class="sidebar-item" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.5rem;">
+                    <a href="#" class="sidebar-link" onclick="logout()">
+                        <span class="sidebar-icon">🚪</span> Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-area">
+
+            <section id="dashboard" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Visão geral do conteúdo e estatísticas</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Estatísticas Rápidas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="total-articles-count">0</div>
+                                <div class="stat-label">Artigos Totais</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="published-articles-count">0</div>
+                                <div class="stat-label">Publicados</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="draft-articles-count">0</div>
+                                <div class="stat-label">Rascunhos</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="featured-articles-count">0</div>
+                                <div class="stat-label">Em Destaque</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Visitas (Últimos 7 dias)</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="visitsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="articles" class="page-section hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Artigos</h1>
+                    <p class="page-subtitle">Gerencie e edite o seu conteúdo</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 class="card-title">Lista de Artigos</h3>
+                        <button class="btn btn-primary" onclick="showSection('new-article')">📝 Novo Artigo</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="articles-loading" class="loading">
+                            <div class="spinner"></div>
+                            A carregar artigos...
+                        </div>
+                        <ul class="article-list" id="articles-list">
+                            </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="new-article" class="page-section hidden">
+                <div class="page-header">
+                    <h1 class="page-title" id="article-form-title">📝 Novo Artigo</h1>
+                    <p class="page-subtitle" id="article-form-subtitle">Crie ou edite uma notícia para o site.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <form id="article-form">
+                            <input type="hidden" id="article-id">
+                            <div class="form-group">
+                                <label for="title" class="form-label">Título do Artigo</label>
+                                <input type="text" id="title" class="form-input" required placeholder="Ex: Grande Prémio de... | Notícia urgente...">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="summary" class="form-label">Resumo (Max 250 carateres)</label>
+                                <textarea id="summary" class="form-textarea" maxlength="250" required placeholder="Um breve resumo que será exibido nas listagens..."></textarea>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="category" class="form-label">Categoria</label>
+                                    <select id="category" class="form-select" required>
+                                        <option value="" disabled selected>Selecione a categoria</option>
+                                        <option value="Fórmula 1">Fórmula 1</option>
+                                        <option value="F1 Academy">F1 Academy</option>
+                                        <option value="Fórmula 2">Fórmula 2</option>
+                                        <option value="Fórmula 3">Fórmula 3</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="author" class="form-label">Autor</label>
+                                    <input type="text" id="author" class="form-input" required placeholder="Nome do autor">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Destaques e Estado</label>
+                                <div class="highlight-options">
+                                    <label><input type="checkbox" id="is-featured"> Artigo em Destaque (Principal)</label>
+                                    <label><input type="checkbox" id="is-carousel"> Carrossel (Topo da Página)</label>
+                                    <label><input type="checkbox" id="is-breaking"> Notícia Urgente (Breaking News)</label>
+                                    <label><input type="checkbox" id="is-published"> Publicado (Visível ao Público)</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="youtube-url" class="form-label">Link do YouTube (Opcional - Prioridade sobre Imagem)</label>
+                                <input type="url" id="youtube-url" class="form-input" placeholder="URL completo do YouTube (ex: https://www.youtube.com/watch?v=...)">
+                                <div id="youtube-preview" class="youtube-preview" style="margin-top: 1rem; display: none;"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image-upload" class="form-label">Imagem de Capa (Opcional)</label>
+                                <input type="file" id="image-upload" accept="image/*" class="hidden">
+                                <div class="image-upload-area" id="image-upload-area" onclick="document.getElementById('image-upload').click()">
+                                    <i class="fas fa-upload" style="font-size: 1.5rem; color: var(--gray);"></i>
+                                    <p style="color: var(--gray); margin-top: 0.5rem;">Clique para carregar ou arraste uma imagem aqui (Máx: 2MB)</p>
+                                    <img id="image-preview" class="image-preview" src="" alt="Pré-visualização da Imagem" style="display: none;">
+                                    <input type="hidden" id="image-url">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Conteúdo do Artigo</label>
+                                <div class="editor-container">
+                                    <div id="editor"></div>
+                                </div>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-success" id="save-button">
+                                    💾 Salvar e Publicar
+                                </button>
+                                <button type="button" class="btn btn-warning" id="save-draft-button" onclick="saveArticle(false)">
+                                    ✍️ Salvar Rascunho
+                                </button>
+                                <button type="button" class="btn btn-danger hidden" id="delete-button" onclick="deleteArticle()">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        // Configuração do Firebase (Substitua com suas credenciais reais)
+      const firebaseConfig = {
+  apiKey: "AIzaSyD6hxQ1_eBEr2wsO54UEahZzP-8zjuA7UI",
+  authDomain: "an-pit-stop.firebaseapp.com",
+  databaseURL: "https://an-pit-stop-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId: "an-pit-stop",
+  storageBucket: "an-pit-stop.firebasestorage.app",
+  messagingSenderId: "163520174383",
+  appId: "1:163520174383:web:5e190e74e4b60d71e0e9da"
+};
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        // Variáveis globais
+        let quill;
+        let articlesData = {}; // Cache para armazenar artigos
+
+        // Referências do DOM
+        const loginScreen = document.getElementById('login-screen');
+        const mainContainer = document.getElementById('main-container');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const articlesList = document.getElementById('articles-list');
+        const articlesLoading = document.getElementById('articles-loading');
+        const saveButton = document.getElementById('save-button');
+        const saveDraftButton = document.getElementById('save-draft-button');
+        const deleteButton = document.getElementById('delete-button');
+        const articleFormTitle = document.getElementById('article-form-title');
+        const articleFormSubtitle = document.getElementById('article-form-subtitle');
+        const articleForm = document.getElementById('article-form');
+        const imageUploadInput = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const youtubeUrlInput = document.getElementById('youtube-url');
+        const youtubePreview = document.getElementById('youtube-preview');
+        const imageUrlInput = document.getElementById('image-url');
+
+        // --- Autenticação e Gestão de Sessão ---
+
+        // Senha simples de administrador (MUITO INSEGURO, APENAS PARA DEMONSTRAÇÃO)
+        // Em produção, use a autenticação Firebase real (Email/Password ou Google Sign-In)
+        const ADMIN_PASSWORD_HASH = "%%ADMIN_PASS%%"; // Substitua por um mecanismo de hash seguro
+
+        function login() {
+            const password = adminPasswordInput.value.trim();
+            if (password === ADMIN_PASSWORD_HASH) {
+                // Simulação de login: Armazena uma flag na sessão
+                localStorage.setItem('admin_logged_in', 'true');
+                checkLoginStatus();
+            } else {
+                showToast('Senha incorreta!', 'error');
+                adminPasswordInput.value = '';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_logged_in');
+            mainContainer.style.display = 'none';
+            loginScreen.style.display = 'flex';
+            showToast('Sessão terminada.', 'info');
+        }
+
+        function checkLoginStatus() {
+            const loggedIn = localStorage.getItem('admin_logged_in') === 'true';
+            if (loggedIn) {
+                loginScreen.style.display = 'none';
+                mainContainer.style.display = 'grid';
+                loadArticles();
+                loadChartData(); // Carrega os dados do Dashboard
+            } else {
+                loginScreen.style.display = 'flex';
+                mainContainer.style.display = 'none';
+            }
+        }
+
+        // --- Navegação e UI ---
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('show');
+            mobileOverlay.classList.toggle('show');
+        }
+
+        function closeMobileMenu() {
+            sidebar.classList.remove('show');
+            mobileOverlay.classList.remove('show');
+        }
+
+        function showSection(sectionId, articleKey = null) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.onclick.toString().includes(`showSection('${sectionId}')`)) {
+                    link.classList.add('active');
+                }
+            });
+
+            if (sectionId === 'new-article') {
+                resetArticleForm();
+                if (articleKey) {
+                    loadArticleForEdit(articleKey);
+                } else {
+                    articleFormTitle.innerText = '📝 Novo Artigo';
+                    articleFormSubtitle.innerText = 'Crie uma notícia para o site.';
+                }
+            } else if (sectionId === 'articles') {
+                 // Certifica-se que a lista é carregada (embora já seja feita no login)
+                if (Object.keys(articlesData).length === 0) {
+                     loadArticles();
+                }
+            }
+            closeMobileMenu();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+
+            // Limpa classes anteriores
+            toast.className = 'toast';
+            toast.classList.add(type);
+            toastMessage.innerText = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- Gestão de Artigos (CRUD) ---
+
+        function loadArticles() {
+            articlesLoading.classList.remove('hidden');
+            articlesList.innerHTML = '';
+            articlesData = {}; // Limpa o cache
+
+            database.ref('articles').once('value')
+                .then(snapshot => {
+                    articlesLoading.classList.add('hidden');
+                    const articles = snapshot.val();
+                    let total = 0, published = 0, draft = 0, featured = 0;
+
+                    if (articles) {
+                        // Converte o objeto de artigos para um array para fácil ordenação
+                        const articlesArray = Object.keys(articles).map(key => ({
+                            id: key,
+                            ...articles[key]
+                        })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Mais recente primeiro
+
+                        articlesArray.forEach(article => {
+                            articlesData[article.id] = article; // Armazena no cache
+                            renderArticleItem(article);
+
+                            total++;
+                            if (article.isPublished) published++;
+                            if (!article.isPublished) draft++;
+                            if (article.isFeatured) featured++;
+                        });
+                    }
+
+                    // Atualiza contagens do Dashboard
+                    document.getElementById('total-articles-count').innerText = total;
+                    document.getElementById('published-articles-count').innerText = published;
+                    document.getElementById('draft-articles-count').innerText = draft;
+                    document.getElementById('featured-articles-count').innerText = featured;
+
+                    if (total === 0) {
+                        articlesList.innerHTML = '<li style="padding: 1rem; color: var(--gray);">Nenhum artigo encontrado. Crie o seu primeiro!</li>';
+                    }
+
+                })
+                .catch(error => {
+                    articlesLoading.classList.add('hidden');
+                    console.error("Erro ao carregar artigos: ", error);
+                    showToast('Erro ao carregar artigos.', 'error');
+                });
+        }
+
+        function renderArticleItem(article) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('article-item');
+
+            const statusBadges = [];
+            if (article.isPublished) {
+                statusBadges.push(`<span class="status-badge status-published">Publicado</span>`);
+            } else {
+                statusBadges.push(`<span class="status-badge status-draft">Rascunho</span>`);
+            }
+            if (article.isFeatured) {
+                 statusBadges.push(`<span class="status-badge status-featured">Destaque</span>`);
+            }
+            if (article.isCarousel) {
+                 statusBadges.push(`<span class="status-badge status-carousel">Carrossel</span>`);
+            }
+
+            const thumbnail = article.image || (article.youtubeUrl ? getYouTubeThumbnail(article.youtubeUrl) : 'placeholder.jpg');
+
+            listItem.innerHTML = `
+                <img src="${thumbnail}" alt="Capa" class="article-thumbnail">
+                <div class="article-info">
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-meta">
+                        <span>${article.category}</span>
+                        <span style="color: var(--primary);">•</span>
+                        <span>${article.author}</span>
+                        <span style="color: var(--primary);">•</span>
+                        <span>${new Date(article.timestamp).toLocaleDateString()}</span>
+                        ${statusBadges.join('')}
+                    </div>
+                </div>
+                <div class="article-actions">
+                    <button class="btn btn-primary" onclick="showSection('new-article', '${article.id}')">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDelete('${article.id}', '${article.title}')">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            `;
+            articlesList.appendChild(listItem);
+        }
+
+        function loadArticleForEdit(articleKey) {
+            const article = articlesData[articleKey];
+            if (!article) {
+                showToast('Artigo não encontrado.', 'error');
+                showSection('articles');
+                return;
+            }
+
+            articleFormTitle.innerText = `✏️ Editar Artigo: ${article.title.substring(0, 30)}...`;
+            articleFormSubtitle.innerText = `ID: ${articleKey}`;
+            deleteButton.classList.remove('hidden');
+
+            document.getElementById('article-id').value = articleKey;
+            document.getElementById('title').value = article.title || '';
+            document.getElementById('summary').value = article.summary || '';
+            document.getElementById('category').value = article.category || '';
+            document.getElementById('author').value = article.author || '';
+            document.getElementById('is-featured').checked = article.isFeatured || false;
+            document.getElementById('is-carousel').checked = article.isCarousel || false;
+            document.getElementById('is-breaking').checked = article.isBreaking || false;
+            document.getElementById('is-published').checked = article.isPublished || false;
+            document.getElementById('youtube-url').value = article.youtubeUrl || '';
+            imageUrlInput.value = article.image || '';
+
+            // Lógica de pré-visualização de imagem/vídeo
+            if (article.youtubeUrl) {
+                updateYoutubePreview(article.youtubeUrl);
+                imagePreview.style.display = 'none';
+                imagePreview.src = '';
+            } else if (article.image) {
+                imagePreview.src = article.image;
+                imagePreview.style.display = 'block';
+                youtubePreview.style.display = 'none';
+            } else {
+                 imagePreview.style.display = 'none';
+                 youtubePreview.style.display = 'none';
+            }
+
+            // Define o conteúdo do Quill
+            if (quill) {
+                quill.root.innerHTML = article.content || '';
+            }
+        }
+
+        function resetArticleForm() {
+            articleForm.reset();
+            document.getElementById('article-id').value = '';
+            articleFormTitle.innerText = '📝 Novo Artigo';
+            articleFormSubtitle.innerText = 'Crie uma notícia para o site.';
+            deleteButton.classList.add('hidden');
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            youtubePreview.style.display = 'none';
+            youtubePreview.innerHTML = '';
+            imageUrlInput.value = '';
+
+            if (quill) {
+                quill.root.innerHTML = '';
+            }
+        }
+
+        function saveArticle(publish = true) {
+            const articleId = document.getElementById('article-id').value;
+            const title = document.getElementById('title').value.trim();
+            const summary = document.getElementById('summary').value.trim();
+            const category = document.getElementById('category').value;
+            const author = document.getElementById('author').value.trim();
+            const isFeatured = document.getElementById('is-featured').checked;
+            const isCarousel = document.getElementById('is-carousel').checked;
+            const isBreaking = document.getElementById('is-breaking').checked;
+            const isPublished = publish ? true : document.getElementById('is-published').checked;
+            const youtubeUrl = document.getElementById('youtube-url').value.trim() || null;
+            const content = quill.root.innerHTML;
+            const image = imageUrlInput.value || null; // URL da imagem ou null
+
+            // Validação simples
+            if (!title || !summary || !category || !author || !content) {
+                showToast('Preencha todos os campos obrigatórios!', 'warning');
+                return;
+            }
+
+            if (!image && !youtubeUrl) {
+                showToast('É necessário um Link do YouTube OU uma Imagem de Capa.', 'warning');
+                return;
+            }
+
+            // Prepara os dados do artigo
+            const articleData = {
+                title: title,
+                summary: summary,
+                category: category,
+                author: author,
+                content: content,
+                isFeatured: isFeatured,
+                isCarousel: isCarousel,
+                isBreaking: isBreaking,
+                isPublished: isPublished,
+                youtubeUrl: youtubeUrl,
+                image: image,
+                timestamp: articleId ? articlesData[articleId].timestamp : new Date().toISOString()
+            };
+
+            const ref = articleId ? database.ref('articles/' + articleId) : database.ref('articles').push();
+
+            const saveBtn = publish ? saveButton : saveDraftButton;
+            saveBtn.classList.add('loading');
+            saveBtn.disabled = true;
+
+            ref.set(articleData)
+                .then(() => {
+                    showToast(`Artigo ${publish ? 'publicado' : 'salvo'} com sucesso!`, 'success');
+                    saveBtn.classList.remove('loading');
+                    saveBtn.disabled = false;
+                    resetArticleForm();
+                    showSection('articles'); // Volta para a lista de artigos
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar artigo: ", error);
+                    showToast('Erro ao salvar artigo.', 'error');
+                    saveBtn.classList.remove('loading');
+                    saveBtn.disabled = false;
+                });
+        }
+
+        function confirmDelete(articleId, title) {
+            if (confirm(`Tem certeza que deseja ELIMINAR permanentemente o artigo: "${title}"? Esta ação não pode ser desfeita.`)) {
+                deleteArticle(articleId);
+            }
+        }
+
+        function deleteArticle(articleId = null) {
+            const keyToDelete = articleId || document.getElementById('article-id').value;
+
+            if (!keyToDelete) {
+                showToast('Nenhum artigo selecionado para eliminar.', 'error');
+                return;
+            }
+
+            if (keyToDelete !== document.getElementById('article-id').value && !articleId) {
+                 showToast('Erro de ID. Atualize a página e tente novamente.', 'error');
+                 return;
+            }
+
+            const deleteBtn = articleId ? null : deleteButton;
+            if (deleteBtn) {
+                 deleteBtn.classList.add('loading');
+                 deleteBtn.disabled = true;
+            }
+
+            database.ref('articles/' + keyToDelete).remove()
+                .then(() => {
+                    showToast('Artigo eliminado com sucesso.', 'success');
+                    if (deleteBtn) {
+                        deleteBtn.classList.remove('loading');
+                        deleteBtn.disabled = false;
+                        resetArticleForm();
+                        showSection('articles');
+                    }
+                    loadArticles(); // Recarrega a lista para remover o item
+                })
+                .catch(error => {
+                    console.error("Erro ao eliminar artigo: ", error);
+                    showToast('Erro ao eliminar artigo.', 'error');
+                    if (deleteBtn) {
+                        deleteBtn.classList.remove('loading');
+                        deleteBtn.disabled = false;
+                    }
+                });
+        }
+
+        // --- Gestão de Imagens e Vídeos ---
+
+        function getYouTubeEmbed(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+
+            if (match && match[2].length === 11) {
+                return `https://www.youtube.com/embed/${match[2]}`;
+            }
+            return null;
+        }
+
+        function getYouTubeThumbnail(url) {
+             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+             const match = url.match(regExp);
+
+             if (match && match[2].length === 11) {
+                 return `https://img.youtube.com/vi/${match[2]}/mqdefault.jpg`;
+             }
+             return 'placeholder.jpg';
+        }
+
+        function updateYoutubePreview(url) {
+            const embed = getYouTubeEmbed(url);
+            if (embed) {
+                youtubePreview.innerHTML = `<iframe src='${embed}' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>`;
+                youtubePreview.style.display = 'block';
+            } else {
+                youtubePreview.style.display = 'none';
+                youtubePreview.innerHTML = '';
+            }
+        }
+
+        youtubeUrlInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url) {
+                updateYoutubePreview(url);
+                imagePreview.style.display = 'none';
+                imagePreview.src = '';
+                // Assume que não vai usar a imagem de capa se tiver URL do YouTube
+                imageUrlInput.value = '';
+            } else {
+                youtubePreview.style.display = 'none';
+                youtubePreview.innerHTML = '';
+                // Se limpar o URL, limpa a pré-visualização, mas mantém a imagem existente no hidden input
+            }
+        });
+
+
+        // Simulação de Upload de Imagem (Apenas para demonstração, pois Firebase Storage não está implementado)
+        // **ATENÇÃO: Em produção, o ficheiro real deve ser carregado para um serviço de armazenamento como Firebase Storage e o URL retornado aqui.**
+        imageUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                    showToast('O ficheiro é muito grande. O tamanho máximo é 2MB.', 'warning');
+                    imageUploadInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    // Em produção, esta base64Image seria carregada para o Firebase Storage.
+                    // Para fins de demonstração/simples, vamos usar um URL de simulação.
+
+                    // Simulação: Apenas mostra a pré-visualização e armazena o Base64 na hidden input
+                    imagePreview.src = base64Image;
+                    imagePreview.style.display = 'block';
+                    imageUrlInput.value = base64Image; // RISCO! Base64 é ineficiente para HTML. Use Storage em produção.
+
+                    // Limpa o campo do YouTube
+                    youtubeUrlInput.value = '';
+                    youtubePreview.style.display = 'none';
+                    youtubePreview.innerHTML = '';
+
+                    showToast('Imagem carregada para pré-visualização (uso de base64 para demo)!', 'info');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- Gráficos (Dashboard) ---
+        let visitsChart;
+
+        function loadChartData() {
+            // Simulação de dados de visitas (Substituir pela integração com Analytics ou dados Firebase reais)
+            const today = new Date();
+            const labels = [];
+            const data = [];
+
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - i);
+                labels.push(d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }));
+                // Dados aleatórios para simulação
+                data.push(Math.floor(Math.random() * 500) + 100);
+            }
+
+            const ctx = document.getElementById('visitsChart').getContext('2d');
+
+            if (visitsChart) {
+                visitsChart.destroy();
+            }
+
+            visitsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Visitas',
+                        data: data,
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: '#667eea',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                borderColor: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // --- Inicialização ---
+
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Inicializa o Editor Quill
+                quill = new Quill('#editor', {
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'indent': '-1'}, { 'indent': '+1' }],
+                            [{ 'align': [] }],
+                            ['link', 'image', 'video'],
+                            ['clean']
+                        ]
+                    },
+                    theme: 'snow',
+                    placeholder: 'Comece a escrever o seu artigo aqui...'
+                });
+
+                // Carrega o estado de login
+                checkLoginStatus();
+
+                // Lógica de submissão do formulário
+                document.getElementById('article-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // O botão 'submit' faz a publicação (true)
+                    saveArticle(true);
+                });
+
+                // Previne envio acidental de formulário ao pressionar Enter no input
+                document.querySelectorAll('input, select').forEach(input => {
+                    if (input.type !== 'submit') {
+                        input.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' && (!quill || !quill.hasFocus())) {
+                                e.preventDefault();
+                            }
+                        });
+                    }
+                });
+
+                console.log('DOM initialization complete');
+            } catch (error) {
+                console.error('Error during DOM initialization:', error);
+                showToast('Erro ao carregar aplicação!', 'error');
+            }
+        });
+
+        // Service Worker registration for offline support (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Global error handler
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            showToast('Erro inesperado na aplicação!', 'error');
+        });
+
+        // Unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            handleNetworkError(event.reason);
+            event.preventDefault();
+        });
+
+    </script>
+</body>
+</html>
