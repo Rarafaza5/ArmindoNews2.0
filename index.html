@@ -2,8 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta name="google-adsense-account" content="ca-pub-8653418731294447">
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJLQTE9VZC"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJLQTE9VZC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -84,6 +83,7 @@
             text-align: center;
             font-weight: 600;
             animation: pulse 2s infinite;
+            cursor: pointer;
         }
 
         @keyframes pulse {
@@ -738,170 +738,7 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
-
-        /* Full Screen Article Modal */
-        .fullscreen-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--white);
-            z-index: 9999;
-            display: none;
-            overflow-y: auto;
-        }
-
-        .fullscreen-modal.active {
-            display: block;
-        }
-
-        .fullscreen-header {
-            position: sticky;
-            top: 0;
-            background: var(--white);
-            box-shadow: var(--shadow);
-            padding: 1rem 0;
-            z-index: 10000;
-        }
-
-        .fullscreen-nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .close-fullscreen {
-            background: var(--danger);
-            color: var(--white);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .close-fullscreen:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow);
-        }
-
-        .fullscreen-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .fullscreen-article-header {
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .fullscreen-meta {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .fullscreen-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .fullscreen-summary {
-            font-size: 1.3rem;
-            color: var(--gray);
-            font-style: italic;
-            line-height: 1.5;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        .fullscreen-image {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 3rem;
-        }
-
-        .fullscreen-article-content {
-            background: var(--white);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .fullscreen-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--dark);
-        }
-
-        .fullscreen-text h2 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 3rem 0 1.5rem;
-            color: var(--dark);
-        }
-
-        .fullscreen-text h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 2.5rem 0 1rem;
-            color: var(--dark);
-        }
-
-        .fullscreen-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .fullscreen-text ul, .fullscreen-text ol {
-            margin: 1.5rem 0;
-            padding-left: 2rem;
-        }
-
-        .fullscreen-text li {
-            margin-bottom: 0.5rem;
-        }
-
-        .fullscreen-text blockquote {
-            background: var(--light);
-            border-left: 4px solid var(--primary);
-            margin: 2rem 0;
-            padding: 1.5rem 2rem;
-            font-style: italic;
-            border-radius: 0 var(--radius) var(--radius) 0;
-        }
-
-        .fullscreen-text img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--radius);
-            margin: 2rem 0;
-            box-shadow: var(--shadow);
-        }
-
+        
         /* Newsletter Section */
         .newsletter-section {
             background: var(--gradient-primary);
@@ -1288,55 +1125,7 @@
             .newsletter-btn {
                 padding: 0.8rem 1.5rem;
             }
-
-            /* Fullscreen Modal Mobile */
-            .fullscreen-content {
-                padding: 1rem;
-            }
-
-            .fullscreen-article-content {
-                padding: 1.5rem;
-            }
-
-            .fullscreen-title {
-                font-size: 1.8rem;
-                margin-bottom: 1rem;
-            }
-
-            .fullscreen-summary {
-                font-size: 1.1rem;
-            }
-
-            .fullscreen-meta {
-                gap: 1rem;
-                justify-content: flex-start;
-                flex-wrap: wrap;
-            }
-
-            .meta-item {
-                font-size: 0.8rem;
-            }
-
-            .fullscreen-text {
-                font-size: 1rem;
-                line-height: 1.7;
-            }
-
-            .fullscreen-text h2 {
-                font-size: 1.5rem;
-                margin: 2rem 0 1rem;
-            }
-
-            .fullscreen-text h3 {
-                font-size: 1.2rem;
-                margin: 1.5rem 0 0.8rem;
-            }
-
-            .fullscreen-text blockquote {
-                padding: 1rem 1.5rem;
-                margin: 1.5rem 0;
-            }
-
+            
             /* Footer Mobile */
             .footer-grid {
                 grid-template-columns: 1fr;
@@ -1467,23 +1256,7 @@
             .newsletter-title {
                 font-size: 1.5rem;
             }
-
-            .fullscreen-content {
-                padding: 0.8rem;
-            }
-
-            .fullscreen-article-content {
-                padding: 1.2rem;
-            }
-
-            .fullscreen-title {
-                font-size: 1.5rem;
-            }
-
-            .fullscreen-summary {
-                font-size: 1rem;
-            }
-
+            
             .mobile-nav {
                 width: 100%;
             }
@@ -1514,15 +1287,12 @@
     </style>
 </head>
 <body>
-    <!-- Alerta AN Banner -->
     <div class="breaking-banner" id="breaking-banner" style="display: none;">
         🚨 Alerta AN: <span id="breaking-text"></span>
     </div>
 
-    <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
 
-    <!-- Mobile Navigation -->
     <nav class="mobile-nav" id="mobile-nav">
         <div class="mobile-nav-header">
             <a href="index.html" class="logo" style="font-size: 2rem;">AN</a>
@@ -1530,7 +1300,6 @@
         </div>
         
         <div class="mobile-nav-content">
-            <!-- Mobile Search -->
             <div class="mobile-search">
                 <div class="mobile-search-box">
                     <span>🔍</span>
@@ -1538,7 +1307,6 @@
                 </div>
             </div>
 
-            <!-- Mobile Navigation Menu -->
             <ul class="mobile-nav-menu">
                 <li><a href="#" class="mobile-nav-link active" onclick="showCategory('all'); closeMobileNav();">🏠 Home</a></li>
                 <li><a href="#" class="mobile-nav-link breaking" onclick="showCategory('breaking'); closeMobileNav();">🚨 Alerta AN</a></li>
@@ -1552,13 +1320,11 @@
         </div>
     </nav>
 
-    <!-- Header -->
     <header class="header">
         <div class="nav-container">
             <div class="nav-top">
                 <a href="index.html" class="logo">AN</a>
                 
-                <!-- Mobile Menu Toggle -->
                 <button class="mobile-nav-toggle" onclick="openMobileNav()">☰</button>
                 
                 <div class="nav-utils">
@@ -1584,7 +1350,6 @@
         </div>
     </header>
 
-    <!-- Hero Carousel Section -->
     <section class="hero-carousel">
         <div class="carousel-container" id="carousel-container">
             <div class="loading">
@@ -1599,9 +1364,7 @@
         <div class="carousel-nav" id="carousel-nav"></div>
     </section>
 
-    <!-- Main Content -->
     <main class="main-content" id="main-content">
-        <!-- Categories Navigation -->
         <section class="categories-nav">
             <div class="categories-list">
                 <a href="#" class="category-link active" onclick="showCategory('all')">📰 Todas</a>
@@ -1615,7 +1378,6 @@
             </div>
         </section>
 
-        <!-- Main Articles Grid -->
         <section class="articles-section">
             <div class="section-header">
                 <h2 class="section-title" id="section-title">📰 Últimas Notícias</h2>
@@ -1636,40 +1398,6 @@
         </section>
     </main>
 
-    <!-- Full Screen Article Modal -->
-    <div id="fullscreen-modal" class="fullscreen-modal">
-        <header class="fullscreen-header">
-            <div class="fullscreen-nav">
-                <a href="#" class="logo">Armindo News</a>
-                <button class="close-fullscreen" onclick="closeFullscreen()">×</button>
-            </div>
-        </header>
-        
-        <div class="fullscreen-content">
-            <article>
-                <header class="fullscreen-article-header">
-                    <div class="fullscreen-meta" id="fullscreen-meta">
-                        <!-- Meta information will be populated here -->
-                    </div>
-                    <h1 class="fullscreen-title" id="fullscreen-title"></h1>
-                    <div class="fullscreen-summary" id="fullscreen-summary"></div>
-                </header>
-
-                <img id="fullscreen-image" class="fullscreen-image" alt="" style="display: none;">
-                
-                <!-- YouTube Video Container -->
-                <div id="fullscreen-youtube" class="youtube-video-container" style="display: none;">
-                    <iframe id="fullscreen-youtube-iframe" allowfullscreen></iframe>
-                </div>
-
-                <div class="fullscreen-article-content">
-                    <div class="fullscreen-text" id="fullscreen-text"></div>
-                </div>
-            </article>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-grid">
@@ -1723,7 +1451,6 @@
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
     <button class="back-to-top" id="back-to-top" onclick="scrollToTop()">
         ↑
     </button>
@@ -1758,7 +1485,6 @@
 
         // DOM Elements
         const articlesContainer = document.getElementById('articles-container');
-        const fullscreenModal = document.getElementById('fullscreen-modal');
         const searchInput = document.getElementById('search-input');
         const mobileSearchInput = document.getElementById('mobile-search-input');
         const backToTopBtn = document.getElementById('back-to-top');
@@ -1768,32 +1494,6 @@
         const carouselNav = document.getElementById('carousel-nav');
 
         // YouTube Helper Functions
-        function convertYouTubeToEmbed(url) {
-            if (!url) return null;
-            
-            try {
-                const urlObj = new URL(url);
-                
-                if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                    const videoId = urlObj.searchParams.get('v');
-                    if (videoId) {
-                        return `https://www.youtube.com/embed/${videoId}`;
-                    }
-                } else if (urlObj.hostname === 'youtu.be') {
-                    const videoId = urlObj.pathname.substring(1);
-                    if (videoId) {
-                        return `https://www.youtube.com/embed/${videoId}`;
-                    }
-                } else if (urlObj.pathname.includes('/embed/')) {
-                    return url;
-                }
-                
-                return null;
-            } catch (error) {
-                return null;
-            }
-        }
-
         function hasYouTubeVideo(article) {
             return article.youtubeUrl || article.youtubeEmbedId;
         }
@@ -1910,7 +1610,7 @@
                        
                         <h1 class="carousel-title">${article.title}</h1>
                         ${article.summary ? `<p class="carousel-summary">${article.summary}</p>` : ''}
-                        <button class="carousel-btn" onclick="openFullscreen('${article.id}')">
+                        <button class="carousel-btn" onclick="window.location.href='article.html?id=${article.id}'">
                             📖 Ler Matéria Completa →
                         </button>
                     </div>
@@ -2059,7 +1759,7 @@
             const hasVideo = hasYouTubeVideo(article);
             
             return `
-                <div class="article-card" onclick="openFullscreen('${article.id}')">
+                <div class="article-card" onclick="window.location.href='article.html?id=${article.id}'">
                     <img src="${article.image || 'https://via.placeholder.com/400x250/667eea/ffffff?text=Noticia'}" 
                          alt="${article.title}" class="article-image">
                     <div class="article-content">
@@ -2073,7 +1773,7 @@
                         </div>
                         <h3 class="article-title">${truncateText(article.title, 80)}</h3>
                         ${article.summary ? `<p class="article-summary">${truncateText(article.summary, 120)}</p>` : ''}
-                        <p class="article-excerpt">${truncateText(article.contentText || article.content.replace(/<[^>]*>/g, ''), 150)}</p>
+                        <p class="article-excerpt">${truncateText(article.contentText || (article.content || '').replace(/<[^>]*>/g, ''), 150)}</p>
                         <div class="article-footer">
                             <div class="author-info">
                                 <div class="author-avatar">${(article.author || 'Admin')[0].toUpperCase()}</div>
@@ -2135,80 +1835,6 @@
             }
         }
 
-        // Open Fullscreen Article
-        function openFullscreen(articleId) {
-            articlesRef.child(articleId).once('value', (snapshot) => {
-                const article = snapshot.val();
-                if (article) {
-                    // Populate fullscreen modal
-                    document.getElementById('fullscreen-title').textContent = article.title;
-                    
-                    const hasVideo = hasYouTubeVideo(article);
-                    
-                    document.getElementById('fullscreen-meta').innerHTML = `
-                        <div class="meta-item">
-                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''}">
-                                ${getCategoryIcon(article.category || 'geral')} ${(article.category || 'geral').toUpperCase()}
-                            </span>
-                        </div>
-                        <div class="meta-item">📅 <span>${formatDate(article.date)}</span></div>
-                        <div class="meta-item">👤 <span>${article.author || 'Admin'}</span></div>
-                        ${hasVideo ? '<div class="meta-item"><span class="video-badge">🎥 Vídeo</span></div>' : ''}
-                        ${article.breaking ? '<div class="meta-item"><span class="category-badge breaking-badge">🚨 Alerta AN</span></div>' : ''}
-                    `;
-                    
-                    const summaryElement = document.getElementById('fullscreen-summary');
-                    if (article.summary) {
-                        summaryElement.textContent = article.summary;
-                        summaryElement.style.display = 'block';
-                    } else {
-                        summaryElement.style.display = 'none';
-                    }
-
-                    const imageElement = document.getElementById('fullscreen-image');
-                    if (article.image) {
-                        imageElement.src = article.image;
-                        imageElement.alt = article.title;
-                        imageElement.style.display = 'block';
-                    } else {
-                        imageElement.style.display = 'none';
-                    }
-                    
-                    // Handle YouTube video
-                    const youtubeElement = document.getElementById('fullscreen-youtube');
-                    const youtubeIframe = document.getElementById('fullscreen-youtube-iframe');
-                    
-                    if (hasVideo) {
-                        const embedUrl = convertYouTubeToEmbed(article.youtubeUrl);
-                        if (embedUrl) {
-                            youtubeIframe.src = embedUrl;
-                            youtubeElement.style.display = 'block';
-                        } else {
-                            youtubeElement.style.display = 'none';
-                        }
-                    } else {
-                        youtubeElement.style.display = 'none';
-                    }
-                    
-                    document.getElementById('fullscreen-text').innerHTML = article.content || article.contentText || '';
-                    
-                    // Show fullscreen modal
-                    fullscreenModal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
-            });
-        }
-
-        // Close Fullscreen
-        function closeFullscreen() {
-            fullscreenModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Stop any YouTube video that might be playing
-            const youtubeIframe = document.getElementById('fullscreen-youtube-iframe');
-            youtubeIframe.src = '';
-        }
-
         // Check Alerta AN
         function checkBreakingNews() {
             const breakingArticles = allArticles.filter(article => 
@@ -2220,7 +1846,7 @@
                 const latestBreaking = breakingArticles[0];
                 document.getElementById('breaking-text').textContent = truncateText(latestBreaking.title, 100);
                 breakingBanner.style.display = 'block';
-                breakingBanner.onclick = () => openFullscreen(latestBreaking.id);
+                breakingBanner.onclick = () => { window.location.href = `article.html?id=${latestBreaking.id}`; };
             } else {
                 breakingBanner.style.display = 'none';
             }
@@ -2276,12 +1902,10 @@
             }
         });
 
-        // Close fullscreen on Escape key
+        // Close mobile nav on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                if (fullscreenModal.classList.contains('active')) {
-                    closeFullscreen();
-                } else if (document.getElementById('mobile-nav').classList.contains('active')) {
+                if (document.getElementById('mobile-nav').classList.contains('active')) {
                     closeMobileNav();
                 }
             }
@@ -2374,4 +1998,3 @@
     </script>
 </body>
 </html>
-

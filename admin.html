@@ -206,7 +206,7 @@
             transition: all 0.3s ease;
             text-decoration: none;
             white-space: nowrap;
-            min-height: 44px;
+            min-height: 44px; /* Touch-friendly */
         }
 
         .btn-primary {
@@ -254,7 +254,7 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             background: white;
-            min-height: 44px;
+            min-height: 44px; /* Touch-friendly */
         }
 
         .form-input:focus, .form-textarea:focus, .form-select:focus {
@@ -321,7 +321,7 @@
 
         .youtube-preview {
             position: relative;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
         }
@@ -574,6 +574,7 @@
             margin-top: 2rem;
         }
 
+        /* Mobile Styles */
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -697,6 +698,7 @@
             }
         }
 
+        /* Small mobile devices */
         @media (max-width: 480px) {
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -713,10 +715,11 @@
             .form-input,
             .form-textarea,
             .form-select {
-                font-size: 16px;
+                font-size: 16px; /* Prevents zoom on iOS */
             }
         }
 
+        /* Overlay for mobile menu */
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -732,6 +735,7 @@
             display: block;
         }
 
+        /* Better touch targets */
         @media (max-width: 768px) {
             .sidebar-link {
                 padding: 1.25rem 1.5rem;
@@ -743,6 +747,7 @@
             }
         }
 
+        /* Loading states */
         .btn.loading {
             opacity: 0.7;
             pointer-events: none;
@@ -761,8 +766,10 @@
     </style>
 </head>
 <body>
+    <!-- Mobile Overlay -->
     <div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileMenu()"></div>
 
+    <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-content">
             <div class="logo">
@@ -777,6 +784,7 @@
         </div>
     </div>
 
+    <!-- Login Screen -->
     <div id="login-screen" class="modal" style="display: flex;">
         <div class="modal-content">
             <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Login Administrativo</h2>
@@ -790,7 +798,9 @@
         </div>
     </div>
 
+    <!-- Main Container -->
     <div class="main-container" id="main-container" style="display: none;">
+        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <ul class="sidebar-menu">
                 <li class="sidebar-item">
@@ -813,14 +823,16 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link" onclick="showSection('editor')">
-                        <span class="sidebar-icon">✍️</span>
+                        <span class="sidebar-icon">✏️</span>
                         Editor Avançado
                     </a>
                 </li>
             </ul>
         </div>
 
+        <!-- Content Area -->
         <div class="content-area">
+            <!-- Dashboard Section -->
             <div id="dashboard-section" class="section">
                 <div class="page-header">
                     <h1 class="page-title">Dashboard</h1>
@@ -854,6 +866,7 @@
                 </div>
             </div>
 
+            <!-- Carousel Management Section -->
             <div id="carousel-section" class="section hidden">
                 <div class="page-header">
                     <h1 class="page-title">Gerenciar Carrossel</h1>
@@ -890,6 +903,7 @@
                 </div>
             </div>
 
+            <!-- Articles Management Section -->
             <div id="articles-section" class="section hidden">
                 <div class="page-header">
                     <h1 class="page-title">Gestão de Artigos</h1>
@@ -916,6 +930,7 @@
                 </div>
             </div>
 
+            <!-- Editor Section -->
             <div id="editor-section" class="section hidden">
                 <div class="page-header">
                     <h1 class="page-title">Editor Avançado</h1>
@@ -934,27 +949,13 @@
                             <label class="form-label">📂 Categoria</label>
                             <select id="article-category" class="form-select">
                                 <option value="breaking">🚨 Breaking News</option>
-                                <option value="critica">✍️ Critica</option>
+                                <option value="critica">✏️ Critica</option>
                                 <option value="mundo">🌍 Mundo</option>
                                 <option value="politica">🏛️ Política</option>
                                 <option value="Entrevista">🎤 Entrevista</option>
                                 <option value="edicaoAN">📰 Edição AN</option>
                                 <option value="entretenimento">🎬 Entretenimento</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">📅 Data de Publicação</label>
-                            <input type="datetime-local" id="article-date" class="form-input">
-                            <small style="color: var(--gray); margin-top: 0.5rem; display: block;">
-                                ℹ️ Defina a data que aparecerá no artigo. Se deixar vazio, usará a data atual.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">👤 Autor</label>
-                            <input type="text" id="article-author" class="form-input" placeholder="Nome do autor" value="Admin">
                         </div>
                     </div>
 
@@ -991,6 +992,12 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="form-label">👤 Autor</label>
+                        <input type="text" id="article-author" class="form-input" placeholder="Nome do autor" value="Admin">
+                    </div>
+
+                    <!-- Highlight Options -->
                     <div class="highlight-options">
                         <label>
                             <input type="checkbox" id="article-published">
@@ -1022,9 +1029,11 @@
         </div>
     </div>
 
+    <!-- Toast Notifications -->
     <div id="toast" class="toast"></div>
 
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc",
             authDomain: "aawards.firebaseapp.com",
@@ -1040,10 +1049,12 @@
         const database = firebase.database();
         const articlesRef = database.ref('articles');
 
+        // Global Variables
         let allArticles = [];
         let quillEditor;
         const ADMIN_PASSWORD = "ANews2024@#";
 
+        // Mobile Menu Functions
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
@@ -1051,6 +1062,7 @@
             sidebar.classList.toggle('show');
             overlay.classList.toggle('show');
             
+            // Prevent body scrolling when menu is open
             document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
         }
 
@@ -1063,6 +1075,7 @@
             document.body.style.overflow = '';
         }
 
+        // Initialize Quill Editor with mobile-friendly settings
         function initQuillEditor() {
             const isMobile = window.innerWidth <= 768;
             
@@ -1074,8 +1087,9 @@
                 ['clean']
             ];
 
+            // Simplified toolbar for mobile
             if (isMobile) {
-                toolbarOptions.splice(1, 1);
+                toolbarOptions.splice(1, 1); // Remove some options on mobile
             }
 
             quillEditor = new Quill('#quill-editor', {
@@ -1086,11 +1100,13 @@
                 placeholder: 'Escreva seu artigo aqui...'
             });
 
+            // Better mobile experience for editor
             if (isMobile) {
                 document.querySelector('.ql-editor').style.minHeight = '250px';
             }
         }
 
+        // Authentication with improved error handling
         function login() {
             const passwordInput = document.getElementById('admin-password');
             const loginButton = event.target;
@@ -1102,9 +1118,11 @@
                 return;
             }
 
+            // Add loading state
             loginButton.classList.add('loading');
             loginButton.disabled = true;
 
+            // Simulate network delay for better UX
             setTimeout(() => {
                 if (password === ADMIN_PASSWORD) {
                     document.getElementById('login-screen').style.display = 'none';
@@ -1130,6 +1148,7 @@
                 document.getElementById('admin-password').value = '';
                 showToast('Logout realizado com sucesso!', 'success');
                 
+                // Clear any cached data
                 allArticles = [];
                 if (quillEditor) {
                     quillEditor.setText('');
@@ -1138,7 +1157,9 @@
             }
         }
 
+        // Enhanced Navigation with mobile support
         function showSection(sectionName) {
+            // Close mobile menu when navigating
             closeMobileMenu();
             
             document.querySelectorAll('.section').forEach(section => {
@@ -1154,11 +1175,13 @@
                 targetSection.classList.remove('hidden');
             }
             
+            // Find and activate the clicked link
             const clickedLink = event.target.closest('.sidebar-link');
             if (clickedLink) {
                 clickedLink.classList.add('active');
             }
 
+            // Scroll to top on section change (mobile)
             if (window.innerWidth <= 768) {
                 document.querySelector('.content-area').scrollTop = 0;
             }
@@ -1179,6 +1202,7 @@
             }
         }
 
+        // Dashboard Functions with error handling
         function loadDashboard() {
             const statsElements = {
                 total: document.getElementById('total-articles'),
@@ -1187,6 +1211,7 @@
                 carousel: document.getElementById('carousel-articles')
             };
 
+            // Show loading state
             Object.values(statsElements).forEach(el => {
                 if (el) el.textContent = '...';
             });
@@ -1208,6 +1233,7 @@
                     console.error('Error loading dashboard:', error);
                     showToast('Erro ao carregar dashboard!', 'error');
                     
+                    // Reset stats to 0 on error
                     Object.values(statsElements).forEach(el => {
                         if (el) el.textContent = '0';
                     });
@@ -1234,6 +1260,7 @@
                 updates.forEach(({ id, value }) => {
                     const element = document.getElementById(id);
                     if (element) {
+                        // Animate number change
                         animateNumber(element, parseInt(element.textContent) || 0, value);
                     }
                 });
@@ -1242,6 +1269,7 @@
             }
         }
 
+        // Number animation for stats
         function animateNumber(element, start, end, duration = 1000) {
             const range = end - start;
             const startTime = Date.now();
@@ -1261,10 +1289,12 @@
             updateNumber();
         }
 
+        // Enhanced Carousel Management
         function loadCarouselManagement() {
             const carouselContainer = document.getElementById('carousel-articles-list');
             const availableContainer = document.getElementById('available-articles-list');
             
+            // Show loading states
             carouselContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando carrossel...</div>';
             availableContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando artigos...</div>';
 
@@ -1275,7 +1305,7 @@
                         const article = childSnapshot.val();
                         if (article) {
                             article.id = childSnapshot.key;
-                            articles.unshift(article);
+                            articles.unshift(article); // Most recent first
                         }
                     });
 
@@ -1323,7 +1353,7 @@
                             ❌ Remover
                         </button>
                         <button class="btn btn-primary" onclick="editArticle('${article.id}')">
-                            ✍️ Editar
+                            ✏️ Editar
                         </button>
                     </div>
                 </div>
@@ -1338,7 +1368,7 @@
                 return;
             }
 
-            const displayArticles = articles.slice(0, 20);
+            const displayArticles = articles.slice(0, 20); // Limit for performance
             
             container.innerHTML = displayArticles.map(article => `
                 <div class="article-item">
@@ -1373,6 +1403,7 @@
             button.classList.add('loading');
             button.disabled = true;
             
+            // Check carousel limit
             articlesRef.orderByChild('carousel').equalTo(true).once('value', (snapshot) => {
                 const carouselCount = snapshot.numChildren();
                 
@@ -1419,6 +1450,7 @@
             });
         }
 
+        // Enhanced Articles Management
         function loadArticlesTable() {
             const tableContainer = document.getElementById('articles-table');
             tableContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando artigos...</div>';
@@ -1458,7 +1490,7 @@
                                 </div>
                             </div>
                             <div class="article-actions">
-                                <button class="btn btn-primary" onclick="editArticle('${article.id}')">✍️ Editar</button>
+                                <button class="btn btn-primary" onclick="editArticle('${article.id}')">✏️ Editar</button>
                                 <button class="btn btn-${article.published ? 'warning' : 'success'}" onclick="togglePublish('${article.id}', ${!article.published})">
                                     ${article.published ? '📝 Despublicar' : '📢 Publicar'}
                                 </button>
@@ -1476,15 +1508,18 @@
             });
         }
 
+        // Enhanced Image Handling
         function handleImageUpload(input) {
             const file = input.files[0];
             if (!file) return;
             
+            // Validate file type
             if (!file.type.startsWith('image/')) {
                 showToast('Por favor, selecione apenas arquivos de imagem!', 'error');
                 return;
             }
             
+            // Validate file size (5MB limit)
             if (file.size > 5 * 1024 * 1024) {
                 showToast('Imagem muito grande! Máximo 5MB.', 'error');
                 return;
@@ -1496,6 +1531,7 @@
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 
+                // Clear URL input when uploading file
                 document.getElementById('article-image-url').value = '';
             };
             reader.onerror = function() {
@@ -1508,6 +1544,7 @@
             const url = document.getElementById('article-image-url').value.trim();
             if (!url) return;
             
+            // Basic URL validation
             try {
                 new URL(url);
             } catch {
@@ -1518,6 +1555,7 @@
             const preview = document.getElementById('image-preview');
             preview.onload = () => {
                 preview.style.display = 'block';
+                // Clear file input when using URL
                 document.getElementById('image-input').value = '';
             };
             preview.onerror = () => {
@@ -1552,6 +1590,7 @@
             try {
                 const urlObj = new URL(url);
                 
+                // Handle different YouTube URL formats
                 if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
                     const videoId = urlObj.searchParams.get('v');
                     if (videoId) {
@@ -1563,6 +1602,7 @@
                         return `https://www.youtube.com/embed/${videoId}`;
                     }
                 } else if (urlObj.pathname.includes('/embed/')) {
+                    // Already an embed URL
                     return url;
                 }
                 
@@ -1592,6 +1632,7 @@
             }
         }
 
+        // Enhanced Article Operations
         function saveArticle() {
             const button = event.target;
             const originalText = button.innerHTML;
@@ -1599,6 +1640,7 @@
             try {
                 const articleData = gatherArticleData();
                 
+                // Validation
                 const validation = validateArticleData(articleData);
                 if (!validation.isValid) {
                     showToast(validation.message, 'error');
@@ -1612,7 +1654,7 @@
 
                 const savePromise = editId ? 
                     articlesRef.child(editId).update(articleData) :
-                    articlesRef.push(articleData);
+                    articlesRef.push({ ...articleData, date: Date.now() });
 
                 savePromise.then(() => {
                     const message = editId ? 'Artigo atualizado com sucesso!' : 'Artigo criado com sucesso!';
@@ -1622,6 +1664,7 @@
                         resetForm();
                     }
                     
+                    // Refresh dashboard stats
                     loadDashboard();
                 }).catch(error => {
                     console.error('Error saving article:', error);
@@ -1643,6 +1686,7 @@
             publishedCheckbox.checked = false;
             saveArticle();
             
+            // Restore original state after save
             setTimeout(() => {
                 publishedCheckbox.checked = wasChecked;
             }, 100);
@@ -1656,14 +1700,6 @@
             const imagePreview = document.getElementById('image-preview');
             const imageUrl = document.getElementById('article-image-url').value.trim();
             const youtubeUrl = document.getElementById('article-youtube-url').value.trim();
-            const articleDate = document.getElementById('article-date').value;
-            
-            let dateTimestamp;
-            if (articleDate) {
-                dateTimestamp = new Date(articleDate).getTime();
-            } else {
-                dateTimestamp = Date.now();
-            }
             
             return {
                 title: document.getElementById('article-title').value.trim(),
@@ -1675,7 +1711,6 @@
                 youtubeEmbedId: getYouTubeVideoId(youtubeUrl),
                 category: document.getElementById('article-category').value,
                 author: document.getElementById('article-author').value.trim() || 'Admin',
-                date: dateTimestamp,
                 published: document.getElementById('article-published').checked,
                 carousel: document.getElementById('article-carousel').checked,
                 breaking: document.getElementById('article-breaking').checked,
@@ -1708,16 +1743,6 @@
                 document.getElementById('article-category').value = article.category || 'breaking';
                 document.getElementById('article-author').value = article.author || 'Admin';
                 
-                if (article.date) {
-                    const date = new Date(article.date);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const hours = String(date.getHours()).padStart(2, '0');
-                    const minutes = String(date.getMinutes()).padStart(2, '0');
-                    document.getElementById('article-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-                }
-                
                 if (article.image) {
                     const preview = document.getElementById('image-preview');
                     preview.src = article.image;
@@ -1748,7 +1773,6 @@
                 document.getElementById('image-preview').style.display = 'none';
                 document.getElementById('youtube-preview').style.display = 'none';
                 document.getElementById('article-author').value = 'Admin';
-                document.getElementById('article-date').value = '';
                 
                 if (quillEditor) {
                     quillEditor.setText('');
@@ -1801,6 +1825,7 @@
             });
         }
 
+        // Utility Functions
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1849,6 +1874,7 @@
             return categories[category] || category || 'Geral';
         }
 
+        // Enhanced error handling for network issues
         function handleNetworkError(error) {
             console.error('Network error:', error);
             
@@ -1860,12 +1886,15 @@
             showToast('Erro de conexão. Tente novamente.', 'error');
         }
 
+        // Initialize app with better error handling
         function initializeApp() {
             try {
+                // Check if Firebase is properly initialized
                 if (!firebase.apps.length) {
                     throw new Error('Firebase não foi inicializado corretamente');
                 }
 
+                // Test database connection
                 database.ref('.info/connected').on('value', (snapshot) => {
                     const connected = snapshot.val();
                     if (!connected) {
@@ -1873,12 +1902,16 @@
                     }
                 });
 
+                // Add keyboard shortcuts
                 document.addEventListener('keydown', handleKeyboardShortcuts);
                 
+                // Add form auto-save for drafts (every 30 seconds)
                 setInterval(autoSaveDraft, 30000);
                 
+                // Handle window resize for mobile menu
                 window.addEventListener('resize', handleResize);
                 
+                // Handle offline/online events
                 window.addEventListener('offline', () => {
                     showToast('Você está offline. Algumas funcionalidades podem não funcionar.', 'warning');
                 });
@@ -1895,6 +1928,7 @@
         }
 
         function handleKeyboardShortcuts(event) {
+            // Ctrl/Cmd + S to save article
             if ((event.ctrlKey || event.metaKey) && event.key === 's') {
                 event.preventDefault();
                 
@@ -1904,6 +1938,7 @@
                 }
             }
             
+            // Esc to close mobile menu
             if (event.key === 'Escape') {
                 closeMobileMenu();
             }
@@ -1913,6 +1948,7 @@
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
             
+            // Close mobile menu on resize to desktop
             if (window.innerWidth > 768) {
                 sidebar.classList.remove('show');
                 overlay.classList.remove('show');
@@ -1934,6 +1970,7 @@
                     return;
                 }
                 
+                // Save to localStorage as backup
                 const draftData = {
                     title: title,
                     summary: document.getElementById('article-summary').value.trim(),
@@ -1947,6 +1984,7 @@
                 try {
                     localStorage.setItem('armindo-news-draft', JSON.stringify(draftData));
                 } catch (e) {
+                    // localStorage might be full or disabled
                     console.warn('Could not save draft to localStorage:', e);
                 }
             } catch (error) {
@@ -1962,6 +2000,7 @@
                 const draft = JSON.parse(saved);
                 const age = Date.now() - draft.timestamp;
                 
+                // Only load drafts less than 24 hours old
                 if (age > 24 * 60 * 60 * 1000) {
                     localStorage.removeItem('armindo-news-draft');
                     return false;
@@ -1994,6 +2033,7 @@
             return false;
         }
 
+        // Enhanced form validation with real-time feedback
         function setupFormValidation() {
             const titleInput = document.getElementById('article-title');
             const summaryTextarea = document.getElementById('article-summary');
@@ -2016,6 +2056,7 @@
                     const length = e.target.value.length;
                     const maxLength = parseInt(e.target.getAttribute('maxlength'));
                     
+                    // Add character counter
                     let counter = e.target.parentNode.querySelector('.char-counter');
                     if (!counter) {
                         counter = document.createElement('div');
@@ -2037,6 +2078,7 @@
             }
         }
 
+        // Performance optimization: Lazy load images
         function setupLazyLoading() {
             if ('IntersectionObserver' in window) {
                 const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -2056,11 +2098,13 @@
             }
         }
 
+        // Initialize everything when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             try {
                 initializeApp();
                 setupFormValidation();
                 
+                // Login on Enter key
                 const passwordInput = document.getElementById('admin-password');
                 if (passwordInput) {
                     passwordInput.addEventListener('keypress', function(e) {
@@ -2071,6 +2115,7 @@
                     });
                 }
 
+                // Load draft when entering editor (only if not editing existing article)
                 const originalShowSection = showSection;
                 window.showSection = function(sectionName) {
                     originalShowSection.call(this, sectionName);
@@ -2082,10 +2127,12 @@
                     }
                 };
 
+                // Add touch events for better mobile experience
                 if ('ontouchstart' in window) {
                     document.body.classList.add('touch-device');
                 }
 
+                // Prevent form submission on Enter (except in textareas)
                 document.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') {
                         if (e.target.form && !e.target.classList.contains('allow-enter')) {
@@ -2101,6 +2148,7 @@
             }
         });
 
+        // Service Worker registration for offline support (optional)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -2113,11 +2161,13 @@
             });
         }
 
+        // Global error handler
         window.addEventListener('error', (event) => {
             console.error('Global error:', event.error);
             showToast('Erro inesperado na aplicação!', 'error');
         });
 
+        // Unhandled promise rejection handler
         window.addEventListener('unhandledrejection', (event) => {
             console.error('Unhandled promise rejection:', event.reason);
             handleNetworkError(event.reason);
