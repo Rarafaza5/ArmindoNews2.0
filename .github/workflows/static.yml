@@ -38,6 +38,8 @@ jobs:
         run: |
           find . -type f -name "*.html" -exec sed -i "s|%%GOOGLE_API%%|${{ secrets.GOOGLE_API }}|g" {} +
           find . -type f -name "*.html" -exec sed -i "s|%%ADMIN_PASS%%|${{ secrets.ADMIN_PASS }}|g" {} +
+          find . -type f -name "*.html" -exec sed -i "s|%%PS_ADMIN_PASS%%|${{ secrets.PS_ADMIN_PASS }}|g" {} +
+          find . -type f -name "*.html" -exec sed -i "s|%%PS_ADMIN_PASS%%|${{ secrets.PS_ADMIN_PASS }}|g" {} +
         # Adicione mais linhas 'sed' se tiver outras chaves/variáveis
 
       - name: Setup Pages
