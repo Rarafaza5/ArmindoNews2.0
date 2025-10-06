@@ -16,6 +16,16 @@
     <priority>1.0</priority>
   </url>
 
+    <loc>https://armindonews.site/pitstop/index.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <loc>https://armindonews.site/pitstop/article.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
   <!-- páginas estáticas -->
   <url>
     <loc>https://armindonews.site/index.html</loc>
