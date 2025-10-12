@@ -1,423 +1,1081 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-PT">
 <head>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e"  type="text/javascript"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Armindo News — Artigo</title>
-<meta name="description" content="Artigo completo da Armindo News">
-<meta property="og:title" content="Armindo News">
-<meta property="og:description" content="Leia esta notícia completa na Armindo News.">
-<meta property="og:image" content="an.png">
-<link rel="icon" type="image/x-icon" href="an.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-<style>
-:root {
-    --font-sans: 'Inter', sans-serif;
-    --font-serif: 'Source Serif 4', serif;
-    --color-text: #1a202c;
-    --color-muted: #4a5568;
-    --color-primary: #1e1e1e;
-    --color-accent: #c00; /* Cor de destaque (vermelho escuro) */
-    --color-background: #f7fafc;
-    --color-card-bg: #ffffff;
-    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-}
-body { 
-    background: var(--color-background); 
-    margin:0; 
-    font-family: var(--font-sans); 
-    color: var(--color-text); 
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-}
-.reading-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 4px;
-    background: var(--color-accent);
-    z-index: 2000;
-    transition: width 0.1s linear;
-}
-header.main-header { 
-    background: var(--color-card-bg); 
-    padding:1rem 2rem; 
-    box-shadow: var(--shadow);
-    position:sticky; 
-    top:0;
-    z-index: 1000;
-}
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armindo News – Artigo</title>
+    <meta name="description" content="Artigo completo da Armindo News">
+    <meta property="og:title" content="Armindo News">
+    <meta property="og:description" content="Leia esta notícia completa na Armindo News.">
+    <meta property="og:image" content="an.png">
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Google AdSense -->
+    <meta name="google-adsense-account" content="ca-pub-8653418731294447">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8653418731294447" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Source Serif 4', serif;
+            --color-text: #1a202c;
+            --color-muted: #4a5568;
+            --color-primary: #1e1e1e;
+            --color-accent: #c00;
+            --color-background: #f7fafc;
+            --color-card-bg: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        
+        body { 
+            background: var(--color-background); 
+            margin: 0; 
+            font-family: var(--font-sans); 
+            color: var(--color-text); 
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        
+        .reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--color-accent);
+            z-index: 2000;
+            transition: width 0.1s linear;
+        }
+        
+        header.main-header { 
+            background: var(--color-card-bg); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+            position: sticky; 
+            top: 0;
+            z-index: 1000;
+        }
 
-   @font-face {
+        @font-face {
             font-family: 'an';
             src: url('/EnglishTowne.woff') format('woff');
             font-weight: bold;
         }
 
-.logo { 
-    font-size:2.5rem; 
-    font-weight:900; 
-    color: var(--color-primary); 
-    text-decoration:none; 
-    font-family: 'an',sans-serif;
-}
-main { 
-    max-width:1100px; 
-    margin:3rem auto; 
-    padding:0 1.5rem;
-}
-article {
-    background: var(--color-card-bg); 
-    border-radius:16px; 
-    box-shadow: var(--shadow-lg); 
-    padding: clamp(1.5rem, 5vw, 4rem); 
-}
-.article-header {
-    text-align: center;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 2rem;
-    margin-bottom: 2rem;
-}
-.category-tag {
-    display: inline-block;
-    background: var(--color-accent);
-    color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-}
-h1#title { 
-    font-family: var(--font-sans);
-    font-size:clamp(2.2rem, 5vw, 3.5rem); 
-    font-weight: 800;
-    line-height:1.2; 
-    margin-bottom:1rem; 
-}
-p#summary {
-    font-family: var(--font-serif);
-    font-size: clamp(1.1rem, 3vw, 1.3rem);
-    color: var(--color-muted);
-    line-height: 1.6;
-    max-width: 750px;
-    margin: 0 auto 1.5rem auto;
-    font-style: italic;
-}
-.meta-info { 
-    color: var(--color-muted); 
-    font-size:0.9rem; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-}
-.meta-info span { display: flex; align-items: center; gap: 0.5rem; }
-.meta-info .fas { font-size: 0.8rem; }
-figure.media-container { margin: 2rem 0; padding: 0; }
-.hero-image { width:100%; border-radius:12px; }
-.video-container iframe { width:100%; height:500px; border:none; border-radius:12px; }
+        .logo { 
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            color: var(--color-primary); 
+            text-decoration: none; 
+            font-family: 'an', sans-serif;
+        }
+        
+        main { 
+            max-width: 1100px; 
+            margin: 3rem auto; 
+            padding: 0 1.5rem;
+        }
+        
+        article {
+            background: var(--color-card-bg); 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-lg); 
+            padding: clamp(1.5rem, 5vw, 4rem); 
+        }
+        
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1#title { 
+            font-family: var(--font-sans);
+            font-size: clamp(2.2rem, 5vw, 3.5rem); 
+            font-weight: 800;
+            line-height: 1.2; 
+            margin-bottom: 1rem; 
+        }
+        
+        p#summary {
+            font-family: var(--font-serif);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: var(--color-muted);
+            line-height: 1.6;
+            max-width: 750px;
+            margin: 0 auto 1.5rem auto;
+            font-style: italic;
+        }
+        
+        .meta-info { 
+            color: var(--color-muted); 
+            font-size: 0.9rem; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+        
+        .meta-info span { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .meta-info .fas { 
+            font-size: 0.8rem; 
+        }
+        
+        figure.media-container { 
+            margin: 2rem 0; 
+            padding: 0; 
+            position: relative;
+        }
+        
+        .hero-image { 
+            width: 100%; 
+            border-radius: 12px; 
+        }
+        
+        .image-credit {
+            font-size: 0.75rem;
+            color: var(--color-muted);
+            font-style: italic;
+            text-align: right;
+            margin-top: 0.5rem;
+            padding-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.3rem;
+        }
+        
+        .image-credit::before {
+            content: "📷";
+            font-style: normal;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .video-container iframe { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
 
-.executive-summary {
-    background: #f7fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem 2rem;
-    margin: 2.5rem auto;
-    max-width: 720px;
-}
-.executive-summary h3 {
-    font-family: var(--font-sans);
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-.executive-summary ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.executive-summary li {
-    font-family: var(--font-serif);
-    color: var(--color-muted);
-    padding-left: 1.5rem;
-    position: relative;
-    margin-bottom: 0.75rem;
-}
-.executive-summary li::before {
-    content: '›';
-    position: absolute;
-    left: 0;
-    top: -2px;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--color-accent);
-}
+        .executive-summary {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 2.5rem auto;
+            max-width: 720px;
+        }
+        
+        .executive-summary h3 {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .executive-summary ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .executive-summary li {
+            font-family: var(--font-serif);
+            color: var(--color-muted);
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+        
+        .executive-summary li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: var(--color-accent);
+        }
 
-.article-body { 
-    max-width:720px;
-    margin: 0 auto;
-    font-family: var(--font-serif);
-    font-size: 1.125rem;
-    line-height:1.8;
-}
-.article-body p:first-of-type::first-letter {
-    font-family: var(--font-serif);
-    color: var(--color-primary);
-    font-weight: 600;
-    font-size: 4.5rem;
-    float: left;
-    line-height: 0.8;
-    padding-right: 0.75rem;
-    padding-top: 0.25rem;
-}
-.article-body p, .article-body ul, .article-body ol { margin-bottom:1.5rem; }
-.article-body h2, .article-body h3 {
-    font-family: var(--font-sans);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    line-height: 1.3;
-    font-weight: 700;
-}
-.article-body h2 { font-size: 1.8rem; }
-.article-body h3 { font-size: 1.5rem; }
-.article-body blockquote {
-    margin: 2.5rem 0;
-    padding-left: 1.5rem;
-    border-left: 3px solid var(--color-accent);
-    font-style: italic;
-    font-size: 1.25rem;
-    color: var(--color-muted);
-}
-.article-footer {
-    max-width: 720px;
-    margin: 3rem auto 0 auto;
-    padding-top: 2rem;
-    border-top: 1px solid #e2e8f0;
-    text-align: center;
-}
-.article-footer h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-.share-buttons { display: flex; justify-content: center; gap: 1rem; }
-.share-buttons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.share-buttons a:hover { transform: translateY(-3px); opacity: 0.9; }
-.share-whatsapp { background: #25D366; }
-.share-facebook { background: #1877F2; }
-.share-twitter { background: #14171A; }
+        .article-body { 
+            max-width: 720px;
+            margin: 0 auto;
+            font-family: var(--font-serif);
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+        
+        .article-body p:first-of-type::first-letter {
+            font-family: var(--font-serif);
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 4.5rem;
+            float: left;
+            line-height: 0.8;
+            padding-right: 0.75rem;
+            padding-top: 0.25rem;
+        }
+        
+        .article-body p, .article-body ul, .article-body ol { 
+            margin-bottom: 1.5rem; 
+        }
+        
+        .article-body h2, .article-body h3 {
+            font-family: var(--font-sans);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        .article-body h2 { 
+            font-size: 1.8rem; 
+        }
+        
+        .article-body h3 { 
+            font-size: 1.5rem; 
+        }
+        
+        .article-body blockquote {
+            margin: 2.5rem 0;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--color-muted);
+        }
+        
+        .ad-container {
+            max-width: 720px;
+            margin: 3rem auto;
+            text-align: center;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+        
+        .comments-section {
+            max-width: 720px;
+            margin: 4rem auto 0 auto;
+            padding-top: 3rem;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .comments-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .comments-count {
+            background: var(--color-accent);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .comment-form {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comment-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #a00;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .auth-prompt {
+            text-align: center;
+            padding: 2rem;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-prompt p {
+            margin-bottom: 1rem;
+            color: var(--color-muted);
+        }
+        
+        .auth-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-link:hover {
+            background: #a00;
+            transform: translateY(-2px);
+        }
+        
+        .comments-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comment-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-item:hover {
+            box-shadow: var(--shadow);
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .comment-user-info {
+            flex: 1;
+        }
+        
+        .comment-username {
+            font-weight: 700;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .comment-date {
+            font-size: 0.85rem;
+            color: var(--color-muted);
+        }
+        
+        .comment-text {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .comment-actions-btns {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .comment-delete-btn {
+            color: var(--color-accent);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .comment-delete-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .no-comments {
+            text-align: center;
+            padding: 3rem;
+            color: var(--color-muted);
+            font-style: italic;
+        }
+        
+        .article-footer {
+            max-width: 720px;
+            margin: 3rem auto 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .article-footer h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-buttons { 
+            display: flex; 
+            justify-content: center; 
+            gap: 1rem; 
+        }
+        
+        .share-buttons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        
+        .share-buttons a:hover { 
+            transform: translateY(-3px); 
+            opacity: 0.9; 
+        }
+        
+        .share-whatsapp { background: #25D366; }
+        .share-facebook { background: #1877F2; }
+        .share-twitter { background: #14171A; }
 
-.back-button { 
-    display:inline-block; 
-    margin-top:3rem; 
-    background:var(--color-primary); 
-    color:white; 
-    padding:0.8rem 1.5rem; 
-    border-radius:8px; 
-    text-decoration:none; 
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-}
-.back-button:hover { background:#333; }
+        .back-button { 
+            display: inline-block; 
+            margin-top: 3rem; 
+            background: var(--color-primary); 
+            color: white; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        
+        .back-button:hover { 
+            background: #333; 
+        }
 
-@media(max-width:900px){ article{padding:1.5rem;} .video-container iframe { height:350px; } }
-</style>
+        @media(max-width: 900px) { 
+            article { 
+                padding: 1.5rem; 
+            } 
+            
+            .video-container { 
+                padding-bottom: 56.25%; 
+            }
+            
+            .image-credit {
+                font-size: 0.7rem;
+                margin-top: 0.3rem;
+            }
+            
+            .comment-form {
+                padding: 1rem;
+            }
+            
+            .comment-textarea {
+                min-height: 100px;
+            }
+            
+            .comment-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="reading-progress-bar" id="reading-progress-bar"></div>
-<header class="main-header"><a href="index.html" class="logo">AN</a></header>
-<main>
-  <article>
-    <header class="article-header">
-      <div id="category-tag" class="category-tag" style="display:none;"></div>
-      <h1 id="title">Carregando...</h1>
-      <p id="summary" style="display:none;"></p>
-      <div class="meta-info">
-        <span id="author-meta" style="display:none;"><i class="fas fa-user-edit"></i> <strong id="author-name"></strong></span>
-        <span class="meta-separator" style="display:none;">•</span>
-        <span id="date-meta" style="display:none;"><i class="fas fa-calendar-alt"></i> <span id="date-text"></span></span>
-        <span class="meta-separator" style="display:none;">•</span>
-        <span id="read-time-meta" style="display:none;"><i class="fas fa-book-open"></i> <span id="read-time-text"></span></span>
-      </div>
+    <div class="reading-progress-bar" id="reading-progress-bar"></div>
+    <header class="main-header">
+        <a href="index.html" class="logo">AN</a>
     </header>
-
-    <figure class="media-container">
-        <div id="video-container" class="video-container" style="display:none;"></div>
-        <img id="image" class="hero-image" style="display:none;">
-    </figure>
     
-    <div class="executive-summary" id="executive-summary" style="display:none;">
-        <h3>Resumo</h3>
-        <ul id="summary-points"></ul>
-    </div>
+    <main>
+        <article>
+            <header class="article-header">
+                <div id="category-tag" class="category-tag" style="display:none;"></div>
+                <h1 id="title">Carregando...</h1>
+                <p id="summary" style="display:none;"></p>
+                <div class="meta-info">
+                    <span id="author-meta" style="display:none;">
+                        <i class="fas fa-user-edit"></i> 
+                        <strong id="author-name"></strong>
+                    </span>
+                    <span class="meta-separator" style="display:none;">•</span>
+                    <span id="date-meta" style="display:none;">
+                        <i class="fas fa-calendar-alt"></i> 
+                        <span id="date-text"></span>
+                    </span>
+                    <span class="meta-separator" style="display:none;">•</span>
+                    <span id="read-time-meta" style="display:none;">
+                        <i class="fas fa-book-open"></i> 
+                        <span id="read-time-text"></span>
+                    </span>
+                </div>
+            </header>
 
-    <div id="content" class="article-body"></div>
+            <figure class="media-container">
+                <div id="video-container" class="video-container" style="display:none;"></div>
+                <div id="image-container" style="display:none;">
+                    <img id="image" class="hero-image">
+                    <figcaption id="image-credit" class="image-credit" style="display:none;"></figcaption>
+                </div>
+            </figure>
+            
+            <div class="executive-summary" id="executive-summary" style="display:none;">
+                <h3>Resumo</h3>
+                <ul id="summary-points"></ul>
+            </div>
 
-    <footer class="article-footer" id="article-footer" style="display:none;">
-        <h3>Partilhar este artigo</h3>
-        <div class="share-buttons">
-            <a id="share-whatsapp" href="#" target="_blank" class="share-whatsapp" title="Partilhar no WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a id="share-facebook" href="#" target="_blank" class="share-facebook" title="Partilhar no Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a id="share-twitter" href="#" target="_blank" class="share-twitter" title="Partilhar no X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-        </div>
-    </footer>
-    
-    <div style="text-align: center;">
-      <a href="index.html" class="back-button">← Voltar às Notícias</a>
-    </div>
+            <div id="content" class="article-body"></div>
 
-  </article>
-</main>
+            <!-- Google AdSense - Meio do Artigo -->
+            <div class="ad-container">
+                <ins class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-8653418731294447"
+                     data-ad-slot="1234567890"></ins>
+            </div>
 
-<script>
-const firebaseConfig = {
-  apiKey: "%%GOOGLE_API%%",
-  authDomain: "aawards.firebaseapp.com",
-  databaseURL: "https://aawards-default-rtdb.firebaseio.com",
-  projectId: "aawards",
-  storageBucket: "aawards.firebasestorage.app",
-  messagingSenderId: "839334918366",
-  appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
-  measurementId: "G-Z9YLSTGHST"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+            <footer class="article-footer" id="article-footer" style="display:none;">
+                <h3>Partilhar este artigo</h3>
+                <div class="share-buttons">
+                    <a id="share-whatsapp" href="#" target="_blank" rel="noopener" class="share-whatsapp" title="Partilhar no WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a id="share-facebook" href="#" target="_blank" rel="noopener" class="share-facebook" title="Partilhar no Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a id="share-twitter" href="#" target="_blank" rel="noopener" class="share-twitter" title="Partilhar no X (Twitter)">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                </div>
+            </footer>
 
-const id = new URLSearchParams(window.location.search).get('id');
-if(!id){ document.getElementById('title').innerText='Artigo não encontrado'; }
+            <!-- Seção de Comentários -->
+            <div class="comments-section" id="comments-section">
+                <div class="comments-header">
+                    <h3 class="comments-title">💬 Comentários</h3>
+                    <span class="comments-count" id="comments-count">0</span>
+                </div>
 
-// --- Reading Progress Bar ---
-const progressBar = document.getElementById('reading-progress-bar');
-window.addEventListener('scroll', () => {
-    const totalHeight = document.body.scrollHeight - window.innerHeight;
-    const progress = (window.pageYOffset / totalHeight) * 100;
-    progressBar.style.width = `${progress}%`;
-});
+                <!-- Formulário de Comentário (apenas para usuários logados) -->
+                <div id="comment-form-container">
+                    <div class="auth-prompt" id="auth-prompt">
+                        <p>🔐 Faça login para deixar seu comentário</p>
+                        <a href="auth.html?return=article.html" class="auth-link">Entrar ou Registar</a>
+                    </div>
 
-function getYouTubeEmbed(url){
-  if(!url) return null;
-  try{
-    const u = new URL(url);
-    if(u.hostname.includes('youtu.be')) return 'https://www.youtube.com/embed/'+u.pathname.slice(1);
-    if(u.hostname.includes('youtube.com')) return 'https://www.youtube.com/embed/'+u.searchParams.get('v');
-    return null;
-  }catch{return null;}
-}
+                    <div class="comment-form" id="comment-form" style="display: none;">
+                        <textarea 
+                            class="comment-textarea" 
+                            id="comment-text" 
+                            placeholder="Escreva seu comentário aqui... (mínimo 10 caracteres)"
+                            maxlength="1000"></textarea>
+                        <div class="comment-actions">
+                            <small style="color: var(--color-muted);" id="char-count">0/1000 caracteres</small>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-secondary" onclick="clearComment()">Cancelar</button>
+                                <button class="btn btn-primary" onclick="postComment()" id="post-btn">
+                                    📝 Publicar Comentário
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-function calculateReadTime(content) {
-    if (!content) return '';
-    const text = content.replace(/<[^>]*>/g, '');
-    const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
-    const wpm = 225;
-    const minutes = Math.ceil(wordCount / wpm);
-    return `${minutes} min de leitura`;
-}
+                <!-- Lista de Comentários -->
+                <ul class="comments-list" id="comments-list">
+                    <li class="no-comments">Nenhum comentário ainda. Seja o primeiro a comentar!</li>
+                </ul>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="index.html" class="back-button">← Voltar às Notícias</a>
+            </div>
+        </article>
+    </main>
 
-function populateExecutiveSummary(summaryText) {
-    if (!summaryText) return;
-    const summaryContainer = document.getElementById('executive-summary');
-    const summaryList = document.getElementById('summary-points');
-    // Divide o resumo em frases. Esta regex tenta apanhar pontos finais seguidos de espaço.
-    const sentences = summaryText.match(/[^.!?]+[.!?]+/g) || [summaryText];
-    
-    summaryList.innerHTML = ''; // Limpa a lista
-    sentences.forEach(sentence => {
-        const li = document.createElement('li');
-        li.textContent = sentence.trim();
-        summaryList.appendChild(li);
-    });
-    summaryContainer.style.display = 'block';
-}
+    <script>
+        const firebaseConfig = {
+            apiKey: "%%GOOGLE_API%%",
+            authDomain: "aawards.firebaseapp.com",
+            databaseURL: "https://aawards-default-rtdb.firebaseio.com",
+            projectId: "aawards",
+            storageBucket: "aawards.firebasestorage.app",
+            messagingSenderId: "839334918366",
+            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
+            measurementId: "G-Z9YLSTGHST"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
 
-function setupShareLinks(url, title) {
-    const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent(title);
+        const id = new URLSearchParams(window.location.search).get('id');
+        let currentUser = null;
+        let currentArticle = null;
+        
+        if (!id) { 
+            document.getElementById('title').innerText = 'Artigo não encontrado'; 
+        }
 
-    document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
-    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
-    document.getElementById('article-footer').style.display = 'block';
-}
+        // Autenticação
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            updateCommentInterface(user);
+        });
 
-db.ref('articles/'+id).once('value').then(snap=>{
-  const a=snap.val();
-  if(!a){document.getElementById('title').innerText='Artigo não encontrado';return;}
-  
-  document.title=a.title+' — Armindo News';
-  document.getElementById('title').innerText=a.title;
+        function updateCommentInterface(user) {
+            const authPrompt = document.getElementById('auth-prompt');
+            const commentForm = document.getElementById('comment-form');
 
-  if (a.category) {
-      document.getElementById('category-tag').innerText = a.category;
-      document.getElementById('category-tag').style.display = 'inline-block';
-  }
+            if (user) {
+                authPrompt.style.display = 'none';
+                commentForm.style.display = 'block';
+            } else {
+                authPrompt.style.display = 'block';
+                commentForm.style.display = 'none';
+            }
+        }
 
-  if (a.summary) {
-      document.getElementById('summary').innerText = a.summary;
-      document.getElementById('summary').style.display = 'block';
-      populateExecutiveSummary(a.summary); // Popula o novo campo de resumo executivo
-  }
-  
-  if (a.author) {
-    document.getElementById('author-name').innerText = a.author;
-    document.getElementById('author-meta').style.display = 'flex';
-  }
-  document.getElementById('date-text').innerText = new Date(a.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-  document.getElementById('date-meta').style.display = 'flex';
+        // Contador de caracteres
+        const commentText = document.getElementById('comment-text');
+        if (commentText) {
+            commentText.addEventListener('input', function() {
+                const count = this.value.length;
+                document.getElementById('char-count').textContent = `${count}/1000 caracteres`;
+            });
+        }
 
-  const articleContent = a.content || a.contentText || '';
-  const readTime = calculateReadTime(articleContent);
-  if (readTime) {
-      document.getElementById('read-time-text').innerText = readTime;
-      document.getElementById('read-time-meta').style.display = 'flex';
-  }
+        // Barra de progresso de leitura
+        const progressBar = document.getElementById('reading-progress-bar');
+        window.addEventListener('scroll', () => {
+            const totalHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (window.pageYOffset / totalHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
 
-  document.querySelectorAll('.meta-separator').forEach(el => el.style.display = 'inline');
+        function getYouTubeEmbed(url) {
+            if (!url) return null;
+            try {
+                const u = new URL(url);
+                if (u.hostname.includes('youtu.be')) return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
+                if (u.hostname.includes('youtube.com')) return 'https://www.youtube.com/embed/' + u.searchParams.get('v');
+                return null;
+            } catch {
+                return null;
+            }
+        }
 
-  if(a.youtubeUrl){
-    const embed=getYouTubeEmbed(a.youtubeUrl);
-    if(embed){
-      document.getElementById('video-container').innerHTML=`<iframe src='${embed}' allowfullscreen></iframe>`;
-      document.getElementById('video-container').style.display='block';
-    }
-  } else if(a.image){
-    const img=document.getElementById('image');
-    img.src=a.image;
-    img.style.display='block';
-  }
+        function calculateReadTime(content) {
+            if (!content) return '';
+            const text = content.replace(/<[^>]*>/g, '');
+            const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+            const wpm = 225;
+            const minutes = Math.ceil(wordCount / wpm);
+            return `${minutes} min de leitura`;
+        }
 
-  if(a.image) { document.querySelector('meta[property=\'og:image\']').setAttribute('content', a.image); }
-  document.querySelector('meta[property=\'og:title\']').setAttribute('content',a.title);
-  document.querySelector('meta[property=\'og:description\']').setAttribute('content',a.summary||'Leia esta notícia completa na Armindo News.');
+        function populateExecutiveSummary(summaryText) {
+            if (!summaryText) return;
+            const summaryContainer = document.getElementById('executive-summary');
+            const summaryList = document.getElementById('summary-points');
+            const sentences = summaryText.match(/[^.!?]+[.!?]+/g) || [summaryText];
+            
+            summaryList.innerHTML = '';
+            sentences.forEach(sentence => {
+                const li = document.createElement('li');
+                li.textContent = sentence.trim();
+                summaryList.appendChild(li);
+            });
+            summaryContainer.style.display = 'block';
+        }
 
-  document.getElementById('content').innerHTML = articleContent;
-  setupShareLinks(window.location.href, a.title);
-});
-</script>
+        function setupShareLinks(url, title) {
+            const encodedUrl = encodeURIComponent(url);
+            const encodedTitle = encodeURIComponent(title);
+
+            document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+            document.getElementById('article-footer').style.display = 'block';
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'tecnologia': 'Tecnologia',
+                'politica': 'Política',
+                'gaming': 'Gaming',
+                'entretenimento': 'Entretenimento',
+                'musica': 'Música',
+                'investigacao': 'Investigação',
+                'cronica': 'Crónica',
+                'critica': 'Crítica',
+                'pais': 'País',
+                'entrevista': 'Entrevista Exclusiva',
+                'desporto': 'Desporto',
+                'mundo': 'Mundo',
+                'opiniao': 'Opinião'
+            };
+            return categories[category] || category || 'Notícias';
+        }
+
+        // Carregar artigo
+        db.ref('articles/' + id).once('value').then(snap => {
+            const a = snap.val();
+            if (!a) {
+                document.getElementById('title').innerText = 'Artigo não encontrado';
+                return;
+            }
+            
+            currentArticle = a;
+            
+            document.title = a.title + ' – Armindo News';
+            document.getElementById('title').innerText = a.title;
+
+            if (a.category) {
+                document.getElementById('category-tag').innerText = getCategoryName(a.category);
+                document.getElementById('category-tag').style.display = 'inline-block';
+            }
+
+            if (a.summary) {
+                document.getElementById('summary').innerText = a.summary;
+                document.getElementById('summary').style.display = 'block';
+                populateExecutiveSummary(a.summary);
+            }
+            
+            if (a.author) {
+                document.getElementById('author-name').innerText = a.author;
+                document.getElementById('author-meta').style.display = 'flex';
+            }
+            
+            document.getElementById('date-text').innerText = new Date(a.date).toLocaleDateString('pt-PT', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            document.getElementById('date-meta').style.display = 'flex';
+
+            const articleContent = a.content || a.contentText || '';
+            const readTime = calculateReadTime(articleContent);
+            if (readTime) {
+                document.getElementById('read-time-text').innerText = readTime;
+                document.getElementById('read-time-meta').style.display = 'flex';
+            }
+
+            document.querySelectorAll('.meta-separator').forEach(el => el.style.display = 'inline');
+
+            if (a.youtubeUrl) {
+                const embed = getYouTubeEmbed(a.youtubeUrl);
+                if (embed) {
+                    document.getElementById('video-container').innerHTML = `<iframe src='${embed}' allowfullscreen></iframe>`;
+                    document.getElementById('video-container').style.display = 'block';
+                }
+            } else if (a.image) {
+                const imageContainer = document.getElementById('image-container');
+                const img = document.getElementById('image');
+                const creditElement = document.getElementById('image-credit');
+                
+                img.src = a.image;
+                img.alt = a.title;
+                imageContainer.style.display = 'block';
+                
+                if (a.imageSource && a.imageSource.trim() !== '') {
+                    creditElement.textContent = a.imageSource;
+                    creditElement.style.display = 'flex';
+                }
+            }
+
+            if (a.image) { 
+                document.querySelector('meta[property="og:image"]').setAttribute('content', a.image); 
+            }
+            document.querySelector('meta[property="og:title"]').setAttribute('content', a.title);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', a.summary || 'Leia esta notícia completa na Armindo News.');
+
+            document.getElementById('content').innerHTML = articleContent;
+            setupShareLinks(window.location.href, a.title);
+            
+            // Carregar comentários
+            loadComments();
+            
+            // Inicializar AdSense
+            setTimeout(() => {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.log('AdSense não carregado:', e);
+                }
+            }, 1000);
+        }).catch(error => {
+            console.error('Error loading article:', error);
+            document.getElementById('title').innerText = 'Erro ao carregar artigo';
+        });
+
+        // Sistema de Comentários
+        function loadComments() {
+            const commentsList = document.getElementById('comments-list');
+            const commentsCount = document.getElementById('comments-count');
+            
+            db.ref('comments/' + id).orderByChild('timestamp').on('value', (snapshot) => {
+                const comments = [];
+                snapshot.forEach((childSnapshot) => {
+                    const comment = childSnapshot.val();
+                    comment.id = childSnapshot.key;
+                    comments.unshift(comment);
+                });
+
+                commentsCount.textContent = comments.length;
+
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<li class="no-comments">Nenhum comentário ainda. Seja o primeiro a comentar!</li>';
+                    return;
+                }
+
+                commentsList.innerHTML = comments.map(comment => createCommentHTML(comment)).join('');
+            });
+        }
+
+        function createCommentHTML(comment) {
+            const isOwner = currentUser && currentUser.uid === comment.userId;
+            const commentDate = new Date(comment.timestamp).toLocaleDateString('pt-PT', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            return `
+                <li class="comment-item">
+                    <div class="comment-header">
+                        <img src="${comment.userAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(comment.userName)}&background=667eea&color=fff&size=96`}" 
+                             alt="${comment.userName}" 
+                             class="comment-avatar">
+                        <div class="comment-user-info">
+                            <div class="comment-username">${escapeHtml(comment.userName)}</div>
+                            <div class="comment-date">${commentDate}</div>
+                        </div>
+                    </div>
+                    <div class="comment-text">${escapeHtml(comment.text)}</div>
+                    ${isOwner ? `
+                        <div class="comment-actions-btns">
+                            <a href="#" class="comment-delete-btn" onclick="deleteComment('${comment.id}'); return false;">
+                                🗑️ Excluir
+                            </a>
+                        </div>
+                    ` : ''}
+                </li>
+            `;
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function postComment() {
+            if (!currentUser) {
+                alert('Por favor, faça login para comentar.');
+                window.location.href = 'auth.html?return=' + encodeURIComponent(window.location.href);
+                return;
+            }
+
+            const commentTextArea = document.getElementById('comment-text');
+            const text = commentTextArea.value.trim();
+
+            if (text.length < 10) {
+                alert('O comentário deve ter pelo menos 10 caracteres.');
+                return;
+            }
+
+            if (text.length > 1000) {
+                alert('O comentário não pode ter mais de 1000 caracteres.');
+                return;
+            }
+
+            const postBtn = document.getElementById('post-btn');
+            postBtn.disabled = true;
+            postBtn.textContent = '📤 Publicando...';
+
+            const commentData = {
+                text: text,
+                userId: currentUser.uid,
+                userName: currentUser.displayName || 'Utilizador',
+                userAvatar: currentUser.photoURL || null,
+                timestamp: Date.now(),
+                articleId: id
+            };
+
+            db.ref('comments/' + id).push(commentData)
+                .then(() => {
+                    commentTextArea.value = '';
+                    document.getElementById('char-count').textContent = '0/1000 caracteres';
+                    postBtn.disabled = false;
+                    postBtn.textContent = '📝 Publicar Comentário';
+                    
+                    // Analytics
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'comment_posted', {
+                            'article_id': id
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error('Erro ao publicar comentário:', error);
+                    alert('Erro ao publicar comentário. Tente novamente.');
+                    postBtn.disabled = false;
+                    postBtn.textContent = '📝 Publicar Comentário';
+                });
+        }
+
+        function clearComment() {
+            document.getElementById('comment-text').value = '';
+            document.getElementById('char-count').textContent = '0/1000 caracteres';
+        }
+
+        function deleteComment(commentId) {
+            if (!confirm('Tem certeza que deseja excluir este comentário?')) {
+                return;
+            }
+
+            db.ref('comments/' + id + '/' + commentId).remove()
+                .then(() => {
+                    console.log('Comentário excluído com sucesso');
+                })
+                .catch((error) => {
+                    console.error('Erro ao excluir comentário:', error);
+                    alert('Erro ao excluir comentário. Tente novamente.');
+                });
+        }
+
+        // Prevenir submissão com Enter (permite quebra de linha com Shift+Enter)
+        if (commentText) {
+            commentText.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    postComment();
+                }
+            });
+        }
+
+        // Analytics
+        if (typeof gtag !== 'undefined' && currentArticle) {
+            gtag('event', 'article_view', {
+                'article_id': id,
+                'article_title': currentArticle.title,
+                'article_category': currentArticle.category
+            });
+        }
+    </script>
 </body>
 </html>

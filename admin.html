@@ -2,8 +2,6 @@
 <html lang="pt-br">
 <head>
     <link rel="icon" type="image/x-icon" href="an.png">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8653418731294447"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armindo News - Admin</title>
@@ -12,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @font-face {
             font-family: 'an';
@@ -25,7 +22,6 @@
             --primary: #667eea;
             --primary-dark: #5a6fd8;
             --secondary: #764ba2;
-            --accent: #f093fb;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -497,11 +493,6 @@
             color: #92400e;
         }
 
-        .status-featured {
-            background: #fbbf24;
-            color: #92400e;
-        }
-
         .status-carousel {
             background: #a855f7;
             color: white;
@@ -572,6 +563,13 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-top: 2rem;
+        }
+
+        .image-source-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+            font-style: italic;
         }
 
         @media (max-width: 768px) {
@@ -697,26 +695,6 @@
             }
         }
 
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .article-actions {
-                flex-direction: column;
-            }
-
-            .article-actions .btn {
-                width: 100%;
-            }
-
-            .form-input,
-            .form-textarea,
-            .form-select {
-                font-size: 16px;
-            }
-        }
-
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -730,17 +708,6 @@
 
         .mobile-overlay.show {
             display: block;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar-link {
-                padding: 1.25rem 1.5rem;
-                font-size: 1rem;
-            }
-
-            .sidebar-icon {
-                font-size: 1.2rem;
-            }
         }
 
         .btn.loading {
@@ -813,7 +780,7 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link" onclick="showSection('editor')">
-                        <span class="sidebar-icon">✍️</span>
+                        <span class="sidebar-icon">✏️</span>
                         Editor Avançado
                     </a>
                 </li>
@@ -933,13 +900,19 @@
                         <div class="form-group">
                             <label class="form-label">📂 Categoria</label>
                             <select id="article-category" class="form-select">
-                                <option value="breaking">🚨 Breaking News</option>
-                                <option value="critica">✍️ Critica</option>
-                                <option value="mundo">🌍 Mundo</option>
+                                <option value="tecnologia">💻 Tecnologia</option>
                                 <option value="politica">🏛️ Política</option>
-                                <option value="Entrevista">🎤 Entrevista</option>
-                                <option value="edicaoAN">📰 Edição AN</option>
+                                <option value="gaming">🎮 Gaming</option>
                                 <option value="entretenimento">🎬 Entretenimento</option>
+                                <option value="musica">🎵 Música</option>
+                                <option value="investigacao">🔍 Investigação</option>
+                                <option value="cronica">📝 Crónica</option>
+                                <option value="critica">✏️ Crítica</option>
+                                <option value="pais">🇵🇹 País</option>
+                                <option value="entrevista">🎤 Entrevista Exclusiva</option>
+                                <option value="desporto">⚽ Desporto</option>
+                                <option value="mundo">🌍 Mundo</option>
+                                <option value="opiniao">💭 Opinião</option>
                             </select>
                         </div>
                     </div>
@@ -971,6 +944,14 @@
                             <img id="image-preview" class="image-preview" style="display: none;">
                         </div>
                         <input type="url" id="article-image-url" class="form-input" placeholder="Ou cole a URL de uma imagem..." style="margin-top: 1rem;" onchange="previewImageUrl()">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">📷 Fonte/Crédito da Imagem</label>
+                        <input type="text" id="article-image-source" class="form-input" placeholder="Ex: Getty Images, Reuters, Unsplash, etc.">
+                        <small class="image-source-note">
+                            ℹ️ Indique sempre a fonte ou crédito da imagem para conformidade com direitos autorais
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -1320,10 +1301,10 @@
                     </div>
                     <div class="article-actions">
                         <button class="btn btn-warning" onclick="removeFromCarousel('${article.id}')">
-                            ❌ Remover
+                            ✖ Remover
                         </button>
                         <button class="btn btn-primary" onclick="editArticle('${article.id}')">
-                            ✍️ Editar
+                            ✏️ Editar
                         </button>
                     </div>
                 </div>
@@ -1458,7 +1439,7 @@
                                 </div>
                             </div>
                             <div class="article-actions">
-                                <button class="btn btn-primary" onclick="editArticle('${article.id}')">✍️ Editar</button>
+                                <button class="btn btn-primary" onclick="editArticle('${article.id}')">✏️ Editar</button>
                                 <button class="btn btn-${article.published ? 'warning' : 'success'}" onclick="togglePublish('${article.id}', ${!article.published})">
                                     ${article.published ? '📝 Despublicar' : '📢 Publicar'}
                                 </button>
@@ -1649,6 +1630,14 @@
         }
 
         function validateArticleData(data) {
+            if (!data.title || data.title.trim().length === 0) {
+                return { isValid: false, message: 'Por favor, adicione um título ao artigo!' };
+            }
+            
+            if (!data.contentText || data.contentText.trim().length < 50) {
+                return { isValid: false, message: 'O conteúdo do artigo deve ter pelo menos 50 caracteres!' };
+            }
+            
             return { isValid: true };
         }
 
@@ -1657,6 +1646,7 @@
             const imageUrl = document.getElementById('article-image-url').value.trim();
             const youtubeUrl = document.getElementById('article-youtube-url').value.trim();
             const articleDate = document.getElementById('article-date').value;
+            const imageSource = document.getElementById('article-image-source').value.trim();
             
             let dateTimestamp;
             if (articleDate) {
@@ -1671,6 +1661,7 @@
                 content: quillEditor.root.innerHTML,
                 contentText: quillEditor.getText().trim(),
                 image: imageUrl || (imagePreview.style.display !== 'none' ? imagePreview.src : ''),
+                imageSource: imageSource,
                 youtubeUrl: youtubeUrl,
                 youtubeEmbedId: getYouTubeVideoId(youtubeUrl),
                 category: document.getElementById('article-category').value,
@@ -1704,8 +1695,9 @@
                 document.getElementById('article-title').value = article.title || '';
                 document.getElementById('article-summary').value = article.summary || '';
                 document.getElementById('article-image-url').value = article.image || '';
+                document.getElementById('article-image-source').value = article.imageSource || '';
                 document.getElementById('article-youtube-url').value = article.youtubeUrl || '';
-                document.getElementById('article-category').value = article.category || 'breaking';
+                document.getElementById('article-category').value = article.category || 'tecnologia';
                 document.getElementById('article-author').value = article.author || 'Admin';
                 
                 if (article.date) {
@@ -1749,6 +1741,7 @@
                 document.getElementById('youtube-preview').style.display = 'none';
                 document.getElementById('article-author').value = 'Admin';
                 document.getElementById('article-date').value = '';
+                document.getElementById('article-image-source').value = '';
                 
                 if (quillEditor) {
                     quillEditor.setText('');
@@ -1816,7 +1809,7 @@
             try {
                 if (!timestamp) return 'Data inválida';
                 const date = new Date(timestamp);
-                return date.toLocaleDateString('pt-BR', {
+                return date.toLocaleDateString('pt-PT', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
@@ -1838,78 +1831,36 @@
 
         function getCategoryName(category) {
             const categories = {
-                breaking: 'Breaking News',
-                critica: 'Crítica',
-                mundo: 'Mundo',
-                politica: 'Política',
-                Entrevista: 'Entrevista',
-                edicaoAN: 'Edição AN',
-                entretenimento: 'Entretenimento'
+                'tecnologia': 'Tecnologia',
+                'politica': 'Política',
+                'gaming': 'Gaming',
+                'entretenimento': 'Entretenimento',
+                'musica': 'Música',
+                'investigacao': 'Investigação',
+                'cronica': 'Crónica',
+                'critica': 'Crítica',
+                'pais': 'País',
+                'entrevista': 'Entrevista Exclusiva',
+                'desporto': 'Desporto',
+                'mundo': 'Mundo',
+                'opiniao': 'Opinião'
             };
             return categories[category] || category || 'Geral';
         }
 
-        function handleNetworkError(error) {
-            console.error('Network error:', error);
-            
-            if (!navigator.onLine) {
-                showToast('Sem conexão com a internet!', 'error');
-                return;
-            }
-            
-            showToast('Erro de conexão. Tente novamente.', 'error');
-        }
-
-        function initializeApp() {
-            try {
-                if (!firebase.apps.length) {
-                    throw new Error('Firebase não foi inicializado corretamente');
-                }
-
-                database.ref('.info/connected').on('value', (snapshot) => {
-                    const connected = snapshot.val();
-                    if (!connected) {
-                        showToast('Conexão perdida com o banco de dados', 'warning');
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('admin-password');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        login();
                     }
                 });
-
-                document.addEventListener('keydown', handleKeyboardShortcuts);
-                
-                setInterval(autoSaveDraft, 30000);
-                
-                window.addEventListener('resize', handleResize);
-                
-                window.addEventListener('offline', () => {
-                    showToast('Você está offline. Algumas funcionalidades podem não funcionar.', 'warning');
-                });
-                
-                window.addEventListener('online', () => {
-                    showToast('Conexão restaurada!', 'success');
-                });
-
-                console.log('App initialized successfully');
-            } catch (error) {
-                console.error('Error initializing app:', error);
-                showToast('Erro ao inicializar aplicação!', 'error');
             }
-        }
+        });
 
-        function handleKeyboardShortcuts(event) {
-            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-                event.preventDefault();
-                
-                const currentSection = document.querySelector('.section:not(.hidden)');
-                if (currentSection && currentSection.id === 'editor-section') {
-                    saveArticle();
-                }
-            }
-            
-            if (event.key === 'Escape') {
-                closeMobileMenu();
-            }
-        }
-
-        function handleResize() {
+        window.addEventListener('resize', () => {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
             
@@ -1918,212 +1869,7 @@
                 overlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
-        }
-
-        function autoSaveDraft() {
-            try {
-                const currentSection = document.querySelector('.section:not(.hidden)');
-                if (!currentSection || currentSection.id !== 'editor-section') {
-                    return;
-                }
-                
-                const title = document.getElementById('article-title').value.trim();
-                const content = quillEditor ? quillEditor.getText().trim() : '';
-                
-                if (!title && !content) {
-                    return;
-                }
-                
-                const draftData = {
-                    title: title,
-                    summary: document.getElementById('article-summary').value.trim(),
-                    content: quillEditor ? quillEditor.root.innerHTML : '',
-                    youtubeUrl: document.getElementById('article-youtube-url').value.trim(),
-                    category: document.getElementById('article-category').value,
-                    author: document.getElementById('article-author').value.trim(),
-                    timestamp: Date.now()
-                };
-                
-                try {
-                    localStorage.setItem('armindo-news-draft', JSON.stringify(draftData));
-                } catch (e) {
-                    console.warn('Could not save draft to localStorage:', e);
-                }
-            } catch (error) {
-                console.error('Error in auto-save:', error);
-            }
-        }
-
-        function loadDraft() {
-            try {
-                const saved = localStorage.getItem('armindo-news-draft');
-                if (!saved) return false;
-                
-                const draft = JSON.parse(saved);
-                const age = Date.now() - draft.timestamp;
-                
-                if (age > 24 * 60 * 60 * 1000) {
-                    localStorage.removeItem('armindo-news-draft');
-                    return false;
-                }
-                
-                if (confirm('Foi encontrado um rascunho salvo automaticamente. Deseja carregá-lo?')) {
-                    document.getElementById('article-title').value = draft.title || '';
-                    document.getElementById('article-summary').value = draft.summary || '';
-                    document.getElementById('article-youtube-url').value = draft.youtubeUrl || '';
-                    document.getElementById('article-category').value = draft.category || 'breaking';
-                    document.getElementById('article-author').value = draft.author || 'Admin';
-                    
-                    if (draft.youtubeUrl) {
-                        previewYouTubeEmbed();
-                    }
-                    
-                    if (quillEditor && draft.content) {
-                        quillEditor.root.innerHTML = draft.content;
-                    }
-                    
-                    localStorage.removeItem('armindo-news-draft');
-                    showToast('Rascunho carregado!', 'success');
-                    return true;
-                }
-            } catch (error) {
-                console.error('Error loading draft:', error);
-                localStorage.removeItem('armindo-news-draft');
-            }
-            
-            return false;
-        }
-
-        function setupFormValidation() {
-            const titleInput = document.getElementById('article-title');
-            const summaryTextarea = document.getElementById('article-summary');
-            
-            if (titleInput) {
-                titleInput.addEventListener('input', (e) => {
-                    const length = e.target.value.length;
-                    const maxLength = parseInt(e.target.getAttribute('maxlength'));
-                    
-                    if (length > maxLength * 0.9) {
-                        e.target.style.borderColor = 'var(--warning)';
-                    } else {
-                        e.target.style.borderColor = '';
-                    }
-                });
-            }
-            
-            if (summaryTextarea) {
-                summaryTextarea.addEventListener('input', (e) => {
-                    const length = e.target.value.length;
-                    const maxLength = parseInt(e.target.getAttribute('maxlength'));
-                    
-                    let counter = e.target.parentNode.querySelector('.char-counter');
-                    if (!counter) {
-                        counter = document.createElement('div');
-                        counter.className = 'char-counter';
-                        counter.style.cssText = 'text-align: right; font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;';
-                        e.target.parentNode.appendChild(counter);
-                    }
-                    
-                    counter.textContent = `${length}/${maxLength}`;
-                    
-                    if (length > maxLength * 0.9) {
-                        counter.style.color = 'var(--warning)';
-                        e.target.style.borderColor = 'var(--warning)';
-                    } else {
-                        counter.style.color = 'var(--gray)';
-                        e.target.style.borderColor = '';
-                    }
-                });
-            }
-        }
-
-        function setupLazyLoading() {
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy');
-                            observer.unobserve(img);
-                        }
-                    });
-                });
-
-                document.querySelectorAll('img[data-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                initializeApp();
-                setupFormValidation();
-                
-                const passwordInput = document.getElementById('admin-password');
-                if (passwordInput) {
-                    passwordInput.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            login();
-                        }
-                    });
-                }
-
-                const originalShowSection = showSection;
-                window.showSection = function(sectionName) {
-                    originalShowSection.call(this, sectionName);
-                    
-                    if (sectionName === 'editor' && !document.getElementById('edit-id').value) {
-                        setTimeout(() => {
-                            loadDraft();
-                        }, 500);
-                    }
-                };
-
-                if ('ontouchstart' in window) {
-                    document.body.classList.add('touch-device');
-                }
-
-                document.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') {
-                        if (e.target.form && !e.target.classList.contains('allow-enter')) {
-                            e.preventDefault();
-                        }
-                    }
-                });
-
-                console.log('DOM initialization complete');
-            } catch (error) {
-                console.error('Error during DOM initialization:', error);
-                showToast('Erro ao carregar aplicação!', 'error');
-            }
         });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-
-        window.addEventListener('error', (event) => {
-            console.error('Global error:', event.error);
-            showToast('Erro inesperado na aplicação!', 'error');
-        });
-
-        window.addEventListener('unhandledrejection', (event) => {
-            console.error('Unhandled promise rejection:', event.reason);
-            handleNetworkError(event.reason);
-            event.preventDefault();
-        });
-
     </script>
 </body>
 </html>

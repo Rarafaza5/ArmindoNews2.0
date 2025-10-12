@@ -1,34 +1,99 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-PT">
 <head>
-    <script data-cookieconsent="ignore">    window.dataLayer = window.dataLayer || [];    function gtag() {        dataLayer.push(arguments);    }    gtag("consent", "default", {        ad_personalization: "denied",        ad_storage: "denied",        ad_user_data: "denied",        analytics_storage: "denied",        functionality_storage: "denied",        personalization_storage: "denied",        security_storage: "granted",        wait_for_update: 500,    });    gtag("set", "ads_data_redaction", true);    gtag("set", "url_passthrough", false);</script>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e"  type="text/javascript"></script>
+    <!-- Google AdSense -->
+    <script data-cookieconsent="ignore">
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag("consent", "default", {
+            ad_personalization: "denied",
+            ad_storage: "denied",
+            ad_user_data: "denied",
+            analytics_storage: "denied",
+            functionality_storage: "denied",
+            personalization_storage: "denied",
+            security_storage: "granted",
+            wait_for_update: 500,
+        });
+        gtag("set", "ads_data_redaction", true);
+        gtag("set", "url_passthrough", false);
+    </script>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e" type="text/javascript"></script>
     <meta name="google-adsense-account" content="ca-pub-8653418731294447">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8653418731294447" crossorigin="anonymous"></script>
+    
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJLQTE9VZC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJLQTE9VZC');
+    </script>
 
-  gtag('config', 'G-YJLQTE9VZC');
-</script>
-    <link rel="icon" type="image/x-icon" href="an.png">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8653418731294447"
-     crossorigin="anonymous"></script>
+    <!-- Meta Tags Essenciais -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024.">
-    <meta name="keywords" content="notícias, breaking news, Alerta AN, Criticas, GrupoArmindo, noticias, news, noticia, alerta">
+    <meta name="description" content="Armindo News - Portal independente de notícias com cobertura em Política, Tecnologia, Desporto, Entretenimento, Mundo e muito mais. Jornalismo de qualidade desde 2024.">
+    <meta name="keywords" content="notícias Portugal, jornalismo, política, tecnologia, desporto, entretenimento, opinião, investigação, música, gaming, notícias ao vivo">
     <meta name="author" content="Armindo News">
-    <meta property="og:title" content="Armindo News by GrupoArmindo">
-    <meta property="og:description" content="Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="an.png">
-    <title>Armindo News</title>
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://www.armindonews.com">
     
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.armindonews.com">
+    <meta property="og:title" content="Armindo News - Jornalismo Independente de Qualidade">
+    <meta property="og:description" content="Cobertura completa de notícias em Portugal e no mundo. Jornalismo independente e de qualidade desde 2024.">
+    <meta property="og:image" content="https://www.armindonews.com/an.png">
+    <meta property="og:site_name" content="Armindo News">
+    <meta property="og:locale" content="pt_PT">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.armindonews.com">
+    <meta name="twitter:title" content="Armindo News - Jornalismo Independente">
+    <meta name="twitter:description" content="Portal de notícias independente com cobertura completa em Portugal e no mundo.">
+    <meta name="twitter:image" content="https://www.armindonews.com/an.png">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <link rel="apple-touch-icon" href="an.png">
+    
+    <title>Armindo News - Notícias de Portugal e do Mundo | Jornalismo Independente</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "NewsMediaOrganization",
+        "name": "Armindo News",
+        "url": "https://www.armindonews.com",
+        "logo": "https://www.armindonews.com/an.png",
+        "description": "Portal independente de notícias com cobertura em Política, Tecnologia, Desporto, Entretenimento e muito mais.",
+        "foundingDate": "2024-04-20",
+        "sameAs": [
+            "https://www.instagram.com/armindo_news/",
+            "https://www.youtube.com/@ArmindoNews",
+            "https://www.tiktok.com/@armindonews"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "armindo.news@grupoarmindo.site",
+            "contactType": "Customer Service"
+        }
+    }
+    </script>
     
     <style>
         :root {
@@ -68,7 +133,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Header & Navigation */
         .header {
             background: var(--white);
             box-shadow: var(--shadow);
@@ -119,17 +183,47 @@
             gap: 0.5rem;
             font-size: 4rem;
             font-weight: 900;
-            background: #0000;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: black;
-            text-decoration: black;
-            font-family: 'an',sans-serif;
+            color: black;
+            text-decoration: none;
+            font-family: 'an', sans-serif;
         }
 
         .nav-utils {
             display: flex;
             align-items: center;
             gap: 1.5rem;
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+        }
+
+        .auth-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .search-box {
@@ -156,30 +250,6 @@
             font-size: 1rem;
         }
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gray-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--gray);
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-
         .nav-main {
             padding: 1rem 0;
         }
@@ -189,6 +259,7 @@
             list-style: none;
             gap: 2rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-link {
@@ -199,6 +270,7 @@
             border-radius: var(--radius);
             transition: var(--transition);
             position: relative;
+            white-space: nowrap;
         }
 
         .nav-link:hover,
@@ -207,30 +279,6 @@
             background: rgba(102, 126, 234, 0.1);
         }
 
-        .nav-link.breaking {
-            background: var(--danger);
-            color: var(--white);
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 5px var(--danger); }
-            to { box-shadow: 0 0 20px var(--danger), 0 0 30px var(--danger); }
-        }
-
-        .admin-link {
-            background: var(--gradient-primary);
-            color: var(--white);
-            margin-left: auto;
-        }
-
-        .admin-link:hover {
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Mobile Navigation */
         .mobile-nav-toggle {
             display: none;
             background: none;
@@ -319,11 +367,6 @@
             color: var(--white);
         }
 
-        .mobile-nav-link.breaking {
-            background: var(--danger);
-            color: var(--white);
-        }
-
         .mobile-search {
             margin-bottom: 2rem;
         }
@@ -344,43 +387,6 @@
             margin-left: 0.5rem;
         }
 
-        /* YouTube Video Embed Styles */
-        .youtube-video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            margin: 2rem 0;
-            overflow: hidden;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .youtube-video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: var(--radius);
-        }
-
-        .video-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: #ff0000;
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            white-space: nowrap;
-            margin-left: 0.5rem;
-        }
-
-        /* Carousel Hero Section */
         .hero-carousel {
             position: relative;
             background: var(--gradient-hero);
@@ -432,16 +438,6 @@
             padding: 0 2rem;
         }
 
-        .carousel-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
         .carousel-title {
             font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 900;
@@ -476,7 +472,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Carousel Navigation */
         .carousel-nav {
             position: absolute;
             bottom: 30px;
@@ -530,7 +525,13 @@
             right: 30px;
         }
 
-        /* Main Content */
+        .ad-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
         .main-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -550,20 +551,6 @@
             color: var(--dark);
         }
 
-        .view-all {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .view-all:hover {
-            text-decoration: underline;
-        }
-
-        /* Categories Navigation */
         .categories-nav {
             background: var(--white);
             box-shadow: var(--shadow);
@@ -588,6 +575,7 @@
             transition: var(--transition);
             border: 2px solid var(--gray-light);
             color: var(--gray);
+            white-space: nowrap;
         }
 
         .category-link:hover,
@@ -598,7 +586,6 @@
             transform: translateY(-2px);
         }
 
-        /* Articles Grid */
         .articles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -649,16 +636,6 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-
-        .breaking-badge {
-            background: var(--danger);
-            animation: pulse 2s infinite;
-        }
-
-        .premium-badge {
-            background: linear-gradient(135deg, #ffd700, #ffb347);
-            color: var(--dark);
         }
 
         .article-title {
@@ -718,7 +695,6 @@
             font-size: 0.9rem;
         }
 
-        /* Load More */
         .load-more-section {
             text-align: center;
             margin-bottom: 4rem;
@@ -740,61 +716,7 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
-        
-        /* Newsletter Section */
-        .newsletter-section {
-            background: var(--gradient-primary);
-            color: var(--white);
-            border-radius: 20px;
-            padding: 4rem;
-            text-align: center;
-            margin-bottom: 5rem;
-        }
 
-        .newsletter-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-        }
-
-        .newsletter-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 2.5rem;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 1rem;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter-input {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1rem;
-        }
-
-        .newsletter-btn {
-            background: var(--white);
-            color: var(--primary);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .newsletter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Footer */
         .footer {
             background: var(--dark);
             color: var(--white);
@@ -845,7 +767,6 @@
             color: var(--gray);
         }
 
-        /* Back to Top */
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -870,7 +791,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 4rem;
@@ -892,62 +812,11 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Mobile Optimizations */
-        @media (max-width: 1024px) {
-            .nav-top {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .search-box {
-                min-width: 100%;
-                order: 3;
-            }
-
-            .nav-utils {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .nav-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .articles-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
-
-            .carousel-arrows {
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
-            }
-
-            .carousel-prev {
-                left: 20px;
-            }
-
-            .carousel-next {
-                right: 20px;
-            }
-
-            .hero-carousel {
-                height: 500px;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-
         @media (max-width: 768px) {
             .nav-container {
                 padding: 0 1rem;
             }
 
-            /* Mobile Navigation */
             .mobile-nav-toggle {
                 display: block;
             }
@@ -970,7 +839,6 @@
                 font-size: 3rem;
             }
 
-            /* Main Content Mobile */
             .main-content {
                 padding: 2rem 1rem;
             }
@@ -986,7 +854,6 @@
                 font-size: 1.8rem;
             }
 
-            /* Categories Mobile */
             .categories-nav {
                 padding: 1rem;
                 margin-bottom: 2rem;
@@ -1000,10 +867,8 @@
             .category-link {
                 padding: 0.6rem 1rem;
                 font-size: 0.9rem;
-                white-space: nowrap;
             }
 
-            /* Articles Grid Mobile */
             .articles-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
@@ -1046,7 +911,6 @@
                 gap: 0.5rem;
             }
 
-            /* Carousel Mobile */
             .hero-carousel {
                 height: 400px;
             }
@@ -1073,12 +937,6 @@
                 overflow: hidden;
             }
 
-            .carousel-badge {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-                margin-bottom: 1rem;
-            }
-
             .carousel-btn {
                 padding: 0.8rem 1.5rem;
                 font-size: 0.9rem;
@@ -1094,56 +952,11 @@
                 height: 10px;
             }
 
-            /* YouTube Video Mobile */
-            .youtube-video-container {
-                margin: 1.5rem 0;
-                border-radius: 10px;
-            }
-
-            /* Newsletter Mobile */
-            .newsletter-section {
-                padding: 2rem 1.5rem;
-                margin-bottom: 3rem;
-            }
-
-            .newsletter-title {
-                font-size: 1.8rem;
-            }
-
-            .newsletter-subtitle {
-                font-size: 1rem;
-                margin-bottom: 2rem;
-            }
-
-            .newsletter-form {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .newsletter-input {
-                padding: 0.8rem;
-            }
-
-            .newsletter-btn {
-                padding: 0.8rem 1.5rem;
-            }
-            
-            /* Footer Mobile */
             .footer-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
 
-            .footer-section h3 {
-                font-size: 1.1rem;
-            }
-
-            .footer-bottom {
-                font-size: 0.9rem;
-                line-height: 1.5;
-            }
-
-            /* Back to Top Mobile */
             .back-to-top {
                 width: 45px;
                 height: 45px;
@@ -1152,138 +965,18 @@
                 font-size: 1.1rem;
             }
 
-            /* Breaking Banner Mobile */
             .breaking-banner {
                 font-size: 0.9rem;
                 padding: 0.7rem 1rem;
-                cursor: pointer;
             }
 
-            /* Load More Mobile */
             .load-more-btn {
                 padding: 0.8rem 2rem;
                 font-size: 1rem;
             }
 
-            /* Touch Optimizations */
-            .article-card {
-                cursor: pointer;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            .nav-link, .category-link, .carousel-btn, .load-more-btn {
-                -webkit-tap-highlight-color: transparent;
-                min-height: 44px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            /* Swipe Indicators for Carousel */
-            .carousel-nav {
-                bottom: 15px;
-            }
-
-            /* Mobile Search */
-            .mobile-search-box {
-                border: 1px solid var(--gray-light);
-            }
-
-            .mobile-search-input {
-                font-size: 1rem;
-            }
-        }
-
-        /* Extra Small Mobile Devices */
-        @media (max-width: 480px) {
-            .nav-container {
-                padding: 0 0.8rem;
-            }
-
-            .logo {
-                font-size: 3rem;
-            }
-
-            .main-content {
-                padding: 1.5rem 0.8rem;
-            }
-
-            .categories-nav {
-                padding: 0.8rem;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .categories-list {
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                min-width: max-content;
-                padding-bottom: 0.5rem;
-            }
-
-            .category-link {
-                flex-shrink: 0;
-            }
-
-            .hero-carousel {
-                height: 350px;
-            }
-
-            .carousel-title {
-                font-size: 1.5rem;
-                line-height: 1.2;
-            }
-
-            .carousel-summary {
-                display: none;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .article-content {
-                padding: 1.2rem;
-            }
-
-            .article-title {
-                font-size: 1.1rem;
-            }
-
-            .newsletter-section {
-                padding: 1.5rem 1rem;
-                border-radius: 15px;
-            }
-
-            .newsletter-title {
-                font-size: 1.5rem;
-            }
-            
             .mobile-nav {
                 width: 100%;
-            }
-        }
-
-        /* Landscape Mobile Optimization */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .hero-carousel {
-                height: 300px;
-            }
-
-            .carousel-title {
-                font-size: 1.6rem;
-            }
-
-            .carousel-summary {
-                font-size: 0.9rem;
-                -webkit-line-clamp: 2;
-            }
-        }
-
-        /* High DPI Displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .article-image, .fullscreen-image {
-                image-rendering: -webkit-optimize-contrast;
             }
         }
     </style>
@@ -1302,6 +995,18 @@
         </div>
         
         <div class="mobile-nav-content">
+            <div id="mobile-user-section" class="user-status" style="margin-bottom: 1rem; justify-content: center; display: none;">
+                <img id="mobile-user-avatar" class="user-avatar" src="" alt="Avatar">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600;" id="mobile-user-name">Carregando...</div>
+                    <a href="#" onclick="logout(); return false;" style="font-size: 0.85rem; color: var(--danger);">Sair</a>
+                </div>
+            </div>
+            
+            <div id="mobile-auth-buttons" style="margin-bottom: 1rem; text-align: center;">
+                <a href="auth.html" class="auth-btn" style="display: inline-block; width: 100%;">🔐 Entrar / Registar</a>
+            </div>
+
             <div class="mobile-search">
                 <div class="mobile-search-box">
                     <span>🔍</span>
@@ -1311,13 +1016,13 @@
 
             <ul class="mobile-nav-menu">
                 <li><a href="#" class="mobile-nav-link active" onclick="showCategory('all'); closeMobileNav();">🏠 Home</a></li>
-                <li><a href="#" class="mobile-nav-link breaking" onclick="showCategory('breaking'); closeMobileNav();">🚨 Alerta AN</a></li>
-                <li><a href="#" class="mobile-nav-link" onclick="showCategory('critica'); closeMobileNav();">✏️ Crítica</a></li>
-                <li><a href="#" class="mobile-nav-link" onclick="showCategory('politica'); closeMobileNav();">🏛️ Política</a></li>
-                <li><a href="#" class="mobile-nav-link" onclick="showCategory('Entrevista'); closeMobileNav();">🎤 Entrevista</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('pais'); closeMobileNav();">🇵🇹 País</a></li>
                 <li><a href="#" class="mobile-nav-link" onclick="showCategory('mundo'); closeMobileNav();">🌍 Mundo</a></li>
-                <li><a href="#" class="mobile-nav-link" onclick="showCategory('Edição AN'); closeMobileNav();">📰 Edições AN</a></li>
-                <li><a href="#" class="mobile-nav-link" onclick="showCategory('entretenimento'); closeMobileNav();">🎬 Filmes & Séries</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('desporto'); closeMobileNav();">⚽ Desporto</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('opiniao'); closeMobileNav();">💭 Opinião</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('entrevista'); closeMobileNav();">🎤 Entrevista</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('cronica'); closeMobileNav();">📝 Crónica</a></li>
+                <li><a href="#" class="mobile-nav-link" onclick="showCategory('critica'); closeMobileNav();">✍️ Crítica</a></li>
             </ul>
         </div>
     </nav>
@@ -1334,19 +1039,31 @@
                         <span>🔍</span>
                         <input type="text" class="search-input" id="search-input" placeholder="Pesquisar notícias...">
                     </div>
+                    
+                    <div id="desktop-user-section" class="user-status" style="display: none;">
+                        <img id="desktop-user-avatar" class="user-avatar" src="" alt="Avatar" onclick="window.location.href='perfil.html'">
+                        <div>
+                            <div style="font-weight: 600; font-size: 0.9rem;" id="desktop-user-name">Utilizador</div>
+                            <a href="#" onclick="logout(); return false;" style="font-size: 0.8rem; color: var(--danger); text-decoration: none;">Sair</a>
+                        </div>
+                    </div>
+                    
+                    <div id="desktop-auth-buttons">
+                        <a href="auth.html" class="auth-btn">🔐 Entrar</a>
+                    </div>
                 </div>
             </div>
 
             <nav class="nav-main">
                 <ul class="nav-menu">
                     <li><a href="#" class="nav-link active" onclick="showCategory('all')">🏠 Home</a></li>
-                    <li><a href="#" class="nav-link breaking" onclick="showCategory('breaking')">🚨 Alerta AN</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('critica')">✏️ Crítica</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('politica')">🏛️ Política</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('Entrevista')">🎤 Entrevista</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('pais')">🇵🇹 País</a></li>
                     <li><a href="#" class="nav-link" onclick="showCategory('mundo')">🌍 Mundo</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('Edição AN')">📰 Edições AN</a></li>
-                    <li><a href="#" class="nav-link" onclick="showCategory('entretenimento')">🎬 Filmes & Séries</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('desporto')">⚽ Desporto</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('opiniao')">💭 Opinião</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('entrevista')">🎤 Entrevista</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('cronica')">📝 Crónica</a></li>
+                    <li><a href="#" class="nav-link" onclick="showCategory('critica')">✍️ Crítica</a></li>
                 </ul>
             </nav>
         </div>
@@ -1366,17 +1083,33 @@
         <div class="carousel-nav" id="carousel-nav"></div>
     </section>
 
+    <!-- Google AdSense - Banner Superior -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8653418731294447"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
     <main class="main-content" id="main-content">
         <section class="categories-nav">
             <div class="categories-list">
                 <a href="#" class="category-link active" onclick="showCategory('all')">📰 Todas</a>
-                <a href="#" class="category-link" onclick="showCategory('breaking')">🚨 Alerta AN</a>
-                <a href="#" class="category-link" onclick="showCategory('critica')">✏️ Crítica</a>
+                <a href="#" class="category-link" onclick="showCategory('cronica')">📝 Crónica</a>
+                <a href="#" class="category-link" onclick="showCategory('critica')">✍️ Crítica</a>
+                <a href="#" class="category-link" onclick="showCategory('tecnologia')">💻 Tecnologia</a>
                 <a href="#" class="category-link" onclick="showCategory('politica')">🏛️ Política</a>
-                <a href="#" class="category-link" onclick="showCategory('Entrevista')">🎤 Entrevista</a>
+                <a href="#" class="category-link" onclick="showCategory('pais')">🇵🇹 País</a>
+                <a href="#" class="category-link" onclick="showCategory('entrevista')">🎤 Entrevista</a>
+                <a href="#" class="category-link" onclick="showCategory('gaming')">🎮 Gaming</a>
+                <a href="#" class="category-link" onclick="showCategory('entretenimento')">🎬 Entretenimento</a>
+                <a href="#" class="category-link" onclick="showCategory('desporto')">⚽ Desporto</a>
+                <a href="#" class="category-link" onclick="showCategory('musica')">🎵 Música</a>
                 <a href="#" class="category-link" onclick="showCategory('mundo')">🌍 Mundo</a>
-                <a href="#" class="category-link" onclick="showCategory('Edição AN')">📰 Edições AN</a>
-                <a href="#" class="category-link" onclick="showCategory('entretenimento')">🎬 Filmes & Séries</a>
+                <a href="#" class="category-link" onclick="showCategory('opiniao')">💭 Opinião</a>
+                <a href="#" class="category-link" onclick="showCategory('investigacao')">🔍 Investigação</a>
             </div>
         </section>
 
@@ -1390,6 +1123,16 @@
                     <div class="spinner"></div>
                     Carregando notícias...
                 </div>
+            </div>
+
+            <!-- Google AdSense - Banner Meio -->
+            <div class="ad-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8653418731294447"
+                     data-ad-slot="9876543210"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
             </div>
 
             <div class="load-more-section" id="load-more-section" style="display: none;">
@@ -1406,20 +1149,20 @@
                 <div class="footer-section">
                     <h3>Armindo News</h3>
                     <p style="color: var(--gray); line-height: 1.6;">
-                        Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024.
+                        Armindo News, um meio de comunicação social independente, fundada no dia 20 de abril de 2024. Jornalismo de qualidade e independente.
                     </p>
                 </div>
 
                 <div class="footer-section">
                     <h3>📰 Categorias</h3>
                     <ul class="footer-links">
-                        <li><a href="#" onclick="showCategory('breaking')">🚨 Alerta AN</a></li>
-                        <li><a href="#" onclick="showCategory('critica')">✏️ Crítica</a></li>
-                        <li><a href="#" onclick="showCategory('politica')">🏛️ Política</a></li>
-                        <li><a href="#" onclick="showCategory('Entrevista')">🎤 Entrevista</a></li>
+                        <li><a href="#" onclick="showCategory('pais')">🇵🇹 País</a></li>
                         <li><a href="#" onclick="showCategory('mundo')">🌍 Mundo</a></li>
-                        <li><a href="#" onclick="showCategory('Edição AN')">📰 Edições AN</a></li>
-                        <li><a href="#" onclick="showCategory('entretenimento')">🎬 Filmes & Séries</a></li>
+                        <li><a href="#" onclick="showCategory('desporto')">⚽ Desporto</a></li>
+                        <li><a href="#" onclick="showCategory('opiniao')">💭 Opinião</a></li>
+                        <li><a href="#" onclick="showCategory('entrevista')">🎤 Entrevista</a></li>
+                        <li><a href="#" onclick="showCategory('cronica')">📝 Crónica</a></li>
+                        <li><a href="#" onclick="showCategory('critica')">✍️ Crítica</a></li>
                     </ul>
                 </div>
 
@@ -1429,6 +1172,7 @@
                         <li><a href="equipe.html">A Nossa Equipa</a></li>
                         <li><a href="privacidade.html">Política de Privacidade</a></li>
                         <li><a href="termos.html">Termos de Uso</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
                     </ul>
                 </div>
 
@@ -1437,18 +1181,18 @@
                     <ul class="footer-links">
                         <p><strong>Armindo News</strong></p>
                         <li>📧 <a href="mailto:armindo.news@grupoarmindo.site">armindo.news@grupoarmindo.site</a></li>
-                        <li>Ig: <a href="https://www.instagram.com/armindo_news/">@Armindo_News</a></li>
-                         <li>YT: <a href="https://www.youtube.com/@ArmindoNews">@ArmindoNews</a></li>
-                         <li>TTK: <a href="https://www.tiktok.com/@armindonews">@armindonews</a></li><br>
-                       <p><strong>Grupo Armindo</strong></p>
+                        <li>Ig: <a href="https://www.instagram.com/armindo_news/" target="_blank" rel="noopener">@Armindo_News</a></li>
+                        <li>YT: <a href="https://www.youtube.com/@ArmindoNews" target="_blank" rel="noopener">@ArmindoNews</a></li>
+                        <li>TTK: <a href="https://www.tiktok.com/@armindonews" target="_blank" rel="noopener">@armindonews</a></li><br>
+                        <p><strong>Grupo Armindo</strong></p>
                         <li>📧 <a href="mailto:contacto@grupoarmindo.site">contacto@grupoarmindo.site</a></li>
-                        <li>🌐 <a href="https://grupoarmindo.site">https://grupoarmindo.site</a></li>
+                        <li>🌐 <a href="https://grupoarmindo.site" target="_blank" rel="noopener">https://grupoarmindo.site</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; Grupo Armindo. Todos os direitos reservados. | Desenvolvido com ❤️ por Rafael Diogo e Jorge Figueira</p>
+                <p>&copy; 2024 Grupo Armindo. Todos os direitos reservados. | Desenvolvido com ❤️ por Rafael Diogo e Jorge Figueira</p>
             </div>
         </div>
     </footer>
@@ -1458,7 +1202,9 @@
     </button>
 
     <script>
-        // Firebase Configuration
+        // Inicialização do Google AdSense
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        
         const firebaseConfig = {
             apiKey: "%%GOOGLE_API%%",
             authDomain: "aawards.firebaseapp.com",
@@ -1472,9 +1218,9 @@
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const auth = firebase.auth();
         const articlesRef = database.ref('articles');
 
-        // Global Variables
         let allArticles = [];
         let displayedArticles = [];
         let carouselArticles = [];
@@ -1484,8 +1230,8 @@
         let currentPage = 1;
         let currentSlide = 0;
         let carouselInterval;
+        let currentUser = null;
 
-        // DOM Elements
         const articlesContainer = document.getElementById('articles-container');
         const searchInput = document.getElementById('search-input');
         const mobileSearchInput = document.getElementById('mobile-search-input');
@@ -1495,12 +1241,101 @@
         const carouselContainer = document.getElementById('carousel-container');
         const carouselNav = document.getElementById('carousel-nav');
 
-        // YouTube Helper Functions
-        function hasYouTubeVideo(article) {
-            return article.youtubeUrl || article.youtubeEmbedId;
+        // Autenticação do usuário
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            updateUserInterface(user);
+            
+            // Sincronizar foto do perfil se necessário
+            if (user && user.photoURL) {
+                database.ref('users/' + user.uid).once('value').then(snapshot => {
+                    const userData = snapshot.val();
+                    
+                    // Se não tem foto no database mas tem no auth, sincronizar
+                    if (!userData || !userData.photoURL) {
+                        database.ref('users/' + user.uid).update({
+                            photoURL: user.photoURL,
+                            name: user.displayName || 'Utilizador',
+                            email: user.email,
+                            updatedAt: Date.now()
+                        }).catch(error => {
+                            console.error('Erro ao sincronizar foto:', error);
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Erro ao verificar dados do usuário:', error);
+                });
+            }
+        });
+
+        function updateUserInterface(user) {
+            const desktopUserSection = document.getElementById('desktop-user-section');
+            const desktopAuthButtons = document.getElementById('desktop-auth-buttons');
+            const mobileUserSection = document.getElementById('mobile-user-section');
+            const mobileAuthButtons = document.getElementById('mobile-auth-buttons');
+
+            if (user) {
+                // Buscar foto do database primeiro, depois do auth
+                database.ref('users/' + user.uid).once('value').then(snapshot => {
+                    const userData = snapshot.val();
+                    const photoURL = (userData && userData.photoURL) ? userData.photoURL : user.photoURL;
+                    const displayName = user.displayName || (userData && userData.name) || 'Utilizador';
+                    
+                    const avatarUrl = photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=667eea&color=fff&size=80`;
+                    
+                    // Desktop
+                    document.getElementById('desktop-user-name').textContent = displayName;
+                    const desktopAvatar = document.getElementById('desktop-user-avatar');
+                    desktopAvatar.src = avatarUrl;
+                    desktopUserSection.style.display = 'flex';
+                    desktopAuthButtons.style.display = 'none';
+
+                    // Mobile
+                    document.getElementById('mobile-user-name').textContent = displayName;
+                    const mobileAvatar = document.getElementById('mobile-user-avatar');
+                    mobileAvatar.src = avatarUrl;
+                    mobileUserSection.style.display = 'flex';
+                    mobileAuthButtons.style.display = 'none';
+                }).catch(error => {
+                    console.error('Erro ao buscar dados do usuário:', error);
+                    // Fallback para dados do auth
+                    const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=667eea&color=fff&size=80`;
+                    
+                    // Desktop
+                    document.getElementById('desktop-user-name').textContent = user.displayName || 'Utilizador';
+                    document.getElementById('desktop-user-avatar').src = avatarUrl;
+                    desktopUserSection.style.display = 'flex';
+                    desktopAuthButtons.style.display = 'none';
+
+                    // Mobile
+                    document.getElementById('mobile-user-name').textContent = user.displayName || 'Utilizador';
+                    document.getElementById('mobile-user-avatar').src = avatarUrl;
+                    mobileUserSection.style.display = 'flex';
+                    mobileAuthButtons.style.display = 'none';
+                });
+            } else {
+                // Desktop
+                desktopUserSection.style.display = 'none';
+                desktopAuthButtons.style.display = 'block';
+
+                // Mobile
+                mobileUserSection.style.display = 'none';
+                mobileAuthButtons.style.display = 'block';
+            }
         }
 
-        // Mobile Navigation Functions
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                auth.signOut().then(() => {
+                    alert('Logout realizado com sucesso!');
+                    window.location.reload();
+                }).catch((error) => {
+                    console.error('Erro ao fazer logout:', error);
+                    alert('Erro ao fazer logout. Tente novamente.');
+                });
+            }
+        }
+
         function openMobileNav() {
             document.getElementById('mobile-nav').classList.add('active');
             document.getElementById('mobile-nav-overlay').classList.add('active');
@@ -1513,7 +1348,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Touch Events for Mobile Carousel
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -1526,10 +1360,9 @@
             }
         }
 
-        // Utility Functions
         function formatDate(timestamp) {
             const date = new Date(timestamp);
-            return date.toLocaleDateString('pt-BR', {
+            return date.toLocaleDateString('pt-PT', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
@@ -1553,41 +1386,59 @@
 
         function getCategoryIcon(category) {
             const icons = {
-                'breaking': '🚨',
-                'critica': '✏️',
-                'Desportes': '⚽',
-                'politica': '🏛️',
-                'Entrevista': '🎤',
-                'edicao AN': '📰',
-                'entretenimento': '🎬',
-                'ciencia': '🔬',
+                'pais': '🇵🇹',
                 'mundo': '🌍',
+                'desporto': '⚽',
                 'opiniao': '💭',
-                'geral': '📰'
+                'entrevista': '🎤',
+                'cronica': '📝',
+                'critica': '✍️',
+                'tecnologia': '💻',
+                'politica': '🏛️',
+                'gaming': '🎮',
+                'entretenimento': '🎬',
+                'musica': '🎵',
+                'investigacao': '🔍'
             };
             return icons[category] || '📰';
         }
 
+        function getCategoryName(category) {
+            const names = {
+                'pais': 'País',
+                'mundo': 'Mundo',
+                'desporto': 'Desporto',
+                'opiniao': 'Opinião',
+                'entrevista': 'Entrevista Exclusiva',
+                'cronica': 'Crónica',
+                'critica': 'Crítica',
+                'tecnologia': 'Tecnologia',
+                'politica': 'Política',
+                'gaming': 'Gaming',
+                'entretenimento': 'Entretenimento',
+                'musica': 'Música',
+                'investigacao': 'Investigação'
+            };
+            return names[category] || 'Notícias';
+        }
+
         function truncateText(text, maxLength) {
+            if (!text) return '';
             if (text.length <= maxLength) return text;
             return text.substr(0, maxLength) + '...';
         }
 
-        // Carousel Functions
         function initCarousel() {
-            // Get carousel articles (prioritize those marked with carousel: true)
             carouselArticles = allArticles
                 .filter(article => article.published && article.carousel)
                 .slice(0, 5);
             
-            // If no carousel articles, use featured or breaking
             if (carouselArticles.length === 0) {
                 carouselArticles = allArticles
                     .filter(article => article.published && (article.featured || article.breaking))
                     .slice(0, 5);
             }
             
-            // If still none, use first 5 published articles
             if (carouselArticles.length === 0) {
                 carouselArticles = allArticles
                     .filter(article => article.published)
@@ -1607,9 +1458,8 @@
         function displayCarousel() {
             carouselContainer.innerHTML = carouselArticles.map((article, index) => `
                 <div class="carousel-slide ${index === 0 ? 'active' : ''}" 
-                     style="background-image: url('${article.image || 'https://via.placeholder.com/1200x600/667eea/ffffff?text=NewsHub+Pro'}')">
+                     style="background-image: url('${article.image || 'https://via.placeholder.com/1200x600/667eea/ffffff?text=Armindo+News'}')">
                     <div class="carousel-content">
-                       
                         <h1 class="carousel-title">${article.title}</h1>
                         ${article.summary ? `<p class="carousel-summary">${article.summary}</p>` : ''}
                         <button class="carousel-btn" onclick="window.location.href='article.html?id=${article.id}'">
@@ -1619,7 +1469,6 @@
                 </div>
             `).join('');
 
-            // Create navigation dots
             carouselNav.innerHTML = carouselArticles.map((_, index) => `
                 <div class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
             `).join('');
@@ -1652,12 +1501,10 @@
         }
 
         function updateCarousel() {
-            // Update slides
             document.querySelectorAll('.carousel-slide').forEach((slide, index) => {
                 slide.classList.toggle('active', index === currentSlide);
             });
 
-            // Update dots
             document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
@@ -1671,7 +1518,6 @@
             clearInterval(carouselInterval);
         }
 
-        // Pause autoplay on hover and touch
         carouselContainer.addEventListener('mouseenter', stopCarouselAutoplay);
         carouselContainer.addEventListener('mouseleave', startCarouselAutoplay);
         carouselContainer.addEventListener('touchstart', stopCarouselAutoplay);
@@ -1679,7 +1525,6 @@
             setTimeout(startCarouselAutoplay, 3000);
         });
 
-        // Load Articles
         function loadArticles() {
             articlesRef.orderByChild('date').on('value', (snapshot) => {
                 allArticles = [];
@@ -1697,18 +1542,15 @@
             });
         }
 
-        // Filter and Display Articles
         function filterAndDisplayArticles() {
             let filtered = [...allArticles];
 
-            // Filter by category
             if (currentCategory !== 'all') {
                 filtered = filtered.filter(article => 
                     (article.category || 'geral') === currentCategory
                 );
             }
 
-            // Filter by search term
             if (searchTerm) {
                 const search = searchTerm.toLowerCase();
                 filtered = filtered.filter(article =>
@@ -1725,7 +1567,6 @@
             updateSectionTitle();
         }
 
-        // Display Articles
         function displayArticles() {
             if (displayedArticles.length === 0) {
                 articlesContainer.innerHTML = '<div style="text-align: center; padding: 4rem; color: var(--gray);">Nenhum artigo encontrado para esta categoria ou busca.</div>';
@@ -1733,7 +1574,6 @@
                 return;
             }
 
-            // Regular Articles
             const startIndex = (currentPage - 1) * articlesPerPage;
             const endIndex = startIndex + articlesPerPage;
             const articlesToShow = displayedArticles.slice(startIndex, endIndex);
@@ -1746,7 +1586,6 @@
                 articlesContainer.innerHTML += articlesToShow.map(article => createArticleCard(article)).join('');
             }
 
-            // Show/hide load more button
             const articlesShown = currentPage * articlesPerPage;
             
             if (articlesShown < displayedArticles.length) {
@@ -1756,21 +1595,16 @@
             }
         }
 
-        // Create Article Card
         function createArticleCard(article) {
-            const hasVideo = hasYouTubeVideo(article);
-            
             return `
-                <div class="article-card" onclick="window.location.href='article.html?id=${article.id}'">
+                <article class="article-card" onclick="window.location.href='article.html?id=${article.id}'">
                     <img src="${article.image || 'https://via.placeholder.com/400x250/667eea/ffffff?text=Noticia'}" 
-                         alt="${article.title}" class="article-image">
+                         alt="${article.title}" class="article-image" loading="lazy">
                     <div class="article-content">
                         <div class="article-meta">
-                            <span class="category-badge ${article.breaking ? 'breaking-badge' : ''}">
-                                ${getCategoryIcon(article.category || 'geral')} ${(article.category || 'geral').toUpperCase()}
-                                ${article.breaking ? ' 🚨' : ''}
+                            <span class="category-badge">
+                                ${getCategoryIcon(article.category || 'geral')} ${getCategoryName(article.category || 'geral').toUpperCase()}
                             </span>
-                            ${hasVideo ? '<span class="video-badge">🎥 Vídeo</span>' : ''}
                             <span class="article-date">📅 ${getRelativeTime(article.date)}</span>
                         </div>
                         <h3 class="article-title">${truncateText(article.title, 80)}</h3>
@@ -1784,17 +1618,15 @@
                             <span class="article-date">${getRelativeTime(article.date)}</span>
                         </div>
                     </div>
-                </div>
+                </article>
             `;
         }
 
-        // Load More Articles
         function loadMoreArticles() {
             currentPage++;
             displayArticles();
         }
 
-        // Show Category
         function showCategory(category) {
             currentCategory = category;
             currentPage = 1;
@@ -1802,32 +1634,37 @@
             mobileSearchInput.value = '';
             searchTerm = '';
 
-            // Update active category links (both desktop and mobile)
             document.querySelectorAll('.category-link, .nav-link, .mobile-nav-link').forEach(link => {
                 link.classList.remove('active');
             });
 
-            // Add active class to clicked elements
             const categoryLinks = document.querySelectorAll(`[onclick*="showCategory('${category}')"]`);
             categoryLinks.forEach(link => link.classList.add('active'));
 
             filterAndDisplayArticles();
+            
+            if (window.innerWidth <= 768) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
-        // Update Section Title
         function updateSectionTitle() {
             const sectionTitle = document.getElementById('section-title');
             const categoryNames = {
                 'all': '📰 Últimas Notícias',
-                'breaking': '🚨 Alerta AN',
-                'critica': '✏️ Crítica',
-                'politica': '🏛️ Política',
-                'Entrevista': '🎤 Entrevista',
-                'edicao AN': '📰 Edições AN',
-                'entretenimento': '🎬 Filmes & Séries',
-                'ciencia': '🔬 Ciência',
+                'pais': '🇵🇹 País',
                 'mundo': '🌍 Mundo',
-                'opiniao': '💭 Opinião'
+                'desporto': '⚽ Desporto',
+                'opiniao': '💭 Opinião',
+                'entrevista': '🎤 Entrevista Exclusiva',
+                'cronica': '📝 Crónica',
+                'critica': '✍️ Crítica',
+                'tecnologia': '💻 Tecnologia',
+                'politica': '🏛️ Política',
+                'gaming': '🎮 Gaming',
+                'entretenimento': '🎬 Entretenimento',
+                'musica': '🎵 Música',
+                'investigacao': '🔍 Investigação'
             };
 
             if (searchTerm) {
@@ -1837,11 +1674,10 @@
             }
         }
 
-        // Check Alerta AN
         function checkBreakingNews() {
             const breakingArticles = allArticles.filter(article => 
                 article.published && article.breaking && 
-                (Date.now() - article.date) < (24 * 60 * 60 * 1000) // Last 24 hours
+                (Date.now() - article.date) < (24 * 60 * 60 * 1000)
             );
 
             if (breakingArticles.length > 0) {
@@ -1854,12 +1690,10 @@
             }
         }
 
-        // Search Function
         function performSearch() {
             const desktopSearch = searchInput.value.trim();
             const mobileSearch = mobileSearchInput.value.trim();
             
-            // Sync search inputs
             searchTerm = desktopSearch || mobileSearch;
             if (desktopSearch && !mobileSearch) {
                 mobileSearchInput.value = desktopSearch;
@@ -1871,16 +1705,6 @@
             filterAndDisplayArticles();
         }
 
-        // Newsletter Subscription
-        function subscribeNewsletter(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('.newsletter-input').value;
-            
-            alert(`✅ Obrigado! Email ${email} inscrito com sucesso na nossa newsletter!`);
-            event.target.reset();
-        }
-
-        // Scroll to Top
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
@@ -1888,7 +1712,6 @@
             });
         }
 
-        // Event Listeners
         searchInput.addEventListener('input', performSearch);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -1904,7 +1727,6 @@
             }
         });
 
-        // Close mobile nav on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (document.getElementById('mobile-nav').classList.contains('active')) {
@@ -1913,7 +1735,6 @@
             }
         });
 
-        // Back to top button visibility
         let ticking = false;
         function updateBackToTop() {
             if (window.pageYOffset > 300) {
@@ -1931,30 +1752,25 @@
             }
         });
 
-        // Optimize for mobile: Reduce carousel autoplay speed on mobile
         function adjustCarouselForDevice() {
             if (window.innerWidth <= 768) {
                 clearInterval(carouselInterval);
-                carouselInterval = setInterval(nextSlide, 6000); // Slower on mobile
+                carouselInterval = setInterval(nextSlide, 6000);
             }
         }
 
-        // Handle resize events
         window.addEventListener('resize', () => {
             adjustCarouselForDevice();
             
-            // Close mobile nav on resize to desktop
             if (window.innerWidth > 768) {
                 closeMobileNav();
             }
         });
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadArticles();
             adjustCarouselForDevice();
 
-            // Performance optimization: Debounce search
             let searchTimeout;
             const debouncedSearch = () => {
                 clearTimeout(searchTimeout);
@@ -1964,28 +1780,26 @@
             searchInput.addEventListener('input', debouncedSearch);
             mobileSearchInput.addEventListener('input', debouncedSearch);
 
-            // Preload critical images
-            const preloadImages = () => {
-                const imageUrls = [
-                    'https://via.placeholder.com/400x250/667eea/ffffff?text=Noticia',
-                    'https://via.placeholder.com/1200x600/667eea/ffffff?text=NewsHub+Pro'
-                ];
-                
-                imageUrls.forEach(url => {
-                    const img = new Image();
-                    img.src = url;
-                });
-            };
-            
-            preloadImages();
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
+            }
+
+            // Inicializar AdSense após o carregamento
+            setTimeout(() => {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.log('AdSense não carregado:', e);
+                }
+            }, 1000);
         });
 
-        // Add passive listeners for better scroll performance
         document.addEventListener('touchstart', () => {}, { passive: true });
         document.addEventListener('touchmove', () => {}, { passive: true });
         document.addEventListener('wheel', () => {}, { passive: true });
 
-        // Service Worker Registration for PWA (optional)
+        // Service Worker para PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -1997,6 +1811,83 @@
                     });
             });
         }
+
+        // Otimização de performance
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        // Prevenir cliques acidentais em links
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && e.target.href) {
+                const clickTime = Date.now();
+                if (window.lastClickTime && (clickTime - window.lastClickTime) < 300) {
+                    e.preventDefault();
+                    return false;
+                }
+                window.lastClickTime = clickTime;
+            }
+        });
+
+        // Analytics de eventos personalizados
+        function trackEvent(category, action, label) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': category,
+                    'event_label': label
+                });
+            }
+        }
+
+        // Track de categoria selecionada
+        function showCategory(category) {
+            trackEvent('Navigation', 'category_select', category);
+            
+            currentCategory = category;
+            currentPage = 1;
+            searchInput.value = '';
+            mobileSearchInput.value = '';
+            searchTerm = '';
+
+            document.querySelectorAll('.category-link, .nav-link, .mobile-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const categoryLinks = document.querySelectorAll(`[onclick*="showCategory('${category}')"]`);
+            categoryLinks.forEach(link => link.classList.add('active'));
+
+            filterAndDisplayArticles();
+            
+            if (window.innerWidth <= 768) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Track de busca
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && searchInput.value.trim()) {
+                trackEvent('Search', 'search_performed', searchInput.value.trim());
+            }
+        });
+
+        // Prevenção de memory leaks
+        window.addEventListener('beforeunload', () => {
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+            }
+            articlesRef.off();
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar / Registar - Armindo News</title>
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .auth-left {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        @font-face {
+            font-family: 'an';
+            src: url('/EnglishTowne.woff') format('woff');
+            font-weight: bold;
+        }
+
+        .auth-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            font-family: 'an', sans-serif;
+        }
+
+        .auth-left h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-left p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .auth-right {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .auth-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #6b7280;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-auth {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c00;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #060;
+            border: 1px solid #cfc;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-left {
+                padding: 2rem;
+            }
+
+            .auth-logo {
+                font-size: 3rem;
+            }
+
+            .auth-left h2 {
+                font-size: 1.5rem;
+            }
+
+            .auth-right {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="auth-logo">AN</div>
+            <h2>Bem-vindo à Armindo News</h2>
+            <p>Crie a sua conta para personalizar a sua experiência, guardar artigos favoritos e comentar nas notícias.</p>
+        </div>
+
+        <div class="auth-right">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Entrar</button>
+                <button class="auth-tab" onclick="switchTab('register')">Registar</button>
+            </div>
+
+            <div id="alert-container"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">📧 Email</label>
+                    <input type="email" class="form-input" id="login-email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🔒 Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-input" id="login-password" placeholder="••••••••" required>
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('login-password')">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword(); return false;">Esqueceu a password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" id="login-btn">
+                    Entrar
+                </button>
+
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+                <div class="social-auth">
+                    <button type="button" class="social-btn" onclick="signInWithGoogle()" title="Entrar com Google">
+                        🌐
+                    </button>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">👤 Nome</label>
+                    <input type="text" class="form-input" id="register-name" placeholder="Seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">📧 Email</label>
+                    <input type="email" class="form-input" id="register-email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🔒 Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-input" id="register-password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('register-password')">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🔒 Confirmar Password</label>
+                    <div class="password-toggle">
+                        <input type="password" class="form-input" id="register-password-confirm" placeholder="Repita a password" required minlength="6">
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('register-password-confirm')">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="register-btn">
+                    Criar Conta
+                </button>
+
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+                <div class="social-auth">
+                    <button type="button" class="social-btn" onclick="signInWithGoogle()" title="Registar com Google">
+                        🌐
+                    </button>
+                </div>
+            </form>
+
+            <div class="back-link">
+                <a href="index.html">← Voltar para a página inicial</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "%%GOOGLE_API%%",
+            authDomain: "aawards.firebaseapp.com",
+            databaseURL: "https://aawards-default-rtdb.firebaseio.com",
+            projectId: "aawards",
+            storageBucket: "aawards.firebasestorage.app",
+            messagingSenderId: "839334918366",
+            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
+            measurementId: "G-Z9YLSTGHST"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('register-form').classList.add('active');
+            }
+            
+            clearAlert();
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                clearAlert();
+            }, 5000);
+        }
+
+        function clearAlert() {
+            document.getElementById('alert-container').innerHTML = '';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const btn = document.getElementById('login-btn');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Entrando...<span class="loading"></span>';
+            clearAlert();
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showAlert('Login realizado com sucesso! Redirecionando...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                let errorMessage = 'Erro ao fazer login. Tente novamente.';
+                
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'Utilizador não encontrado. Verifique o email.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'Password incorreta. Tente novamente.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Email inválido. Verifique o formato.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Muitas tentativas. Tente novamente mais tarde.';
+                }
+                
+                showAlert(errorMessage, 'error');
+                btn.disabled = false;
+                btn.innerHTML = 'Entrar';
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const passwordConfirm = document.getElementById('register-password-confirm').value;
+            const btn = document.getElementById('register-btn');
+            
+            if (password !== passwordConfirm) {
+                showAlert('As passwords não coincidem!', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('A password deve ter no mínimo 6 caracteres!', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Criando conta...<span class="loading"></span>';
+            clearAlert();
+            
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+                
+                await database.ref('users/' + userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    createdAt: Date.now(),
+                    photoURL: null
+                });
+                
+                showAlert('Conta criada com sucesso! Redirecionando...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                let errorMessage = 'Erro ao criar conta. Tente novamente.';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'Este email já está em uso. Tente fazer login.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Email inválido. Verifique o formato.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password fraca. Use no mínimo 6 caracteres.';
+                }
+                
+                showAlert(errorMessage, 'error');
+                btn.disabled = false;
+                btn.innerHTML = 'Criar Conta';
+            }
+        }
+
+        // No auth.html, substitua a função signInWithGoogle por esta versão atualizada:
+
+async function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+        prompt: 'select_account'
+    });
+    
+    try {
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+        
+        // IMPORTANTE: Garantir que a foto do Google seja salva
+        const userData = {
+            name: user.displayName || 'Utilizador',
+            email: user.email,
+            photoURL: user.photoURL, // Foto do Google
+            provider: 'google',
+            createdAt: Date.now(),
+            lastLogin: Date.now()
+        };
+        
+        // Verificar se é novo usuário ou atualização
+        const userRef = database.ref('users/' + user.uid);
+        const snapshot = await userRef.once('value');
+        
+        if (snapshot.exists()) {
+            // Usuário existente - atualizar apenas lastLogin e photo se não existir
+            const existingData = snapshot.val();
+            await userRef.update({
+                lastLogin: Date.now(),
+                // Atualizar photo apenas se não tiver uma ou se for diferente
+                photoURL: existingData.photoURL || user.photoURL,
+                name: existingData.name || user.displayName
+            });
+        } else {
+            // Novo usuário - criar registro completo
+            await userRef.set(userData);
+        }
+        
+        showAlert('Login com Google realizado com sucesso!', 'success');
+        
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    } catch (error) {
+        console.error('Erro no login Google:', error);
+        let errorMessage = 'Erro ao fazer login com Google.';
+        
+        if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = 'Login cancelado. Tente novamente.';
+        } else if (error.code === 'auth/popup-blocked') {
+            errorMessage = 'Pop-up bloqueado. Permita pop-ups e tente novamente.';
+        } else if (error.code === 'auth/cancelled-popup-request') {
+            errorMessage = 'Apenas uma janela de login pode estar aberta por vez.';
+        }
+        
+        showAlert(errorMessage, 'error');
+    }
+}
+
+// ADICIONE TAMBÉM esta função para garantir sincronização quando o usuário logar
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // Verificar e sincronizar foto do perfil
+        const userRef = database.ref('users/' + user.uid);
+        userRef.once('value').then(snapshot => {
+            const userData = snapshot.val();
+            
+            // Se o usuário tem foto no Auth mas não no Database, sincronizar
+            if (user.photoURL && (!userData || !userData.photoURL)) {
+                userRef.update({
+                    photoURL: user.photoURL,
+                    name: user.displayName || userData?.name || 'Utilizador',
+                    email: user.email,
+                    updatedAt: Date.now()
+                }).then(() => {
+                    console.log('Foto do perfil sincronizada com sucesso');
+                }).catch(error => {
+                    console.error('Erro ao sincronizar foto:', error);
+                });
+            }
+        });
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || 'index.html';
+        
+        // Redirecionar após um pequeno delay
+        setTimeout(() => {
+            window.location.href = returnUrl;
+        }, 500);
+    }
+});
+
+        function showForgotPassword() {
+            const email = document.getElementById('login-email').value.trim();
+            
+            if (!email) {
+                showAlert('Por favor, insira seu email primeiro.', 'error');
+                return;
+            }
+            
+            if (confirm(`Enviar email de recuperação para ${email}?`)) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => {
+                        showAlert('Email de recuperação enviado! Verifique sua caixa de entrada.', 'success');
+                    })
+                    .catch((error) => {
+                        let errorMessage = 'Erro ao enviar email de recuperação.';
+                        
+                        if (error.code === 'auth/user-not-found') {
+                            errorMessage = 'Email não encontrado no sistema.';
+                        } else if (error.code === 'auth/invalid-email') {
+                            errorMessage = 'Email inválido.';
+                        }
+                        
+                        showAlert(errorMessage, 'error');
+                    });
+            }
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnUrl = urlParams.get('return') || 'index.html';
+                window.location.href = returnUrl;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Armindo News</title>
+    <link rel="icon" type="image/x-icon" href="an.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @font-face {
+            font-family: 'an';
+            src: url('/EnglishTowne.woff') format('woff');
+            font-weight: bold;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            font-family: 'an', sans-serif;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        .alert-container {
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .danger-zone {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .danger-zone p {
+            color: #991b1b;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .activity-section {
+            margin-top: 2rem;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-left: 3px solid #667eea;
+            background: #f9fafb;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+        }
+
+        .activity-item strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .activity-date {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .badge-verified {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-member {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .info-box i {
+            color: #3b82f6;
+            font-size: 1.5rem;
+        }
+
+        .info-box p {
+            color: #1e40af;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="logo">AN</a>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Voltar à Página Inicial
+            </a>
+        </div>
+
+        <div id="alert-container" class="alert-container"></div>
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <img id="profile-avatar" class="profile-avatar" src="" alt="Avatar">
+                <div class="profile-info">
+                    <h1 id="profile-name">Carregando...</h1>
+                    <p id="profile-email"></p>
+                    <p style="color: #9ca3af; font-size: 0.9rem; margin-top: 0.5rem;">
+                        <i class="fas fa-calendar-alt"></i> Membro desde <span id="member-since"></span>
+                    </p>
+                    <div style="margin-top: 0.75rem;">
+                        <span class="badge badge-verified">✓ E-mail Verificado</span>
+                        <span class="badge badge-member">👤 Membro Ativo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="stat-articles">0</div>
+                    <div class="stat-label">Artigos Lidos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="stat-comments">0</div>
+                    <div class="stat-label">Comentários</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="stat-days">0</div>
+                    <div class="stat-label">Dias de Membro</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                <i class="fas fa-user-edit"></i>
+                Informações da Conta
+            </h2>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <p>
+                    <strong>Dica:</strong> Mantenha suas informações atualizadas para uma melhor experiência. 
+                    Seu nome de exibição será mostrado nos comentários que você fizer nos artigos.
+                </p>
+            </div>
+
+            <form id="profile-form" onsubmit="updateProfile(event)">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i> Nome de Exibição
+                    </label>
+                    <input type="text" id="display-name" class="form-input" placeholder="Seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i> E-mail
+                    </label>
+                    <input type="email" id="email" class="form-input" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i> URL da Foto de Perfil
+                    </label>
+                    <input type="url" id="photo-url" class="form-input" placeholder="https://exemplo.com/foto.jpg">
+                    <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
+                        Cole o link de uma imagem da internet ou deixe em branco para usar o avatar padrão
+                    </small>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar Alterações
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-undo"></i> Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-card">
+            <h2 class="section-title">
+                <i class="fas fa-lock"></i>
+                Segurança da Conta
+            </h2>
+            
+            <div class="info-box">
+                <i class="fas fa-shield-alt"></i>
+                <p>
+                    Para alterar sua password, enviaremos um e-mail seguro com instruções de redefinição. 
+                    Certifique-se de ter acesso ao e-mail cadastrado.
+                </p>
+            </div>
+
+            <button class="btn btn-primary" onclick="sendPasswordReset()">
+                <i class="fas fa-key"></i> Enviar E-mail de Recuperação de Password
+            </button>
+        </div>
+
+        <div class="profile-card">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Atividade Recente
+            </h2>
+            
+            <div class="activity-section" id="activity-section">
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div>
+                            <strong>📝 Comentário publicado</strong>
+                            <p style="color: #6b7280; margin-top: 0.25rem;">Você comentou no artigo "Título do Artigo"</p>
+                            <div class="activity-date">Há 2 dias</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div>
+                            <strong>👤 Perfil atualizado</strong>
+                            <p style="color: #6b7280; margin-top: 0.25rem;">Suas informações de perfil foram atualizadas</p>
+                            <div class="activity-date">Há 5 dias</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div>
+                            <strong>✅ Conta criada</strong>
+                            <p style="color: #6b7280; margin-top: 0.25rem;">Bem-vindo à Armindo News!</p>
+                            <div class="activity-date" id="account-created-date">Há 7 dias</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <h2 class="section-title" style="color: #dc2626;">
+                <i class="fas fa-exclamation-triangle"></i>
+                Zona de Perigo
+            </h2>
+            
+            <div class="danger-zone">
+                <p>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>Atenção:</strong> Esta ação é permanente e irreversível. 
+                    Todos os seus dados, incluindo comentários e atividades, serão excluídos permanentemente.
+                </p>
+                <button class="btn btn-danger" onclick="deleteAccount()">
+                    <i class="fas fa-trash-alt"></i> Excluir Conta Permanentemente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "%%GOOGLE_API%%",
+            authDomain: "aawards.firebaseapp.com",
+            databaseURL: "https://aawards-default-rtdb.firebaseio.com",
+            projectId: "aawards",
+            storageBucket: "aawards.firebasestorage.app",
+            messagingSenderId: "839334918366",
+            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
+            measurementId: "G-Z9YLSTGHST"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        let currentUser = null;
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                loadUserProfile(user);
+            } else {
+                window.location.href = 'auth.html?return=perfil.html';
+            }
+        });
+
+        function loadUserProfile(user) {
+            document.getElementById('profile-name').textContent = user.displayName || 'Utilizador';
+            document.getElementById('profile-email').textContent = user.email;
+            document.getElementById('display-name').value = user.displayName || '';
+            document.getElementById('email').value = user.email;
+            
+            // Buscar photoURL do Firebase Database primeiro, depois do Auth
+            database.ref('users/' + user.uid).once('value').then(snapshot => {
+                const userData = snapshot.val();
+                let photoURL = null;
+                
+                if (userData && userData.photoURL) {
+                    photoURL = userData.photoURL;
+                } else if (user.photoURL) {
+                    // Se tem foto no Auth mas não no Database, atualizar o Database
+                    photoURL = user.photoURL;
+                    database.ref('users/' + user.uid).update({
+                        photoURL: photoURL,
+                        name: user.displayName || 'Utilizador',
+                        email: user.email,
+                        updatedAt: Date.now()
+                    });
+                }
+                
+                // Atualizar campo de input
+                document.getElementById('photo-url').value = photoURL || '';
+                
+                // Gerar avatar
+                const avatarUrl = photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=667eea&color=fff&size=240`;
+                document.getElementById('profile-avatar').src = avatarUrl;
+            }).catch(error => {
+                console.error('Erro ao carregar dados do usuário:', error);
+                // Fallback para photoURL do Auth
+                const photoURL = user.photoURL || '';
+                document.getElementById('photo-url').value = photoURL;
+                const avatarUrl = photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.email)}&background=667eea&color=fff&size=240`;
+                document.getElementById('profile-avatar').src = avatarUrl;
+            });
+
+            if (user.metadata.creationTime) {
+                const creationDate = new Date(user.metadata.creationTime);
+                document.getElementById('member-since').textContent = creationDate.toLocaleDateString('pt-PT', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Calcular dias de membro
+                const daysSince = Math.floor((Date.now() - creationDate.getTime()) / (1000 * 60 * 60 * 24));
+                document.getElementById('stat-days').textContent = daysSince;
+
+                document.getElementById('account-created-date').textContent = getRelativeTime(creationDate.getTime());
+            }
+
+            loadUserStats(user.uid);
+        }
+
+        function loadUserStats(userId) {
+            // Carregar contagem de comentários
+            database.ref('comments').orderByChild('userId').equalTo(userId).once('value').then(snapshot => {
+                const commentCount = snapshot.numChildren();
+                document.getElementById('stat-comments').textContent = commentCount;
+            });
+
+            // Carregar dados adicionais do usuário
+            database.ref('users/' + userId).once('value').then(snapshot => {
+                const userData = snapshot.val() || {};
+                const articlesRead = userData.articlesRead || 0;
+                document.getElementById('stat-articles').textContent = articlesRead;
+            });
+        }
+
+        function getRelativeTime(timestamp) {
+            const now = Date.now();
+            const diffMs = now - timestamp;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) return 'Hoje';
+            if (diffDays === 1) return 'Ontem';
+            if (diffDays < 7) return `Há ${diffDays} dias`;
+            if (diffDays < 30) return `Há ${Math.floor(diffDays / 7)} semanas`;
+            if (diffDays < 365) return `Há ${Math.floor(diffDays / 30)} meses`;
+            return `Há ${Math.floor(diffDays / 365)} anos`;
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('show');
+        }
+
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const displayName = document.getElementById('display-name').value.trim();
+            const photoURL = document.getElementById('photo-url').value.trim();
+
+            if (!displayName) {
+                showAlert('Por favor, insira um nome de exibição.', 'error');
+                return;
+            }
+
+            if (displayName.length < 3) {
+                showAlert('O nome deve ter pelo menos 3 caracteres.', 'error');
+                return;
+            }
+
+            if (photoURL && !isValidUrl(photoURL)) {
+                showAlert('Por favor, insira uma URL válida para a foto.', 'error');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Atualizar Firebase Auth
+                await currentUser.updateProfile({
+                    displayName: displayName,
+                    photoURL: photoURL || null
+                });
+
+                // Atualizar Firebase Database
+                await database.ref('users/' + currentUser.uid).update({
+                    name: displayName,
+                    photoURL: photoURL || null,
+                    email: currentUser.email,
+                    updatedAt: Date.now()
+                });
+
+                // Forçar refresh do token para garantir que as mudanças sejam aplicadas
+                await currentUser.reload();
+
+                showAlert('✅ Perfil atualizado com sucesso!', 'success');
+                
+                // Recarregar perfil com dados atualizados
+                loadUserProfile(currentUser);
+
+                // Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'profile_updated', {
+                        'user_id': currentUser.uid
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar perfil:', error);
+                showAlert('❌ Erro ao atualizar perfil. Tente novamente.', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function resetForm() {
+            loadUserProfile(currentUser);
+            showAlert('✅ Alterações canceladas.', 'success');
+        }
+
+        async function sendPasswordReset() {
+            if (!confirm('📧 Enviar e-mail de recuperação de password para ' + currentUser.email + '?')) {
+                return;
+            }
+
+            showLoading();
+
+            try {
+                await auth.sendPasswordResetEmail(currentUser.email);
+                showAlert('✅ E-mail de recuperação enviado! Verifique sua caixa de entrada e spam.', 'success');
+
+                // Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'password_reset_requested', {
+                        'user_id': currentUser.uid
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao enviar e-mail:', error);
+                let errorMessage = '❌ Erro ao enviar e-mail. Tente novamente.';
+                
+                if (error.code === 'auth/too-many-requests') {
+                    errorMessage = '⏱️ Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+                }
+                
+                showAlert(errorMessage, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function deleteAccount() {
+            const confirmation1 = prompt('⚠️ Esta ação é IRREVERSÍVEL!\n\nDigite "EXCLUIR" (em maiúsculas) para confirmar:');
+
+            if (confirmation1 !== 'EXCLUIR') {
+                showAlert('✅ Exclusão cancelada.', 'success');
+                return;
+            }
+
+            const confirmation2 = confirm(
+                '🚨 ÚLTIMA CONFIRMAÇÃO!\n\n' +
+                'Tem CERTEZA ABSOLUTA que deseja excluir sua conta?\n\n' +
+                '• Todos os seus comentários serão excluídos\n' +
+                '• Todo o seu histórico será perdido\n' +
+                '• Esta ação NÃO PODE ser desfeita\n\n' +
+                'Clique em OK para excluir permanentemente ou Cancelar para voltar.'
+            );
+
+            if (!confirmation2) {
+                showAlert('✅ Exclusão cancelada.', 'success');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const userId = currentUser.uid;
+
+                // Excluir comentários do usuário
+                const commentsSnapshot = await database.ref('comments').orderByChild('userId').equalTo(userId).once('value');
+                const deletePromises = [];
+                
+                commentsSnapshot.forEach((childSnapshot) => {
+                    deletePromises.push(childSnapshot.ref.remove());
+                });
+
+                await Promise.all(deletePromises);
+
+                // Excluir dados do usuário
+                await database.ref('users/' + userId).remove();
+
+                // Excluir conta do Firebase Auth
+                await currentUser.delete();
+
+                alert('✅ Conta excluída com sucesso. Você será redirecionado para a página inicial.');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Erro ao excluir conta:', error);
+                
+                hideLoading();
+
+                if (error.code === 'auth/requires-recent-login') {
+                    showAlert(
+                        '🔐 Por segurança, você precisa fazer login novamente antes de excluir sua conta. ' +
+                        'Você será redirecionado para a página de login.',
+                        'error'
+                    );
+                    setTimeout(() => {
+                        auth.signOut();
+                        window.location.href = 'auth.html?return=perfil.html';
+                    }, 3000);
+                } else {
+                    showAlert('❌ Erro ao excluir conta. Tente novamente ou entre em contato com o suporte.', 'error');
+                }
+            }
+        }
+
+        // Prevenir saída acidental
+        window.addEventListener('beforeunload', (e) => {
+            const form = document.getElementById('profile-form');
+            const displayName = document.getElementById('display-name').value;
+            const photoURL = document.getElementById('photo-url').value;
+
+            const hasChanges = 
+                displayName !== (currentUser.displayName || '') ||
+                photoURL !== (currentUser.photoURL || '');
+
+            if (hasChanges) {
+                e.preventDefault();
+                e.returnValue = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
+                return e.returnValue;
+            }
+        });
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + S para salvar
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                document.getElementById('profile-form').dispatchEvent(new Event('submit'));
+            }
+
+            // Escape para cancelar
+            if (e.key === 'Escape') {
+                resetForm();
+            }
+        });
+
+        // Validação em tempo real
+        document.getElementById('display-name').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value.length > 0 && value.length < 3) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#e5e7eb';
+            }
+        });
+
+        document.getElementById('photo-url').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && !isValidUrl(value)) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#e5e7eb';
+            }
+        });
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Preview de avatar ao mudar URL
+        let previewTimeout;
+        document.getElementById('photo-url').addEventListener('input', function() {
+            clearTimeout(previewTimeout);
+            const url = this.value.trim();
+            
+            if (url && isValidUrl(url)) {
+                previewTimeout = setTimeout(() => {
+                    const avatar = document.getElementById('profile-avatar');
+                    const tempImg = new Image();
+                    
+                    tempImg.onload = function() {
+                        avatar.src = url;
+                    };
+                    
+                    tempImg.onerror = function() {
+                        showAlert('⚠️ Não foi possível carregar a imagem desta URL.', 'error');
+                    };
+                    
+                    tempImg.src = url;
+                }, 1000);
+            }
+        });
+
+        // Smooth scroll para alertas
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.addedNodes.length > 0) {
+                    const alertContainer = document.getElementById('alert-container');
+                    if (alertContainer.children.length > 0) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.getElementById('alert-container'), { 
+            childList: true 
+        });
+
+        // Analytics de página
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                'page_title': 'Perfil do Usuário',
+                'page_location': window.location.href
+            });
+        }
+
+        // Carregar atividades recentes (exemplo básico)
+        function loadRecentActivity() {
+            if (!currentUser) return;
+
+            // Carregar comentários recentes do usuário
+            database.ref('comments')
+                .orderByChild('userId')
+                .equalTo(currentUser.uid)
+                .limitToLast(5)
+                .once('value')
+                .then(snapshot => {
+                    const activities = [];
+                    snapshot.forEach(childSnapshot => {
+                        const comment = childSnapshot.val();
+                        activities.push({
+                            type: 'comment',
+                            timestamp: comment.timestamp,
+                            articleId: comment.articleId
+                        });
+                    });
+
+                    // Ordenar por data mais recente
+                    activities.sort((a, b) => b.timestamp - a.timestamp);
+
+                    // Atualizar a interface com atividades reais
+                    // (implementação opcional para mostrar atividades reais)
+                });
+        }
+
+        // Inicializar carregamento de atividades
+        setTimeout(loadRecentActivity, 1000);
+
+        // Animação de entrada suave
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.profile-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Auto-save em rascunho (opcional)
+        let autoSaveTimeout;
+        const formInputs = document.querySelectorAll('.form-input:not([disabled])');
+        
+        formInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                clearTimeout(autoSaveTimeout);
+                
+                // Salvar no localStorage como backup
+                autoSaveTimeout = setTimeout(() => {
+                    const formData = {
+                        displayName: document.getElementById('display-name').value,
+                        photoURL: document.getElementById('photo-url').value,
+                        lastSaved: Date.now()
+                    };
+                    
+                    try {
+                        localStorage.setItem('profile_draft_' + currentUser.uid, JSON.stringify(formData));
+                    } catch (e) {
+                        console.log('Auto-save não disponível');
+                    }
+                }, 2000);
+            });
+        });
+
+        // Restaurar rascunho ao carregar
+        function restoreDraft() {
+            if (!currentUser) return;
+            
+            try {
+                const draft = localStorage.getItem('profile_draft_' + currentUser.uid);
+                if (draft) {
+                    const data = JSON.parse(draft);
+                    const lastSaved = new Date(data.lastSaved);
+                    const hoursSince = (Date.now() - lastSaved.getTime()) / (1000 * 60 * 60);
+                    
+                    // Se o rascunho foi salvo nas últimas 24 horas
+                    if (hoursSince < 24) {
+                        const restore = confirm(
+                            '💾 Encontramos alterações não salvas de ' + 
+                            lastSaved.toLocaleString('pt-PT') + 
+                            '\n\nDeseja restaurar essas alterações?'
+                        );
+                        
+                        if (restore) {
+                            if (data.displayName) {
+                                document.getElementById('display-name').value = data.displayName;
+                            }
+                            if (data.photoURL) {
+                                document.getElementById('photo-url').value = data.photoURL;
+                            }
+                            showAlert('✅ Rascunho restaurado com sucesso!', 'success');
+                        } else {
+                            localStorage.removeItem('profile_draft_' + currentUser.uid);
+                        }
+                    } else {
+                        // Remover rascunhos antigos
+                        localStorage.removeItem('profile_draft_' + currentUser.uid);
+                    }
+                }
+            } catch (e) {
+                console.log('Erro ao restaurar rascunho:', e);
+            }
+        }
+
+        // Restaurar rascunho após carregar perfil
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                setTimeout(restoreDraft, 1000);
+            }
+        });
+
+        // Limpar rascunho após salvar com sucesso
+        const originalUpdateProfile = updateProfile;
+        updateProfile = async function(event) {
+            await originalUpdateProfile(event);
+            if (currentUser) {
+                try {
+                    localStorage.removeItem('profile_draft_' + currentUser.uid);
+                } catch (e) {
+                    console.log('Erro ao limpar rascunho:', e);
+                }
+            }
+        };
+
+        // Adicionar suporte a arrastar e soltar para upload de avatar (futuro)
+        const avatar = document.getElementById('profile-avatar');
+        avatar.addEventListener('click', () => {
+            const photoUrlInput = document.getElementById('photo-url');
+            photoUrlInput.focus();
+            photoUrlInput.select();
+        });
+
+        // Tooltip informativo
+        const tooltips = {
+            'display-name': 'Este nome será exibido publicamente nos seus comentários',
+            'photo-url': 'Cole o link de uma imagem hospedada online (JPG, PNG, GIF)',
+            'email': 'Seu e-mail não pode ser alterado por segurança'
+        };
+
+        Object.keys(tooltips).forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.setAttribute('title', tooltips[id]);
+            }
+        });
+
+        // Estatísticas animadas ao entrar na visualização
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    if (statNumber && !statNumber.classList.contains('animated')) {
+                        statNumber.classList.add('animated');
+                        animateNumber(statNumber, 0, parseInt(statNumber.textContent));
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-item').forEach(item => {
+            statsObserver.observe(item);
+        });
+
+        function animateNumber(element, start, end, duration = 1000) {
+            const range = end - start;
+            const startTime = Date.now();
+            
+            function update() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.floor(start + (range * easeOutCubic(progress)));
+                
+                element.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            update();
+        }
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        // Feedback visual ao salvar
+        const submitButton = document.querySelector('.btn-primary[type="submit"]');
+        if (submitButton) {
+            const originalSubmit = submitButton.textContent;
+            
+            document.getElementById('profile-form').addEventListener('submit', () => {
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                submitButton.disabled = true;
+                
+                setTimeout(() => {
+                    submitButton.innerHTML = originalSubmit;
+                    submitButton.disabled = false;
+                }, 2000);
+            });
+        }
+
+        // Copiar ID do usuário (útil para suporte)
+        let clickCount = 0;
+        let clickTimer;
+
+        document.getElementById('profile-name').addEventListener('click', () => {
+            clickCount++;
+            
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 500);
+            } else if (clickCount === 3) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                
+                if (currentUser) {
+                    navigator.clipboard.writeText(currentUser.uid).then(() => {
+                        showAlert('🔑 ID do usuário copiado para a área de transferência!', 'success');
+                    }).catch(() => {
+                        prompt('ID do Usuário (copie manualmente):', currentUser.uid);
+                    });
+                }
+            }
+        });
+
+        // Mensagem de boas-vindas para novos usuários
+        auth.onAuthStateChanged((user) => {
+            if (user && user.metadata.creationTime) {
+                const accountAge = Date.now() - new Date(user.metadata.creationTime).getTime();
+                const isNewUser = accountAge < (24 * 60 * 60 * 1000); // Menos de 24 horas
+                
+                if (isNewUser && !sessionStorage.getItem('welcome_shown')) {
+                    setTimeout(() => {
+                        showAlert(
+                            '🎉 Bem-vindo à Armindo News, ' + (user.displayName || 'utilizador') + '! ' +
+                            'Complete seu perfil para aproveitar ao máximo nossa plataforma.',
+                            'success'
+                        );
+                        sessionStorage.setItem('welcome_shown', 'true');
+                    }, 1000);
+                }
+            }
+        });
+
+        // Log de erro global para debugging
+        window.addEventListener('error', (e) => {
+            console.error('Erro global capturado:', e.error);
+            
+            if (e.error && e.error.code && e.error.code.startsWith('auth/')) {
+                showAlert('❌ Erro de autenticação. Por favor, faça login novamente.', 'error');
+                setTimeout(() => {
+                    auth.signOut();
+                    window.location.href = 'auth.html?return=perfil.html';
+                }, 2000);
+            }
+        });
+
+        // Verificar conexão com internet
+        window.addEventListener('online', () => {
+            showAlert('✅ Conexão com internet restaurada!', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            showAlert('⚠️ Sem conexão com internet. Suas alterações serão salvas quando a conexão for restaurada.', 'error');
+        });
+
+        // Limpar recursos ao sair da página
+        window.addEventListener('beforeunload', () => {
+            if (observer) observer.disconnect();
+            if (statsObserver) statsObserver.disconnect();
+            clearTimeout(autoSaveTimeout);
+            clearTimeout(previewTimeout);
+        });
+
+        console.log('%c🎨 Armindo News - Perfil do Usuário', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cVersão: 1.0.0 | Build: 2024', 'color: #6b7280; font-size: 12px;');
+    </script>
+</body>
+</html>
