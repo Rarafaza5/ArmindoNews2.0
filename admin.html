@@ -1,1009 +1,211 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="icon" type="image/x-icon" href="an.png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armindo News - Admin</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>Admin | Verdade Jovem</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
     <style>
-        @font-face {
-            font-family: 'an';
-            src: url('/EnglishTowne.woff') format('woff');
-            font-weight: bold;
-            font-display: swap;
-        }
-
         :root {
-            --primary: #667eea;
-            --primary-dark: #5a6fd8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --dark: #1f2937;
-            --light: #f9fafb;
-            --gray: #6b7280;
-            --border: #e5e7eb;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .topbar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem;
-            box-shadow: var(--shadow);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-
-        .topbar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: 'an', sans-serif;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        .main-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            margin-top: 70px;
-            min-height: calc(100vh - 70px);
-        }
-
-        .sidebar {
-            background: white;
-            box-shadow: var(--shadow);
-            padding: 1rem 0;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-item {
-            margin-bottom: 0.25rem;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-right: 3px solid transparent;
-        }
-
-        .sidebar-link:hover, .sidebar-link.active {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent);
-            color: var(--primary);
-            border-right-color: var(--primary);
-        }
-
-        .sidebar-icon {
-            font-size: 1.1rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        .content-area {
-            padding: 1.5rem;
-            overflow-y: auto;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .page-subtitle {
-            color: var(--gray);
-            font-size: 1rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header {
-            padding: 1.5rem 1.5rem 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            min-height: 44px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #d97706);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #dc2626);
-            color: white;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 0.875rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-            min-height: 44px;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .editor-container {
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .editor-container .ql-toolbar {
-            border: none;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .editor-container .ql-container {
-            border: none;
-            font-family: inherit;
-            font-size: 1rem;
-            min-height: 300px;
-        }
-
-        .image-upload-area {
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 2rem 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .image-upload-area:hover {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .image-preview {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-
-        .youtube-preview {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-        }
-
-        .youtube-preview iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 400px;
-            width: 100%;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-            background: none;
-            border: none;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--gray);
-        }
-
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .toast {
-            position: fixed;
-            top: 90px;
-            right: 1rem;
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: var(--shadow-lg);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 3000;
-            max-width: calc(100vw - 2rem);
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--success);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger);
-        }
-
-        .toast.warning {
-            border-left: 4px solid var(--warning);
-        }
-
-        .article-list {
-            list-style: none;
-        }
-
-        .article-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease;
-        }
-
-        .article-item:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .article-thumbnail {
-            width: 60px;
-            height: 45px;
-            object-fit: cover;
-            border-radius: 6px;
-            flex-shrink: 0;
-        }
-
-        .article-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .article-title {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        .article-meta {
-            font-size: 0.8rem;
-            color: var(--gray);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .article-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            flex-shrink: 0;
-        }
-
-        .status-badge {
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .status-published {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-draft {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-carousel {
-            background: #a855f7;
-            color: white;
-        }
-
-        .highlight-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .highlight-options label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-
-        .highlight-options label:hover {
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .highlight-options input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .image-source-note {
-            font-size: 0.85rem;
-            color: var(--gray);
-            margin-top: 0.5rem;
-            font-style: italic;
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                margin-top: 60px;
-            }
-            
-            .topbar {
-                padding: 0.75rem 1rem;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 60px;
-                height: calc(100vh - 60px);
-                width: 280px;
-                transform: translateX(-100%);
-                z-index: 999;
-                background: white;
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .content-area {
-                padding: 1rem;
-                width: 100%;
-            }
-
-            .page-title {
-                font-size: 1.5rem;
-            }
-
-            .card-header,
-            .card-body {
-                padding: 1rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .article-item {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 1rem;
-            }
-
-            .article-thumbnail {
-                width: 80px;
-                height: 60px;
-            }
-
-            .article-actions {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .btn {
-                padding: 0.6rem 1rem;
-                font-size: 0.85rem;
-                flex: 1;
-                min-width: auto;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .action-buttons .btn {
-                width: 100%;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-
-            .stat-card {
-                padding: 1rem;
-            }
-
-            .stat-number {
-                font-size: 1.5rem;
-            }
-
-            .highlight-options {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-            }
-
-            .modal-content {
-                margin: 1rem;
-                padding: 1.5rem;
-                max-width: none;
-            }
-
-            .editor-container .ql-container {
-                min-height: 250px;
-            }
-
-            .image-upload-area {
-                padding: 1.5rem 1rem;
-                min-height: 100px;
-            }
-
-            .toast {
-                right: 0.5rem;
-                left: 0.5rem;
-                max-width: none;
+            --primary: #dd0000;
+            --bg: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --text: #1e293b;
+            --glass: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root { --bg: #020617; --text: #f1f5f9; --glass: #1e293b; --sidebar-bg: #020617; }
+            .glass-card, .stat-item, .login-card, .input, .ql-toolbar, #editor-quill { 
+                background: #1e293b !important; color: white !important; border-color: #334155 !important; 
             }
         }
 
-        .mobile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-            display: none;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+        #login { position: fixed; inset: 0; background: var(--sidebar-bg); z-index: 20000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: white; padding: 2.5rem; border-radius: 28px; width: 100%; max-width: 400px; text-align: center; }
+
+        .app-layout { display: flex; min-height: 100vh; width: 100%; }
+        
+        .sidebar { 
+            width: 280px; min-width: 280px; background: var(--sidebar-bg); color: white; 
+            padding: 2rem 1.2rem; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; 
         }
 
-        .mobile-overlay.show {
-            display: block;
+        .nav-item { 
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; 
+            color: #94a3b8; margin-bottom: 8px; cursor: pointer; transition: 0.2s; font-weight: 600; width: 100%; 
+        }
+        .nav-item.active { background: var(--primary); color: white; }
+
+        .main-content { flex-grow: 1; padding: 2.5rem; max-width: calc(100vw - 280px); }
+
+        .editor-grid { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
+        .glass-card { background: var(--glass); border-radius: 24px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+
+        .input-group { margin-bottom: 1.2rem; }
+        .label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
+        .input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; outline: none; }
+        
+        .btn { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+        .btn-p { background: var(--primary); color: white; }
+
+        .ultima-hora-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px; background: #fff1f2; border: 2px solid #fecdd3;
+            border-radius: 15px; margin-bottom: 1.5rem; cursor: pointer; color: #991b1b;
         }
 
-        .btn.loading {
-            opacity: 0.7;
-            pointer-events: none;
+        .upload-area { border: 2px dashed #e2e8f0; border-radius: 16px; padding: 1.5rem; text-align: center; cursor: pointer; background: rgba(0,0,0,0.01); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-item { background: var(--glass); padding: 1.5rem; border-radius: 20px; text-align: center; box-shadow: var(--shadow); }
+
+        .carousel-slot {
+            display: flex; align-items: center; gap: 15px; padding: 15px;
+            background: rgba(0,0,0,0.02); border-radius: 18px; margin-bottom: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .carousel-number {
+            background: var(--primary); color: white; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
         }
 
-        .btn.loading::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 0.5rem;
+        .mobile-nav { display: none; }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--glass); border-top: 1px solid rgba(0,0,0,0.1); justify-content: space-around; padding: 10px 5px calc(10px + env(safe-area-inset-bottom)); z-index: 1000; }
+            .m-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.65rem; font-weight: 700; }
+            .m-nav-item.active { color: var(--primary); }
+            .m-nav-item span { font-size: 1.3rem; }
+            .main-content { padding: 1rem; padding-bottom: 100px; max-width: 100vw; }
+            .editor-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileMenu()"></div>
 
-    <div class="topbar">
-        <div class="topbar-content">
-            <div class="logo">
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
-                Armindo News - Admin
-            </div>
-            <div class="user-menu">
-                <button class="btn btn-danger" onclick="logout()">
-                    🚪 Sair
-                </button>
-            </div>
+    <div id="toast" style="position:fixed; top:20px; right:20px; padding:15px 25px; border-radius:12px; color:white; z-index:30000; font-weight:700; display:none;"></div>
+
+    <div id="login">
+        <div class="login-card">
+            <h1 style="color:var(--primary); margin-bottom: 2rem;">Admin<br>Verdade Jovem</h1>
+            <input type="password" id="pass" class="input" placeholder="Palavra-passe" style="text-align: center; margin-bottom: 1rem">
+            <button onclick="login()" class="btn btn-p">Aceder</button>
         </div>
     </div>
 
-    <div id="login-screen" class="modal" style="display: flex;">
-        <div class="modal-content">
-            <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Login Administrativo</h2>
-            <div class="form-group">
-                <label class="form-label">Senha de Administrador</label>
-                <input type="password" id="admin-password" class="form-input" placeholder="Digite sua senha...">
-            </div>
-            <button class="btn btn-primary" onclick="login()" style="width: 100%;">
-                🚀 Acessar Painel
-            </button>
-        </div>
+    <div id="panel" class="app-layout" style="display:none">
+        <aside class="sidebar">
+            <h2 style="margin-bottom: 2.5rem; color: var(--primary); padding-left: 10px;">VJ Admin</h2>
+            <nav style="flex:1">
+                <div class="nav-item active" onclick="showSection('dash', this)">📊 Painel</div>
+                <div class="nav-item" onclick="showSection('write', this)">✏️ Redigir</div>
+                <div class="nav-item" onclick="showSection('manage', this)">📰 Biblioteca</div>
+                <div class="nav-item" onclick="showSection('carousel', this)">🎞️ Carrossel</div>
+            </nav>
+            <div class="nav-item" onclick="logout()" style="color:#f87171">🚪 Sair</div>
+        </aside>
+
+        <nav class="mobile-nav">
+            <div class="m-nav-item active" id="m-nav-dash" onclick="showSection('dash', this)"><span>📊</span>Painel</div>
+            <div class="m-nav-item" id="m-nav-write" onclick="showSection('write', this)"><span>✏️</span>Redigir</div>
+            <div class="m-nav-item" id="m-nav-manage" onclick="showSection('manage', this)"><span>📰</span>Biblioteca</div>
+            <div class="m-nav-item" id="m-nav-carousel" onclick="showSection('carousel', this)"><span>🎞️</span>Carrossel</div>
+            <div class="m-nav-item" onclick="logout()"><span>🚪</span>Sair</div>
+        </nav>
+
+        <main class="main-content">
+            <section id="sect-dash">
+                <h1 style="margin-bottom: 1.5rem">Estatísticas</h1>
+                <div class="stats-grid">
+                    <div class="stat-item"><h2 id="stat-total">0</h2><p>Total</p></div>
+                    <div class="stat-item"><h2 id="stat-pub" style="color:#10b981">0</h2><p>Online</p></div>
+                    <div class="stat-item"><h2 id="stat-uh" style="color:var(--primary)">0</h2><p>Última Hora</p></div>
+                </div>
+            </section>
+
+            <section id="sect-write" style="display:none">
+                <div class="editor-grid">
+                    <div class="editor-left">
+                        <div class="glass-card">
+                            <h2 style="margin-bottom: 1.5rem">✏️ Conteúdo</h2>
+                            <input type="hidden" id="post-id">
+                            <div class="input-group">
+                                <label class="label">Título</label>
+                                <input type="text" id="title" class="input" placeholder="Título da notícia...">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Texto</label>
+                                <div id="editor-quill" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-right">
+                        <div class="glass-card">
+                            <label class="ultima-hora-toggle">
+                                <span>🚨 ÚLTIMA HORA</span>
+                                <input type="checkbox" id="is-ultima-hora" style="width:20px; height:20px; cursor:pointer">
+                            </label>
+                            <div class="input-group">
+                                <label class="label">Autor</label>
+                                <input type="text" id="author" class="input" placeholder="Nome do autor...">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Categoria</label>
+                                <select id="category" class="input">
+                                    <option value="pais">🇵🇹 País</option>
+                                    <option value="mundo">🌍 Mundo</option>
+                                    <option value="critica">✏️ Crítica</option>
+                                    <option value="politica">🏛️ Política</option>
+                                    <option value="Entrevista">🎤 Entrevista</option>
+                                    <option value="desporto">⚽ Desporto</option>
+                                    <option value="tecnologia">📱 Tecnologia</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Capa</label>
+                                <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                                    <span id="up-label">📷 Foto</span>
+                                    <input type="file" id="file-input" hidden accept="image/*" onchange="processImage(this)">
+                                </div>
+                                <input type="hidden" id="image-data">
+                                <img id="img-render" src="" style="width:100%; border-radius:10px; margin-top:10px; display:none;">
+                            </div>
+                            <button onclick="savePost(true)" class="btn btn-p" style="margin-bottom:10px">🚀 Publicar</button>
+                            <button onclick="savePost(false)" class="btn" style="background:#e2e8f0; color:#475569">💾 Rascunho</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sect-manage" style="display:none">
+                <h1 style="margin-bottom: 1.5rem">Biblioteca</h1>
+                <div class="glass-card">
+                    <input type="text" id="search" class="input" placeholder="🔍 Pesquisar por título..." oninput="renderLibrary()" style="margin-bottom:1.5rem">
+                    <div id="library-list"></div>
+                </div>
+            </section>
+
+            <section id="sect-carousel" style="display:none">
+                <h1 style="margin-bottom: 0.5rem">🎞️ Destaques do Carrossel</h1>
+                <p style="margin-bottom: 2rem; opacity: 0.7;">Escolha as notícias que ficarão fixas no topo do index.</p>
+                <div class="glass-card" id="carousel-manager-content">
+                    </div>
+            </section>
+        </main>
     </div>
 
-    <div class="main-container" id="main-container" style="display: none;">
-        <div class="sidebar" id="sidebar">
-            <ul class="sidebar-menu">
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
-                        <span class="sidebar-icon">📊</span>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="showSection('articles')">
-                        <span class="sidebar-icon">📄</span>
-                        Artigos
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="showSection('carousel')">
-                        <span class="sidebar-icon">🎠</span>
-                        Carrossel
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="showSection('editor')">
-                        <span class="sidebar-icon">✏️</span>
-                        Editor Avançado
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="content-area">
-            <div id="dashboard-section" class="section">
-                <div class="page-header">
-                    <h1 class="page-title">Dashboard</h1>
-                    <p class="page-subtitle">Visão geral completa do seu portal de notícias</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">📈 Estatísticas Rápidas</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-number" id="total-articles">0</div>
-                                <div class="stat-label">Total de Artigos</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="published-articles">0</div>
-                                <div class="stat-label">Publicados</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="draft-articles">0</div>
-                                <div class="stat-label">Rascunhos</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="carousel-articles">0</div>
-                                <div class="stat-label">No Carrossel</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="carousel-section" class="section hidden">
-                <div class="page-header">
-                    <h1 class="page-title">Gerenciar Carrossel</h1>
-                    <p class="page-subtitle">Configure os artigos que aparecem no carrossel da página principal</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">🎠 Artigos no Carrossel</h3>
-                        <p style="color: var(--gray); margin-top: 0.5rem;">Máximo de 5 artigos podem aparecer no carrossel</p>
-                    </div>
-                    <div class="card-body">
-                        <div id="carousel-articles-list">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Carregando artigos do carrossel...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">➕ Adicionar ao Carrossel</h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="available-articles-list">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Carregando artigos disponíveis...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="articles-section" class="section hidden">
-                <div class="page-header">
-                    <h1 class="page-title">Gestão de Artigos</h1>
-                    <p class="page-subtitle">Gerencie todos os seus artigos de forma profissional</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                            <h3 class="card-title">📚 Biblioteca de Artigos</h3>
-                            <button class="btn btn-primary" onclick="showSection('editor')">
-                                ➕ Novo Artigo
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="articles-table">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Carregando artigos...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="editor-section" class="section hidden">
-                <div class="page-header">
-                    <h1 class="page-title">Editor Avançado</h1>
-                    <p class="page-subtitle">Crie conteúdo profissional com nosso editor visual</p>
-                </div>
-
-                <form id="article-form">
-                    <input type="hidden" id="edit-id">
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">🏷️ Título do Artigo</label>
-                            <input type="text" id="article-title" class="form-input" placeholder="Digite um título cativante..." maxlength="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">📂 Categoria</label>
-                            <select id="article-category" class="form-select">
-                                <option value="tecnologia">💻 Tecnologia</option>
-                                <option value="politica">🏛️ Política</option>
-                                <option value="gaming">🎮 Gaming</option>
-                                <option value="entretenimento">🎬 Entretenimento</option>
-                                <option value="musica">🎵 Música</option>
-                                <option value="investigacao">🔍 Investigação</option>
-                                <option value="cronica">📝 Crónica</option>
-                                <option value="critica">✏️ Crítica</option>
-                                <option value="pais">🇵🇹 País</option>
-                                <option value="entrevista">🎤 Entrevista Exclusiva</option>
-                                <option value="desporto">⚽ Desporto</option>
-                                <option value="mundo">🌍 Mundo</option>
-                                <option value="opiniao">💭 Opinião</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">📅 Data de Publicação</label>
-                            <input type="datetime-local" id="article-date" class="form-input">
-                            <small style="color: var(--gray); margin-top: 0.5rem; display: block;">
-                                ℹ️ Defina a data que aparecerá no artigo. Se deixar vazio, usará a data atual.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">👤 Autor</label>
-                            <input type="text" id="article-author" class="form-input" placeholder="Nome do autor" value="Admin">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">📄 Resumo Executivo</label>
-                        <textarea id="article-summary" class="form-textarea" placeholder="Escreva um resumo atrativo do seu artigo..." maxlength="300"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">🖼️ Imagem Principal</label>
-                        <div class="image-upload-area" onclick="document.getElementById('image-input').click()">
-                            <input type="file" id="image-input" style="display: none;" accept="image/*" onchange="handleImageUpload(this)">
-                            <div>📸 Clique para fazer upload ou arraste uma imagem</div>
-                            <img id="image-preview" class="image-preview" style="display: none;">
-                        </div>
-                        <input type="url" id="article-image-url" class="form-input" placeholder="Ou cole a URL de uma imagem..." style="margin-top: 1rem;" onchange="previewImageUrl()">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">📷 Fonte/Crédito da Imagem</label>
-                        <input type="text" id="article-image-source" class="form-input" placeholder="Ex: Getty Images, Reuters, Unsplash, etc.">
-                        <small class="image-source-note">
-                            ℹ️ Indique sempre a fonte ou crédito da imagem para conformidade com direitos autorais
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">🎥 Vídeo do YouTube (Entrevistas)</label>
-                        <input type="url" id="article-youtube-url" class="form-input" placeholder="Cole a URL do YouTube aqui (ex: https://www.youtube.com/watch?v=...)" onchange="previewYouTubeEmbed()">
-                        <div id="youtube-preview" class="youtube-preview" style="display: none; margin-top: 1rem; border: 2px solid var(--border); border-radius: 8px; overflow: hidden;">
-                            <iframe id="youtube-iframe" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
-                        </div>
-                        <small style="color: var(--gray); margin-top: 0.5rem; display: block;">
-                            ℹ️ Ideal para entrevistas em vídeo. O vídeo aparecerá no artigo publicado.
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">📝 Conteúdo do Artigo</label>
-                        <div class="editor-container">
-                            <div id="quill-editor" style="height: 400px;"></div>
-                        </div>
-                    </div>
-
-                    <div class="highlight-options">
-                        <label>
-                            <input type="checkbox" id="article-published">
-                            📢 Publicar Imediatamente
-                        </label>
-                        <label>
-                            <input type="checkbox" id="article-carousel">
-                            🎠 Destacar no Carrossel
-                        </label>
-                        <label>
-                            <input type="checkbox" id="article-breaking">
-                            🚨 Breaking News
-                        </label>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button type="button" class="btn btn-success" onclick="saveArticle()">
-                            💾 Salvar Artigo
-                        </button>
-                        <button type="button" class="btn btn-warning" onclick="saveDraft()">
-                            📝 Salvar Rascunho
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="resetForm()" style="background: var(--gray);">
-                            🔄 Limpar Formulário
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="toast"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -1011,865 +213,200 @@
             authDomain: "aawards.firebaseapp.com",
             databaseURL: "https://aawards-default-rtdb.firebaseio.com",
             projectId: "aawards",
-            storageBucket: "aawards.firebasestorage.app",
+            storageBucket: "aawards.appspot.com",
             messagingSenderId: "839334918366",
-            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f",
-            measurementId: "G-Z9YLSTGHST"
+            appId: "1:839334918366:web:81f2bbfc78fd85f046ea4f"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const articlesRef = database.ref('articles');
-
-        let allArticles = [];
-        let quillEditor;
-        const ADMIN_PASSWORD = "ANews2024@#";
-
-        function toggleMobileMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-            
-            document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
-        }
-
-        function closeMobileMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            
-            sidebar.classList.remove('show');
-            overlay.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        function initQuillEditor() {
-            const isMobile = window.innerWidth <= 768;
-            
-            const toolbarOptions = [
-                ['bold', 'italic', 'underline'],
-                ['blockquote', { 'header': 1 }, { 'header': 2 }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link', 'image'],
-                ['clean']
-            ];
-
-            if (isMobile) {
-                toolbarOptions.splice(1, 1);
-            }
-
-            quillEditor = new Quill('#quill-editor', {
-                modules: {
-                    toolbar: toolbarOptions
-                },
-                theme: 'snow',
-                placeholder: 'Escreva seu artigo aqui...'
-            });
-
-            if (isMobile) {
-                document.querySelector('.ql-editor').style.minHeight = '250px';
-            }
-        }
+        let db, quill, articles = [];
 
         function login() {
-            const passwordInput = document.getElementById('admin-password');
-            const loginButton = event.target;
-            const password = passwordInput.value.trim();
-            
-            if (!password) {
-                showToast('Por favor, digite a senha!', 'error');
-                passwordInput.focus();
-                return;
-            }
-
-            loginButton.classList.add('loading');
-            loginButton.disabled = true;
-
-            setTimeout(() => {
-                if (password === ADMIN_PASSWORD) {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-container').style.display = 'grid';
-                    showToast('Login realizado com sucesso!', 'success');
-                    loadDashboard();
-                    initQuillEditor();
-                } else {
-                    showToast('Senha incorreta! Tente novamente.', 'error');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-                
-                loginButton.classList.remove('loading');
-                loginButton.disabled = false;
-            }, 500);
+            if(document.getElementById('pass').value === "ArmindoNews2024") {
+                sessionStorage.setItem('vj_in', 'ok');
+                start();
+            } else { showToast("Erro!", "#ef4444"); }
         }
 
-        function logout() {
-            if (confirm('Tem certeza que deseja sair?')) {
-                document.getElementById('login-screen').style.display = 'flex';
-                document.getElementById('main-container').style.display = 'none';
-                document.getElementById('admin-password').value = '';
-                showToast('Logout realizado com sucesso!', 'success');
-                
-                allArticles = [];
-                if (quillEditor) {
-                    quillEditor.setText('');
-                }
-                resetForm();
-            }
-        }
-
-        function showSection(sectionName) {
-            closeMobileMenu();
+        function start() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('panel').style.display = 'flex';
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            quill = new Quill('#editor-quill', { theme: 'snow', modules: { toolbar: [[{'header': [1, 2, false]}], ['bold', 'italic', 'link'], [{'list': 'bullet'}]] }});
             
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
-            });
-
-            document.querySelectorAll('.sidebar-link').forEach(link => {
-                link.classList.remove('active');
-            });
-
-            const targetSection = document.getElementById(sectionName + '-section');
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-            }
-            
-            const clickedLink = event.target.closest('.sidebar-link');
-            if (clickedLink) {
-                clickedLink.classList.add('active');
-            }
-
-            if (window.innerWidth <= 768) {
-                document.querySelector('.content-area').scrollTop = 0;
-            }
-
-            switch(sectionName) {
-                case 'dashboard':
-                    loadDashboard();
-                    break;
-                case 'articles':
-                    loadArticlesTable();
-                    break;
-                case 'carousel':
-                    loadCarouselManagement();
-                    break;
-                case 'editor':
-                    if (!quillEditor) initQuillEditor();
-                    break;
-            }
-        }
-
-        function loadDashboard() {
-            const statsElements = {
-                total: document.getElementById('total-articles'),
-                published: document.getElementById('published-articles'),
-                drafts: document.getElementById('draft-articles'),
-                carousel: document.getElementById('carousel-articles')
-            };
-
-            Object.values(statsElements).forEach(el => {
-                if (el) el.textContent = '...';
-            });
-
-            articlesRef.once('value', (snapshot) => {
-                try {
-                    const articles = [];
-                    snapshot.forEach((childSnapshot) => {
-                        const article = childSnapshot.val();
-                        if (article) {
-                            article.id = childSnapshot.key;
-                            articles.push(article);
-                        }
-                    });
-
-                    allArticles = articles;
-                    updateDashboardStats(articles);
-                } catch (error) {
-                    console.error('Error loading dashboard:', error);
-                    showToast('Erro ao carregar dashboard!', 'error');
-                    
-                    Object.values(statsElements).forEach(el => {
-                        if (el) el.textContent = '0';
-                    });
-                }
-            }).catch(error => {
-                console.error('Firebase error:', error);
-                showToast('Erro de conexão com o banco de dados!', 'error');
+            db.ref('articles').on('value', snap => {
+                const data = snap.val();
+                articles = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+                renderDashboard();
+                renderLibrary();
+                renderCarouselManager();
             });
         }
 
-        function updateDashboardStats(articles) {
-            try {
-                const published = articles.filter(a => a.published);
-                const drafts = articles.filter(a => !a.published);
-                const carouselItems = articles.filter(a => a.carousel && a.published);
-
-                const updates = [
-                    { id: 'total-articles', value: articles.length },
-                    { id: 'published-articles', value: published.length },
-                    { id: 'draft-articles', value: drafts.length },
-                    { id: 'carousel-articles', value: carouselItems.length }
-                ];
-
-                updates.forEach(({ id, value }) => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        animateNumber(element, parseInt(element.textContent) || 0, value);
-                    }
-                });
-            } catch (error) {
-                console.error('Error updating stats:', error);
-            }
-        }
-
-        function animateNumber(element, start, end, duration = 1000) {
-            const range = end - start;
-            const startTime = Date.now();
-            
-            function updateNumber() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const current = Math.round(start + (range * progress));
-                
-                element.textContent = current;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                }
-            }
-            
-            updateNumber();
-        }
-
-        function loadCarouselManagement() {
-            const carouselContainer = document.getElementById('carousel-articles-list');
-            const availableContainer = document.getElementById('available-articles-list');
-            
-            carouselContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando carrossel...</div>';
-            availableContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando artigos...</div>';
-
-            articlesRef.orderByChild('date').once('value', (snapshot) => {
-                try {
-                    const articles = [];
-                    snapshot.forEach((childSnapshot) => {
-                        const article = childSnapshot.val();
-                        if (article) {
-                            article.id = childSnapshot.key;
-                            articles.unshift(article);
-                        }
-                    });
-
-                    const carouselArticles = articles.filter(a => a.carousel && a.published);
-                    const availableArticles = articles.filter(a => !a.carousel && a.published);
-
-                    displayCarouselArticles(carouselArticles);
-                    displayAvailableArticles(availableArticles);
-                } catch (error) {
-                    console.error('Error loading carousel:', error);
-                    carouselContainer.innerHTML = '<p style="text-align: center; color: var(--danger); padding: 2rem;">Erro ao carregar carrossel</p>';
-                    availableContainer.innerHTML = '<p style="text-align: center; color: var(--danger); padding: 2rem;">Erro ao carregar artigos</p>';
-                }
-            }).catch(error => {
-                console.error('Firebase error:', error);
-                showToast('Erro ao carregar dados do carrossel!', 'error');
-            });
-        }
-
-        function displayCarouselArticles(articles) {
-            const container = document.getElementById('carousel-articles-list');
-            
-            if (articles.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum artigo no carrossel</p>';
-                return;
-            }
-
-            container.innerHTML = articles.map((article, index) => `
-                <div class="article-item">
-                    <div style="font-weight: 900; color: var(--primary); min-width: 30px; text-align: center;">${index + 1}</div>
-                    <img src="${article.image || 'https://via.placeholder.com/80x60/667eea/ffffff?text=IMG'}" 
-                         alt="${escapeHtml(article.title)}" class="article-thumbnail" loading="lazy">
-                    <div class="article-info">
-                        <div class="article-title">${escapeHtml(article.title)}</div>
-                        <div class="article-meta">
-                            ${formatDate(article.date)} • 
-                            ${escapeHtml(article.author || 'Admin')} • 
-                            ${escapeHtml(getCategoryName(article.category))}
-                            ${article.youtubeUrl ? '<span class="status-badge" style="background: #ff0000; color: white;">🎥 Vídeo</span>' : ''}
-                            <span class="status-badge status-carousel">🎠 Carrossel</span>
-                        </div>
-                    </div>
-                    <div class="article-actions">
-                        <button class="btn btn-warning" onclick="removeFromCarousel('${article.id}')">
-                            ✖ Remover
-                        </button>
-                        <button class="btn btn-primary" onclick="editArticle('${article.id}')">
-                            ✏️ Editar
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function displayAvailableArticles(articles) {
-            const container = document.getElementById('available-articles-list');
-            
-            if (articles.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Todos os artigos publicados já estão no carrossel</p>';
-                return;
-            }
-
-            const displayArticles = articles.slice(0, 20);
-            
-            container.innerHTML = displayArticles.map(article => `
-                <div class="article-item">
-                    <img src="${article.image || 'https://via.placeholder.com/80x60/667eea/ffffff?text=IMG'}" 
-                         alt="${escapeHtml(article.title)}" class="article-thumbnail" loading="lazy">
-                    <div class="article-info">
-                        <div class="article-title">${escapeHtml(article.title)}</div>
-                        <div class="article-meta">
-                            ${formatDate(article.date)} • 
-                            ${escapeHtml(article.author || 'Admin')} • 
-                            ${escapeHtml(getCategoryName(article.category))}
-                            ${article.youtubeUrl ? '<span class="status-badge" style="background: #ff0000; color: white;">🎥 Vídeo</span>' : ''}
-                            <span class="status-badge status-published">📢 Publicado</span>
-                        </div>
-                    </div>
-                    <div class="article-actions">
-                        <button class="btn btn-success" onclick="addToCarousel('${article.id}')" 
-                                style="background: var(--info);">
-                            🎠 Adicionar
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-
-            if (articles.length > 20) {
-                container.innerHTML += `<p style="text-align: center; color: var(--gray); padding: 1rem;">Mostrando 20 de ${articles.length} artigos disponíveis</p>`;
-            }
-        }
-
-        function addToCarousel(articleId) {
-            const button = event.target;
-            button.classList.add('loading');
-            button.disabled = true;
-            
-            articlesRef.orderByChild('carousel').equalTo(true).once('value', (snapshot) => {
-                const carouselCount = snapshot.numChildren();
-                
-                if (carouselCount >= 5) {
-                    showToast('Máximo de 5 artigos permitidos no carrossel!', 'error');
-                    button.classList.remove('loading');
-                    button.disabled = false;
-                    return;
-                }
-
-                articlesRef.child(articleId).update({ 
-                    carousel: true,
-                    lastModified: Date.now()
-                }).then(() => {
-                    showToast('Artigo adicionado ao carrossel!', 'success');
-                    loadCarouselManagement();
-                }).catch(error => {
-                    console.error('Error adding to carousel:', error);
-                    showToast('Erro ao adicionar ao carrossel!', 'error');
-                    button.classList.remove('loading');
-                    button.disabled = false;
-                });
-            });
-        }
-
-        function removeFromCarousel(articleId) {
-            if (!confirm('Remover este artigo do carrossel?')) return;
-            
-            const button = event.target;
-            button.classList.add('loading');
-            button.disabled = true;
-            
-            articlesRef.child(articleId).update({ 
-                carousel: false,
-                lastModified: Date.now()
-            }).then(() => {
-                showToast('Artigo removido do carrossel!', 'success');
-                loadCarouselManagement();
-            }).catch(error => {
-                console.error('Error removing from carousel:', error);
-                showToast('Erro ao remover do carrossel!', 'error');
-                button.classList.remove('loading');
-                button.disabled = false;
-            });
-        }
-
-        function loadArticlesTable() {
-            const tableContainer = document.getElementById('articles-table');
-            tableContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando artigos...</div>';
-            
-            articlesRef.orderByChild('date').once('value', (snapshot) => {
-                try {
-                    const articles = [];
-                    snapshot.forEach((childSnapshot) => {
-                        const article = childSnapshot.val();
-                        if (article) {
-                            article.id = childSnapshot.key;
-                            articles.unshift(article);
-                        }
-                    });
-
-                    if (articles.length === 0) {
-                        tableContainer.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Nenhum artigo encontrado. <button class="btn btn-primary" onclick="showSection(\'editor\')">Criar primeiro artigo</button></p>';
-                        return;
-                    }
-
-                    tableContainer.innerHTML = articles.map(article => `
-                        <div class="article-item">
-                            <img src="${article.image || 'https://via.placeholder.com/80x60/667eea/ffffff?text=IMG'}" 
-                                 alt="${escapeHtml(article.title)}" class="article-thumbnail" loading="lazy">
-                            <div class="article-info">
-                                <div class="article-title">${escapeHtml(article.title)}</div>
-                                <div class="article-meta">
-                                    ${formatDate(article.date)} • 
-                                    ${escapeHtml(article.author || 'Admin')} • 
-                                    ${escapeHtml(getCategoryName(article.category))}
-                                    <span class="status-badge ${article.published ? 'status-published' : 'status-draft'}">
-                                        ${article.published ? '📢 Publicado' : '📝 Rascunho'}
-                                    </span>
-                                    ${article.youtubeUrl ? '<span class="status-badge" style="background: #ff0000; color: white;">🎥 Vídeo</span>' : ''}
-                                    ${article.carousel ? '<span class="status-badge status-carousel">🎠 Carrossel</span>' : ''}
-                                    ${article.breaking ? '<span class="status-badge" style="background: #ef4444; color: white;">🚨 Breaking</span>' : ''}
-                                </div>
-                            </div>
-                            <div class="article-actions">
-                                <button class="btn btn-primary" onclick="editArticle('${article.id}')">✏️ Editar</button>
-                                <button class="btn btn-${article.published ? 'warning' : 'success'}" onclick="togglePublish('${article.id}', ${!article.published})">
-                                    ${article.published ? '📝 Despublicar' : '📢 Publicar'}
-                                </button>
-                                <button class="btn btn-danger" onclick="deleteArticle('${article.id}')">🗑️ Excluir</button>
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (error) {
-                    console.error('Error loading articles:', error);
-                    tableContainer.innerHTML = '<p style="text-align: center; color: var(--danger); padding: 2rem;">Erro ao carregar artigos</p>';
-                }
-            }).catch(error => {
-                console.error('Firebase error:', error);
-                showToast('Erro ao carregar artigos!', 'error');
-            });
-        }
-
-        function handleImageUpload(input) {
+        function processImage(input) {
             const file = input.files[0];
             if (!file) return;
-            
-            if (!file.type.startsWith('image/')) {
-                showToast('Por favor, selecione apenas arquivos de imagem!', 'error');
-                return;
-            }
-            
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Imagem muito grande! Máximo 5MB.', 'error');
-                return;
-            }
-            
             const reader = new FileReader();
             reader.onload = function(e) {
-                const preview = document.getElementById('image-preview');
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                
-                document.getElementById('article-image-url').value = '';
-            };
-            reader.onerror = function() {
-                showToast('Erro ao carregar imagem!', 'error');
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const scale = 800 / img.width;
+                    canvas.width = 800; canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const base64 = canvas.toDataURL('image/jpeg', 0.7);
+                    document.getElementById('image-data').value = base64;
+                    document.getElementById('img-render').src = base64;
+                    document.getElementById('img-render').style.display = 'block';
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function previewImageUrl() {
-            const url = document.getElementById('article-image-url').value.trim();
-            if (!url) return;
-            
-            try {
-                new URL(url);
-            } catch {
-                showToast('URL de imagem inválida!', 'error');
-                return;
-            }
-            
-            const preview = document.getElementById('image-preview');
-            preview.onload = () => {
-                preview.style.display = 'block';
-                document.getElementById('image-input').value = '';
+        function savePost(isPub) {
+            const id = document.getElementById('post-id').value;
+            const title = document.getElementById('title').value;
+            if(!title) return showToast("Título obrigatório", "#ef4444");
+
+            const existing = id ? articles.find(a => a.id === id) : null;
+            const data = {
+                title: title,
+                author: document.getElementById('author').value,
+                category: document.getElementById('category').value,
+                image: document.getElementById('image-data').value,
+                content: quill.root.innerHTML,
+                isUH: document.getElementById('is-ultima-hora').checked,
+                carouselOrder: existing ? (existing.carouselOrder || null) : null,
+                published: isPub,
+                date: id ? existing.date : Date.now()
             };
-            preview.onerror = () => {
-                showToast('Não foi possível carregar a imagem desta URL!', 'error');
-                preview.style.display = 'none';
-            };
-            preview.src = url;
-        }
 
-        function previewYouTubeEmbed() {
-            const url = document.getElementById('article-youtube-url').value.trim();
-            const preview = document.getElementById('youtube-preview');
-            const iframe = document.getElementById('youtube-iframe');
-            
-            if (!url) {
-                preview.style.display = 'none';
-                return;
-            }
-            
-            const embedUrl = convertYouTubeToEmbed(url);
-            if (embedUrl) {
-                iframe.src = embedUrl;
-                preview.style.display = 'block';
-                showToast('Vídeo do YouTube carregado!', 'success');
-            } else {
-                preview.style.display = 'none';
-                showToast('URL do YouTube inválida! Use formato: https://www.youtube.com/watch?v=...', 'error');
-            }
-        }
-
-        function convertYouTubeToEmbed(url) {
-            try {
-                const urlObj = new URL(url);
-                
-                if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                    const videoId = urlObj.searchParams.get('v');
-                    if (videoId) {
-                        return `https://www.youtube.com/embed/${videoId}`;
-                    }
-                } else if (urlObj.hostname === 'youtu.be') {
-                    const videoId = urlObj.pathname.substring(1);
-                    if (videoId) {
-                        return `https://www.youtube.com/embed/${videoId}`;
-                    }
-                } else if (urlObj.pathname.includes('/embed/')) {
-                    return url;
-                }
-                
-                return null;
-            } catch (error) {
-                return null;
-            }
-        }
-
-        function getYouTubeVideoId(url) {
-            if (!url) return null;
-            
-            try {
-                const urlObj = new URL(url);
-                
-                if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                    return urlObj.searchParams.get('v');
-                } else if (urlObj.hostname === 'youtu.be') {
-                    return urlObj.pathname.substring(1);
-                } else if (urlObj.pathname.includes('/embed/')) {
-                    return urlObj.pathname.split('/embed/')[1];
-                }
-                
-                return null;
-            } catch (error) {
-                return null;
-            }
-        }
-
-        function saveArticle() {
-            const button = event.target;
-            const originalText = button.innerHTML;
-            
-            try {
-                const articleData = gatherArticleData();
-                
-                const validation = validateArticleData(articleData);
-                if (!validation.isValid) {
-                    showToast(validation.message, 'error');
-                    return;
-                }
-
-                button.classList.add('loading');
-                button.disabled = true;
-
-                const editId = document.getElementById('edit-id').value;
-
-                const savePromise = editId ? 
-                    articlesRef.child(editId).update(articleData) :
-                    articlesRef.push(articleData);
-
-                savePromise.then(() => {
-                    const message = editId ? 'Artigo atualizado com sucesso!' : 'Artigo criado com sucesso!';
-                    showToast(message, 'success');
-                    
-                    if (!editId) {
-                        resetForm();
-                    }
-                    
-                    loadDashboard();
-                }).catch(error => {
-                    console.error('Error saving article:', error);
-                    showToast('Erro ao salvar artigo!', 'error');
-                }).finally(() => {
-                    button.classList.remove('loading');
-                    button.disabled = false;
-                });
-            } catch (error) {
-                console.error('Error in saveArticle:', error);
-                showToast('Erro inesperado ao salvar!', 'error');
-            }
-        }
-
-        function saveDraft() {
-            const publishedCheckbox = document.getElementById('article-published');
-            const wasChecked = publishedCheckbox.checked;
-            
-            publishedCheckbox.checked = false;
-            saveArticle();
-            
-            setTimeout(() => {
-                publishedCheckbox.checked = wasChecked;
-            }, 100);
-        }
-
-        function validateArticleData(data) {
-            if (!data.title || data.title.trim().length === 0) {
-                return { isValid: false, message: 'Por favor, adicione um título ao artigo!' };
-            }
-            
-            if (!data.contentText || data.contentText.trim().length < 50) {
-                return { isValid: false, message: 'O conteúdo do artigo deve ter pelo menos 50 caracteres!' };
-            }
-            
-            return { isValid: true };
-        }
-
-        function gatherArticleData() {
-            const imagePreview = document.getElementById('image-preview');
-            const imageUrl = document.getElementById('article-image-url').value.trim();
-            const youtubeUrl = document.getElementById('article-youtube-url').value.trim();
-            const articleDate = document.getElementById('article-date').value;
-            const imageSource = document.getElementById('article-image-source').value.trim();
-            
-            let dateTimestamp;
-            if (articleDate) {
-                dateTimestamp = new Date(articleDate).getTime();
-            } else {
-                dateTimestamp = Date.now();
-            }
-            
-            return {
-                title: document.getElementById('article-title').value.trim(),
-                summary: document.getElementById('article-summary').value.trim(),
-                content: quillEditor.root.innerHTML,
-                contentText: quillEditor.getText().trim(),
-                image: imageUrl || (imagePreview.style.display !== 'none' ? imagePreview.src : ''),
-                imageSource: imageSource,
-                youtubeUrl: youtubeUrl,
-                youtubeEmbedId: getYouTubeVideoId(youtubeUrl),
-                category: document.getElementById('article-category').value,
-                author: document.getElementById('article-author').value.trim() || 'Admin',
-                date: dateTimestamp,
-                published: document.getElementById('article-published').checked,
-                carousel: document.getElementById('article-carousel').checked,
-                breaking: document.getElementById('article-breaking').checked,
-                lastModified: Date.now()
-            };
-        }
-
-        function editArticle(articleId) {
-            articlesRef.child(articleId).once('value', (snapshot) => {
-                const article = snapshot.val();
-                if (article) {
-                    populateForm(article);
-                    document.getElementById('edit-id').value = articleId;
-                    showSection('editor');
-                } else {
-                    showToast('Artigo não encontrado!', 'error');
-                }
-            }).catch(error => {
-                console.error('Error loading article for edit:', error);
-                showToast('Erro ao carregar artigo para edição!', 'error');
+            const ref = id ? db.ref('articles/'+id) : db.ref('articles').push();
+            ref.set(data).then(() => {
+                showToast("Sucesso!");
+                clearEditor();
+                showSection('manage', document.getElementById('m-nav-manage'));
             });
         }
 
-        function populateForm(article) {
-            try {
-                document.getElementById('article-title').value = article.title || '';
-                document.getElementById('article-summary').value = article.summary || '';
-                document.getElementById('article-image-url').value = article.image || '';
-                document.getElementById('article-image-source').value = article.imageSource || '';
-                document.getElementById('article-youtube-url').value = article.youtubeUrl || '';
-                document.getElementById('article-category').value = article.category || 'tecnologia';
-                document.getElementById('article-author').value = article.author || 'Admin';
-                
-                if (article.date) {
-                    const date = new Date(article.date);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const hours = String(date.getHours()).padStart(2, '0');
-                    const minutes = String(date.getMinutes()).padStart(2, '0');
-                    document.getElementById('article-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-                }
-                
-                if (article.image) {
-                    const preview = document.getElementById('image-preview');
-                    preview.src = article.image;
-                    preview.style.display = 'block';
-                }
-
-                if (article.youtubeUrl) {
-                    previewYouTubeEmbed();
-                }
-
-                if (quillEditor) {
-                    quillEditor.root.innerHTML = article.content || '';
-                }
-
-                document.getElementById('article-published').checked = article.published || false;
-                document.getElementById('article-carousel').checked = article.carousel || false;
-                document.getElementById('article-breaking').checked = article.breaking || false;
-            } catch (error) {
-                console.error('Error populating form:', error);
-                showToast('Erro ao carregar dados do artigo!', 'error');
-            }
+        function renderLibrary() {
+            const list = document.getElementById('library-list');
+            const search = document.getElementById('search').value.toLowerCase();
+            const filtered = articles.filter(a => a.title.toLowerCase().includes(search)).sort((a,b) => b.date - a.date);
+            list.innerHTML = filtered.map(a => `
+                <div style="display:flex; align-items:center; gap:15px; padding:12px; border-bottom:1px solid rgba(0,0,0,0.05)">
+                    <img src="${a.image || 'VJ_l.webp'}" style="width:50px; height:35px; border-radius:4px; object-fit:cover">
+                    <div style="flex:1">
+                        <h4 style="font-size:0.85rem">${a.isUH ? '🚨 ' : ''}${a.title}</h4>
+                        <small style="opacity:0.6">${a.published ? '🟢 No Ar' : '⚪ Rascunho'}</small>
+                    </div>
+                    <button onclick="editPost('${a.id}')" style="background:none; border:none; cursor:pointer; font-size:1.1rem">✏️</button>
+                    <button onclick="deletePost('${a.id}')" style="background:none; border:none; cursor:pointer; font-size:1.1rem">🗑️</button>
+                </div>
+            `).join('');
         }
 
-        function resetForm() {
-            try {
-                document.getElementById('article-form').reset();
-                document.getElementById('edit-id').value = '';
-                document.getElementById('image-preview').style.display = 'none';
-                document.getElementById('youtube-preview').style.display = 'none';
-                document.getElementById('article-author').value = 'Admin';
-                document.getElementById('article-date').value = '';
-                document.getElementById('article-image-source').value = '';
-                
-                if (quillEditor) {
-                    quillEditor.setText('');
-                }
-                
-                showToast('Formulário limpo!', 'success');
-            } catch (error) {
-                console.error('Error resetting form:', error);
-            }
-        }
+        function renderCarouselManager() {
+            const container = document.getElementById('carousel-manager-content');
+            const pubs = articles.filter(a => a.published);
+            const inCarousel = pubs.filter(a => a.carouselOrder).sort((a,b) => a.carouselOrder - b.carouselOrder);
+            const available = pubs.filter(a => !a.carouselOrder).sort((a,b) => b.date - a.date);
 
-        function togglePublish(articleId, publish) {
-            const button = event.target;
-            button.classList.add('loading');
-            button.disabled = true;
-            
-            articlesRef.child(articleId).update({ 
-                published: publish,
-                lastModified: Date.now()
-            }).then(() => {
-                showToast(`Artigo ${publish ? 'publicado' : 'despublicado'} com sucesso!`, 'success');
-                loadArticlesTable();
-                loadDashboard();
-            }).catch(error => {
-                console.error('Error toggling publish:', error);
-                showToast('Erro ao alterar status de publicação!', 'error');
-                button.classList.remove('loading');
-                button.disabled = false;
+            let html = '<div style="margin-bottom:30px">';
+            [1, 2, 3].forEach(num => {
+                const active = inCarousel.find(a => a.carouselOrder == num);
+                html += `
+                <div class="carousel-slot">
+                    <div class="carousel-number">${num}</div>
+                    ${active ? `
+                        <img src="${active.image}" style="width:60px; height:40px; border-radius:8px; object-fit:cover">
+                        <div style="flex:1"><h4 style="font-size:0.9rem">${active.title}</h4></div>
+                        <button onclick="updateCarouselOrder('${active.id}', null)" style="background:#fee2e2; color:#ef4444; border:none; padding:8px 15px; border-radius:10px; cursor:pointer; font-weight:700; font-size:0.75rem">Remover</button>
+                    ` : `
+                        <div style="flex:1; opacity:0.5; font-style:italic; font-size:0.9rem">Slot vazio (mostra notícia recente)</div>
+                    `}
+                </div>`;
             });
+            html += '</div>';
+
+            html += `
+            <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top:20px">
+                <h3 style="margin-bottom:15px; font-size:1rem">Substituir / Adicionar:</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px">
+                    ${[1, 2, 3].map(n => `
+                        <div>
+                            <label class="label">Para Posição ${n}</label>
+                            <select class="input" onchange="if(this.value) updateCarouselOrder(this.value, ${n})">
+                                <option value="">Selecionar notícia...</option>
+                                ${available.map(a => `<option value="${a.id}">${a.title}</option>`).join('')}
+                            </select>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+
+            container.innerHTML = html;
         }
 
-        function deleteArticle(articleId) {
-            if (!confirm('Tem certeza que deseja excluir este artigo? Esta ação não pode ser desfeita.')) {
-                return;
+        function updateCarouselOrder(id, pos) {
+            if(pos !== null) {
+                const old = articles.find(a => a.carouselOrder == pos);
+                if(old) db.ref('articles/'+old.id+'/carouselOrder').set(null);
             }
-            
-            const button = event.target;
-            button.classList.add('loading');
-            button.disabled = true;
-            
-            articlesRef.child(articleId).remove().then(() => {
-                showToast('Artigo excluído com sucesso!', 'success');
-                loadArticlesTable();
-                loadDashboard();
-            }).catch(error => {
-                console.error('Error deleting article:', error);
-                showToast('Erro ao excluir artigo!', 'error');
-                button.classList.remove('loading');
-                button.disabled = false;
-            });
+            db.ref('articles/'+id+'/carouselOrder').set(pos).then(() => showToast("Carrossel atualizado!"));
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
+        function editPost(id) {
+            const a = articles.find(x => x.id === id);
+            document.getElementById('post-id').value = id;
+            document.getElementById('title').value = a.title;
+            document.getElementById('author').value = a.author || "";
+            document.getElementById('category').value = a.category;
+            document.getElementById('is-ultima-hora').checked = a.isUH || false;
+            document.getElementById('image-data').value = a.image || '';
+            document.getElementById('img-render').src = a.image || '';
+            document.getElementById('img-render').style.display = a.image ? 'block' : 'none';
+            quill.root.innerHTML = a.content;
+            showSection('write', document.getElementById('m-nav-write'));
         }
 
-        function formatDate(timestamp) {
-            try {
-                if (!timestamp) return 'Data inválida';
-                const date = new Date(timestamp);
-                return date.toLocaleDateString('pt-PT', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                });
-            } catch (error) {
-                return 'Data inválida';
-            }
+        function deletePost(id) { if(confirm("Apagar definitivamente?")) db.ref('articles/'+id).remove(); }
+
+        function renderDashboard() {
+            document.getElementById('stat-total').innerText = articles.length;
+            document.getElementById('stat-pub').innerText = articles.filter(a=>a.published).length;
+            document.getElementById('stat-uh').innerText = articles.filter(a=>a.isUH).length;
         }
 
-        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+        function showSection(name, el) {
+            document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+            document.getElementById('sect-'+name).style.display = 'block';
+            document.querySelectorAll('.nav-item, .m-nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
+            const mobEl = document.getElementById('m-nav-'+name);
+            if(mobEl) mobEl.classList.add('active');
         }
 
-        function getCategoryName(category) {
-            const categories = {
-                'tecnologia': 'Tecnologia',
-                'politica': 'Política',
-                'gaming': 'Gaming',
-                'entretenimento': 'Entretenimento',
-                'musica': 'Música',
-                'investigacao': 'Investigação',
-                'cronica': 'Crónica',
-                'critica': 'Crítica',
-                'pais': 'País',
-                'entrevista': 'Entrevista Exclusiva',
-                'desporto': 'Desporto',
-                'mundo': 'Mundo',
-                'opiniao': 'Opinião'
-            };
-            return categories[category] || category || 'Geral';
+        function clearEditor() {
+            document.getElementById('post-id').value = "";
+            document.getElementById('title').value = "";
+            document.getElementById('author').value = "";
+            document.getElementById('image-data').value = "";
+            document.getElementById('is-ultima-hora').checked = false;
+            document.getElementById('img-render').style.display = 'none';
+            quill.root.innerHTML = "";
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('admin-password');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        login();
-                    }
-                });
-            }
-        });
+        function showToast(msg, color = '#10b981') {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.style.background = color; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
 
-        window.addEventListener('resize', () => {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        });
+        function logout() { sessionStorage.clear(); location.reload(); }
+        if(sessionStorage.getItem('vj_in')) start();
     </script>
 </body>
 </html>
