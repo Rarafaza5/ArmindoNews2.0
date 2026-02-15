@@ -3,18 +3,50 @@
 
 <head>
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="b4f40891-690f-4ff2-87c2-c5bbdf9a408e"
-        type="text/javascript"></script>
+        type="text/javascript" async></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://aawards-default-rtdb.firebaseio.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://aawards-default-rtdb.firebaseio.com">
+
     <title>Verdade Jovem — Artigo</title>
-    <link rel="icon" type="image/x-icon" href="VJ_D.webp">
+    <meta name="description" content="Leia as últimas notícias no portal Verdade Jovem.">
+    <meta name="keywords" content="notícias, jornalismo, jovem, Verdade Jovem">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" id="og-url" content="">
+    <meta property="og:title" id="og-title" content="Verdade Jovem">
+    <meta property="og:description" id="og-desc" content="Leia este artigo no portal Verdade Jovem.">
+    <meta property="og:image" id="og-img" content="https://armindonews.site/VJ_l.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" id="tw-url" content="">
+    <meta property="twitter:title" id="tw-title" content="Verdade Jovem">
+    <meta property="twitter:description" id="tw-desc" content="Leia este artigo no portal Verdade Jovem.">
+    <meta property="twitter:image" id="tw-img" content="https://armindonews.site/VJ_l.webp">
+
+    <link rel="canonical" id="canonical-link" href="">
+
+    <!-- Dynamic JSON-LD placeholder -->
+    <script type="application/ld+json" id="article-schema"></script>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- Firebase SDKs (Compat) - CRITICAL for new users/shared links -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
+
+
     <style>
         :root {
             --font-sans: 'Inter', sans-serif;
@@ -48,8 +80,19 @@
         }
 
         /* Barra de Progresso */
-        .progress-container { position: fixed; top: 0; width: 100%; height: 5px; z-index: 2000; }
-        .progress-bar { height: 100%; background: var(--color-primary); width: 0%; }
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 5px;
+            z-index: 2000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--color-primary);
+            width: 0%;
+        }
 
         header.main-header {
             background: var(--header-bg);
@@ -65,9 +108,15 @@
             align-items: center;
         }
 
-        .logo img { height: 70px; width: auto; }
+        .logo img {
+            height: 70px;
+            width: auto;
+        }
 
-        .header-actions { display: flex; gap: 10px; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
 
         .action-btn {
             background: var(--color-card-bg);
@@ -78,9 +127,17 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .action-btn:hover { background: var(--color-primary); color: white; }
 
-        main { max-width: 850px; margin: 3rem auto; padding: 0 1.5rem; }
+        .action-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
 
         article {
             background: var(--color-card-bg);
@@ -88,6 +145,8 @@
             box-shadow: var(--shadow);
             padding: clamp(1.5rem, 5vw, 3.5rem);
             border: 1px solid var(--border);
+            content-visibility: auto;
+            contain-intrinsic-size: 800px 1000px;
         }
 
         /* ESTILO DOS LINKS NO TEXTO */
@@ -98,6 +157,7 @@
             border-bottom: 1px solid transparent;
             transition: 0.2s;
         }
+
         .article-body a:hover {
             border-bottom: 2px solid var(--color-primary);
         }
@@ -112,12 +172,27 @@
             text-transform: uppercase;
         }
 
-        h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; line-height: 1.1; margin: 1.5rem 0; }
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 1.5rem 0;
+        }
 
         .article-body {
             font-family: var(--font-serif);
             font-size: 1.2rem;
             line-height: 1.8;
+        }
+
+        /* Drop Cap (Capitular) - Premium Editorial Factor */
+        .article-body p:first-of-type::first-letter {
+            float: left;
+            font-size: 4rem;
+            line-height: 3.5rem;
+            padding: 4px 10px 0 0;
+            font-weight: 800;
+            color: var(--color-primary);
         }
 
         /* Blockquote Estilizado */
@@ -131,9 +206,22 @@
             color: var(--color-text);
         }
 
-        .hero-media { margin: 2rem 0; border-radius: 16px; overflow: hidden; }
-        .hero-media img, .hero-media iframe { width: 100%; border: none; display: block; }
-        .hero-media iframe { height: 450px; }
+        .hero-media {
+            margin: 2rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .hero-media img,
+        .hero-media iframe {
+            width: 100%;
+            border: none;
+            display: block;
+        }
+
+        .hero-media iframe {
+            height: 450px;
+        }
 
         .toolbar-bottom {
             position: fixed;
@@ -143,14 +231,15 @@
             background: var(--color-card-bg);
             padding: 10px 20px;
             border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             display: flex;
             gap: 20px;
             z-index: 1000;
             border: 1px solid var(--border);
         }
 
-        .toolbar-bottom a, .toolbar-bottom button {
+        .toolbar-bottom a,
+        .toolbar-bottom button {
             color: var(--color-text);
             font-size: 1.2rem;
             background: none;
@@ -158,34 +247,465 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .toolbar-bottom a:hover { color: var(--color-primary); }
 
-        .back-nav { text-align: center; margin-top: 3rem; }
-        .back-nav a { color: var(--color-muted); text-decoration: none; font-weight: 600; }
-        .back-nav a:hover { color: var(--color-primary); }
+        .toolbar-bottom a:hover {
+            color: var(--color-primary);
+        }
+
+        .back-nav {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .back-nav a {
+            color: var(--color-muted);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* SEO & Discovery Additions */
+        .breadcrumb {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            color: var(--color-muted);
+        }
+
+        .breadcrumb a {
+            color: inherit;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--color-primary);
+        }
+
+        .related-section {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .related-title {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--color-primary);
+            padding-left: 15px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .related-card {
+            background: var(--color-card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .related-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .related-body {
+            padding: 1.2rem;
+        }
+
+        .related-cat {
+            font-size: 0.7rem;
+            color: var(--color-primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .related-t {
+            font-size: 1.1rem;
+            margin: 8px 0;
+            line-height: 1.4;
+            color: var(--color-text);
+        }
+
+        .back-nav a:hover {
+            color: var(--color-primary);
+        }
 
         @media (max-width: 600px) {
-            .hero-media iframe { height: 250px; }
-            .toolbar-bottom { width: 90%; justify-content: space-around; }
+            .hero-media iframe {
+                height: 250px;
+            }
+
+            .toolbar-bottom {
+                width: 90%;
+                justify-content: space-around;
+            }
+        }
+
+        @keyframes fIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Skip Link para Acessibilidade (Sinal de Alta Qualidade Google) */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0 0 10px 10px;
+            z-index: 9999;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        footer {
+            background: var(--color-card-bg);
+            border-top: 1px solid var(--border);
+            padding: 80px 20px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
         }
     </style>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered'));
+            });
+        }
+    </script>
+    <script defer>
+        const cfg = { apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc", authDomain: "aawards.firebaseapp.com", databaseURL: "https://aawards-default-rtdb.firebaseio.com", projectId: "aawards" };
+        let currentFontSize = 1.2;
+
+        function adjustFont(delta) {
+            currentFontSize += delta * 0.1;
+            if (currentFontSize < 0.9) currentFontSize = 0.9;
+            if (currentFontSize > 1.8) currentFontSize = 1.8;
+            const c = document.getElementById('content');
+            if (c) c.style.fontSize = currentFontSize + 'rem';
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('tIcon');
+            const logo = document.getElementById('main-logo');
+            if (icon) {
+                icon.innerHTML = isDark
+                    ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+                    : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+            }
+            if (logo) logo.src = isDark ? 'VJ_l.webp' : 'VJ_D.webp';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        function copyURL() {
+            navigator.clipboard.writeText(window.location.href);
+            const toast = document.createElement('div');
+            toast.style = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#000; color:#fff; padding:10px 20px; border-radius:20px; font-size:0.9rem; z-index:9999; animation: fIn 0.3s ease;";
+            toast.innerText = "Link copiado para a área de transferência!";
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+        }
+
+        window.onscroll = () => {
+            const scroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const bar = document.getElementById("pBar");
+            if (bar) bar.style.width = (scroll / height * 100) + "%";
+        };
+
+        function initArticle() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (!id) return;
+
+            // 1. Flash Injection from Local Cache
+            const cache = localStorage.getItem('vj_articles');
+            if (cache) {
+                try {
+                    const articles = JSON.parse(cache);
+                    const found = articles.find(a => a.id === id);
+                    if (found) renderArticle(found, true);
+                } catch (e) { console.warn("Cache error:", e); }
+            }
+
+            // 2. Full Fetch from Firebase
+            if (window.db) {
+                db.ref('articles/' + id).once('value').then(snap => {
+                    const a = snap.val();
+                    if (a) {
+                        a.id = id; // Garante o ID
+                        renderArticle(a, false);
+                    }
+                }).catch(e => console.error("Firebase fetch error:", e));
+            }
+        }
+
+        function renderArticle(a, isPartial) {
+            if (!a) return;
+
+            try {
+                // Seleção de elementos DOM
+                const t = document.getElementById('title');
+                const n = document.getElementById('author-name');
+                const d = document.getElementById('date-text');
+                const c = document.getElementById('category');
+                const m = document.getElementById('media-box');
+                const co = document.getElementById('content');
+                const bCat = document.getElementById('breadcrumb-cat');
+
+                // Título e SEO básico
+                if (t) t.innerText = a.title || "Verdade Jovem";
+                document.title = (a.title || "Artigo") + " | Verdade Jovem";
+
+                // Metadados
+                if (n) n.innerText = a.author || "Redação";
+                if (d && a.date) {
+                    try {
+                        d.innerText = new Date(a.date).toLocaleDateString('pt-PT');
+                    } catch (e) { d.innerText = "Recente"; }
+                }
+                if (c && a.category) {
+                    c.innerText = a.category;
+                    c.style.display = 'inline-block';
+                }
+                if (bCat) bCat.innerText = a.category || "Geral";
+
+                // INJEÇÃO DO CONTEÚDO (CRÍTICO)
+                if (co && a.content) {
+                    co.innerHTML = a.content;
+                } else if (co && !isPartial && !a.content) {
+                    co.innerHTML = "<p style='text-align:center; opacity:0.5;'>Este artigo está temporariamente indisponível ou não possui conteúdo.</p>";
+                }
+
+                // Media Handling (YouTube ou Imagem)
+                if (m) {
+                    if (a.youtubeUrl && !isPartial) {
+                        let vId = a.youtubeUrl.includes('v=') ? a.youtubeUrl.split('v=')[1] : a.youtubeUrl.split('/').pop();
+                        m.innerHTML = `<iframe src="https://www.youtube.com/embed/${vId.split('&')[0]}" allowfullscreen loading="lazy"></iframe>`;
+                    } else if (a.image && (isPartial || !a.youtubeUrl)) {
+                        m.innerHTML = `<img src="${a.image}" alt="${a.title}" style="width:100%; border-radius:16px;">`;
+                    }
+                }
+
+                // SEO Avançado (Meta Tags e JSON-LD)
+                updateSEO(a);
+
+            } catch (err) {
+                console.error("Render error:", err);
+            }
+        }
+
+        function updateSEO(a) {
+            const url = window.location.href;
+            const desc = a.content ? a.content.substring(0, 160).replace(/<[^>]*>/g, '') + '...' : "Leia este artigo no portal Verdade Jovem.";
+
+            const sets = [
+                ['meta[name="description"]', 'content', desc],
+                ['#og-url', 'content', url],
+                ['#og-title', 'content', (a.title || "Verdade Jovem") + " | Verdade Jovem"],
+                ['#og-desc', 'content', desc],
+                ['#tw-url', 'content', url],
+                ['#tw-title', 'content', (a.title || "Verdade Jovem") + " | Verdade Jovem"],
+                ['#tw-desc', 'content', desc],
+                ['#canonical-link', 'href', url]
+            ];
+
+            sets.forEach(s => {
+                const el = document.querySelector(s[0]);
+                if (el) el.setAttribute(s[1], s[2]);
+            });
+
+            if (a.image) {
+                const imgSet = [['#og-img', 'content', a.image], ['#tw-img', 'content', a.image]];
+                imgSet.forEach(s => {
+                    const el = document.querySelector(s[0]);
+                    if (el) el.setAttribute(s[1], s[2]);
+                });
+            }
+
+            // Share Links Injection (HARDENED)
+            const w = document.getElementById('share-wpp');
+            const f = document.getElementById('share-fb');
+            const shareText = encodeURIComponent(`📰 *VERDADE JOVEM* 📰\n\n📍 *${a.title || "Notícia"}*\n\n👇 Aceda aqui a todos os detalhes e à reportagem completa: 👇\n`);
+            if (w) w.href = `https://api.whatsapp.com/send?text=${shareText}${encodeURIComponent(url)}`;
+            if (f) f.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+            // Schema Injection
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "NewsArticle",
+                "headline": a.title || "Verdade Jovem",
+                "image": [a.image || "https://armindonews.site/VJ_l.webp"],
+                "datePublished": a.date ? new Date(a.date).toISOString() : new Date().toISOString(),
+                "author": [{
+                    "@type": "Person",
+                    "name": a.author || "Redação Verdade Jovem",
+                    "url": "https://armindonews.site/equipe.html"
+                }],
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Verdade Jovem",
+                    "logo": { "@type": "ImageObject", "url": "https://armindonews.site/VJ_l.webp" }
+                }
+            };
+            const sScript = document.getElementById('article-schema');
+            if (sScript) sScript.text = JSON.stringify(schema);
+
+            renderRelated(a.id, a.category);
+        }
+
+        function renderRelated(currentId, category) {
+            const cache = localStorage.getItem('vj_articles');
+            if (cache) {
+                try {
+                    const articles = JSON.parse(cache);
+                    if (articles && articles.length > 0) {
+                        return displayRelated(articles, currentId, category);
+                    }
+                } catch (e) { }
+            }
+            // Fallback: Fetch from Firebase if cache is empty or invalid
+            fetchRelated(currentId, category);
+        }
+
+        function fetchRelated(currentId, category) {
+            if (!window.db) return;
+            db.ref('articles').limitToLast(12).once('value').then(snap => {
+                const data = snap.val();
+                const articles = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
+                displayRelated(articles, currentId, category);
+            }).catch(e => console.error("Error fetching related articles:", e));
+        }
+
+        function displayRelated(articles, currentId, category) {
+            const related = articles
+                .filter(x => x.id !== currentId && x.published)
+                .sort((a, b) => {
+                    if (a.category === category && b.category !== category) return -1;
+                    if (a.category !== category && b.category === category) return 1;
+                    return new Date(b.date) - new Date(a.date);
+                })
+                .slice(0, 3);
+
+            const grid = document.getElementById('related-grid');
+            if (grid) {
+                if (related.length === 0) {
+                    grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; opacity:0.5;'>Nenhum artigo relacionado encontrado.</p>";
+                    return;
+                }
+                grid.innerHTML = related.map(x => `
+                    <article class="related-card" onclick="location.href='article.html?id=${x.id}'">
+                        <img src="${x.image || 'VJ_l.webp'}" class="related-img" alt="${x.title}" loading="lazy">
+                        <div class="related-body">
+                            <span class="related-cat">${x.category}</span>
+                            <h3 class="related-t">${x.title}</h3>
+                        </div>
+                    </article>
+                `).join('');
+            }
+        }
+
+        function startFirebase() {
+            if (typeof firebase === 'undefined') { setTimeout(startFirebase, 50); return; }
+            if (!firebase.apps.length) firebase.initializeApp(cfg);
+            window.db = firebase.database();
+            initArticle();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'light') toggleTheme();
+        });
+        startFirebase();
+    </script>
 </head>
 
+
+
+
 <body class="dark-mode">
-    <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
-    
+    <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+    <div class="progress-container">
+        <div class="progress-bar" id="pBar"></div>
+    </div>
+
     <header class="main-header">
         <a href="index.html" class="logo">
             <img src="VJ_l.webp" id="main-logo" alt="Verdade Jovem">
         </a>
         <div class="header-actions">
-            <button class="action-btn" onclick="adjustFont(1)" title="Aumentar texto"><i class="fas fa-plus"></i></button>
-            <button class="action-btn" onclick="adjustFont(-1)" title="Diminuir texto"><i class="fas fa-minus"></i></button>
-            <button class="action-btn" onclick="toggleTheme()" title="Modo Escuro/Claro"><i class="fas fa-moon" id="tIcon"></i></button>
+            <button class="action-btn" onclick="adjustFont(1)" title="Aumentar texto"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg></button>
+            <button class="action-btn" onclick="adjustFont(-1)" title="Diminuir texto"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg></button>
+            <button class="action-btn" onclick="toggleTheme()" title="Modo Escuro/Claro"
+                aria-label="Alternar modo escuro e claro">
+                <span id="tIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </span>
+            </button>
         </div>
     </header>
 
-    <main>
+    <main id="main-content" class="container" style="margin-top: 2rem;">
+        <nav class="breadcrumb">
+            <a href="index.html">Início</a>
+            <span style="margin: 0 8px;">/</span>
+            <span id="breadcrumb-cat">Geral</span>
+        </nav>
+
         <article id="readable-content">
             <header style="text-align: center; margin-bottom: 2rem;">
                 <span id="category" class="category-tag" style="display:none;"></span>
@@ -205,87 +725,105 @@
                 <a href="index.html">← Voltar para o Início</a>
             </div>
         </article>
+
+        <section class="related-section">
+            <h2 class="related-title">Mais de Verdade Jovem</h2>
+            <div class="related-grid" id="related-grid">
+                <!-- Related articles will be injected here -->
+            </div>
+        </section>
     </main>
 
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <img src="VJ_l.webp" id="footer-logo" style="height:60px; margin-bottom:25px;" alt="Logo Verdade Jovem">
+                <p style="color:var(--color-muted); line-height:1.6; font-size:0.95rem;">Um jornal para jovens, feito
+                    por jovens.<br><br>Verdade Jovem é um meio de comunicação social independente, fundado a 20 de abril
+                    de 2024.</p>
+            </div>
+            <div>
+                <h4 style="color:var(--color-primary); margin-bottom:15px;">Explorar</h4>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="equipe.html" style="color:var(--color-muted); text-decoration:none;">Equipa</a>
+                    <a href="privacidade.html" style="color:var(--color-muted); text-decoration:none;">Política de
+                        Privacidade</a>
+                    <a href="termos.html" style="color:var(--color-muted); text-decoration:none;">Termos e Condições</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="color:var(--color-primary); margin-bottom:15px;">Contacto</h4>
+                <p><strong>Verdade Jovem</strong></p>
+                <div style="color:var(--color-muted); display:flex; flex-direction:column; gap:12px; font-size:0.9rem;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:inherit; text-decoration:none;">contacto@grupoarmindo.site</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <a href="https://www.instagram.com/Verdade.Jovem/" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@Verdade.Jovem</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path
+                                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.42 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.42-5.58z">
+                            </path>
+                            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon>
+                        </svg>
+                        <a href="https://www.youtube.com/@VerdadeJovem" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@VerdadeJovem</a>
+                    </div>
+                </div><br>
+                <p><strong>Grupo Armindo</strong></p>
+                <div style="color:var(--color-muted); display:flex; flex-direction:column; gap:8px; font-size:0.9rem;">
+                    <div>📧 <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:inherit; text-decoration:none;">contacto@grupoarmindo.site</a></div>
+                    <div>🌐 <a href="https://grupoarmindo.site" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">https://grupoarmindo.site</a></div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:50px; opacity:0.5; font-size:0.8rem;">
+            &copy; 2026 Grupo Armindo. Todos os direitos reservados.
+        </div>
+    </footer>
+
     <div class="toolbar-bottom">
-        <a id="share-wpp" target="_blank" title="Partilhar WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a id="share-fb" target="_blank" title="Partilhar Facebook"><i class="fab fa-facebook-f"></i></a>
-        <button onclick="copyURL()" title="Copiar Link"><i class="fas fa-link"></i></button>
+        <a id="share-wpp" target="_blank" title="Partilhar WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 448 512" fill="currentColor">
+                <path
+                    d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.7 17.8 69.4 27.2 106.2 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.2-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.1-3.2-5.5-.3-8.4 2.4-11.2 2.5-2.5 5.5-6.4 8.3-9.7 2.8-3.3 3.7-5.7 5.5-9.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.1 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+            </svg>
+        </a>
+        <a id="share-fb" target="_blank" title="Partilhar Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="20"
+                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg></a>
+        <button onclick="copyURL()" title="Copiar Link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg></button>
     </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc",
-            authDomain: "aawards.firebaseapp.com",
-            databaseURL: "https://aawards-default-rtdb.firebaseio.com",
-            projectId: "aawards"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // --- FUNÇÕES DE UTILIDADE ---
-        let currentFontSize = 1.2;
-        function adjustFont(delta) {
-            currentFontSize += delta * 0.1;
-            if(currentFontSize < 0.9) currentFontSize = 0.9;
-            if(currentFontSize > 1.8) currentFontSize = 1.8;
-            document.getElementById('content').style.fontSize = currentFontSize + 'rem';
-        }
-
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            document.getElementById('tIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            document.getElementById('main-logo').src = isDark ? 'VJ_l.webp' : 'VJ_D.webp';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-        if(localStorage.getItem('theme') === 'light') toggleTheme();
-
-        function copyURL() {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Link copiado com sucesso!");
-        }
-
-        window.onscroll = () => {
-            const scroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            document.getElementById("pBar").style.width = (scroll / height * 100) + "%";
-        };
-
-        // --- CARREGAMENTO DO ARTIGO ---
-        const id = new URLSearchParams(window.location.search).get('id');
-        if (id) {
-            db.ref('articles/' + id).once('value').then(snap => {
-                const a = snap.val();
-                if (!a) return;
-
-                document.title = a.title + " — Verdade Jovem";
-                document.getElementById('title').innerText = a.title;
-                document.getElementById('author-name').innerText = a.author || "Redação";
-                document.getElementById('date-text').innerText = new Date(a.date).toLocaleDateString('pt-PT');
-
-                if(a.category) {
-                    const cat = document.getElementById('category');
-                    cat.innerText = a.category; cat.style.display = 'inline-block';
-                }
-
-                const media = document.getElementById('media-box');
-                if (a.youtubeUrl) {
-                    let vId = a.youtubeUrl.includes('v=') ? a.youtubeUrl.split('v=')[1] : a.youtubeUrl.split('/').pop();
-                    media.innerHTML = `<iframe src="https://www.youtube.com/embed/${vId.split('&')[0]}" allowfullscreen></iframe>`;
-                } else if (a.image) {
-                    media.innerHTML = `<img src="${a.image}" alt="Imagem de capa">`;
-                }
-
-                // Renderiza o conteúdo (o Firebase já deve trazer as tags <a> formatadas)
-                document.getElementById('content').innerHTML = a.content || a.contentText;
-
-                // Configura links de partilha
-                const url = encodeURIComponent(window.location.href);
-                const msg = encodeURIComponent(a.title);
-                document.getElementById('share-wpp').href = `https://api.whatsapp.com/send?text=${msg}%20${url}`;
-                document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            });
-        }
-    </script>
 </body>
+
+
+</body>
+
 </html>

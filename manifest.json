@@ -1,0 +1,21 @@
+{
+  "name": "Verdade Jovem",
+  "short_name": "VJ",
+  "description": "Portal de Notícias Independente para Jovens",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#efede2",
+  "theme_color": "#dd0000",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

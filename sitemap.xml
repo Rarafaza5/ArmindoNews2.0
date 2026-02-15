@@ -5,7 +5,8 @@
 
   <!-- página principal -->
   <url>
-    <loc>https://armindonews.site</loc>
+    <loc>https://armindonews.site/</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,21 +14,25 @@
   <!-- páginas estáticas -->
   <url>
     <loc>https://armindonews.site/index.html</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://armindonews.site/equipe.html</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://armindonews.site/privacidade.html</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://armindonews.site/termos.html</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

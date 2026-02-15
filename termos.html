@@ -1,84 +1,272 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Verdade Jovem – Institucional</title>
+    <title>Termos e Condições | Verdade Jovem</title>
+    <meta name="description" content="Leia os Termos e Condições de utilização do site Verdade Jovem.">
+    <link rel="canonical" href="https://armindonews.site/termos.html">
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+
     <style>
         :root {
-            --bg: #f8f7f2; --card: #ffffff; --text: #121212; --text-sec: #555b66;
-            --p: #dd0000; --border: rgba(0,0,0,0.06); --header-bg: rgba(248, 247, 242, 0.85);
+            --bg: #f8f7f2;
+            --card: #ffffff;
+            --text: #121212;
+            --text-sec: #555b66;
+            --p: #dd0000;
+            --border: rgba(0, 0, 0, 0.06);
+            --header-bg: rgba(248, 247, 242, 0.85);
         }
+
         body.dark-mode {
-            --bg: #10121e; --card: #181b2d; --text: #ffffff; --text-sec: #a0a6b1;
-            --border: rgba(255,255,255,0.05); --header-bg: rgba(16, 18, 30, 0.85);
+            --bg: #10121e;
+            --card: #181b2d;
+            --text: #ffffff;
+            --text-sec: #a0a6b1;
+            --border: rgba(255, 255, 255, 0.05);
+            --header-bg: rgba(16, 18, 30, 0.85);
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.4s; line-height: 1.7; }
-        .header { background: var(--header-bg); padding: 1.2rem 2rem; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .logo img { height: 52px; }
-        .container { max-width: 800px; margin: 4rem auto; padding: 0 1.5rem; }
-        .content-box { background: var(--card); padding: 3rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        h1 { color: var(--p); margin-bottom: 2rem; }
-        h2 { color: var(--text); margin-top: 2.5rem; }
-        p { color: var(--text-sec); }
-        .theme-toggle { background: var(--card); border: 1px solid var(--border); color: var(--text); cursor: pointer; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            transition: 0.4s;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: var(--header-bg);
+            padding: 1.2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 52px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .content-box {
+            background: var(--card);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--p);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--text);
+            margin-top: 2.5rem;
+        }
+
+        p {
+            color: var(--text-sec);
+        }
+
+        .theme-toggle {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 80px 20px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
     </style>
 </head>
+
 <body class="dark-mode">
     <header class="header">
         <a href="index.html" class="logo"><img src="VJ_l.webp" id="main-logo" alt="Verdade Jovem"></a>
         <button class="theme-toggle" onclick="toggleTheme()"><span id="theme-icon">☀️</span></button>
     </header>
-     <main class="container">
+    <main class="container">
         <article class="content-box">
             <h1>📜 Termos e Condições</h1>
-            
+
             <div class="intro-text">
                 <p><strong>Última atualização:</strong> Janeiro de 2026</p>
-                <p>Estes Termos e Condições de Uso (doravante "Termos") regulam o acesso e a utilização do site Verdade Jovem (doravante "Site"), de propriedade de Rafael Diogo e Jorge Figueira (doravante "Nós", "Nossa Empresa" ou "Grupo Armindo").</p>
+                <p>Estes Termos e Condições de Uso (doravante "Termos") regulam o acesso e a utilização do site Verdade
+                    Jovem (doravante "Site"), de propriedade de Rafael Diogo e Jorge Figueira (doravante "Nós", "Nossa
+                    Empresa" ou "Grupo Armindo").</p>
             </div>
 
-            <p>Ao aceder à Verdade Jovem, o utilizador (doravante "Você") concorda integralmente com estes Termos. Se não concordar com qualquer parte destes Termos, por favor, não utilize o nosso Site.</p>
+            <p>Ao aceder à Verdade Jovem, o utilizador (doravante "Você") concorda integralmente com estes Termos. Se
+                não concordar com qualquer parte destes Termos, por favor, não utilize o nosso Site.</p>
 
             <h2>📰 Conteúdos do Site</h2>
-            <p>O conteúdo publicado no nosso Site, incluindo artigos, notícias, fotografias, vídeos e outros materiais, é destinado exclusivamente a fins jornalísticos e informativos.</p>
-            <p>Embora nos esforcemos para garantir a precisão e a atualização das informações, não garantimos a sua total exatidão, fiabilidade ou integridade. As opiniões expressas nos artigos são dos respetivos autores e não refletem necessariamente a posição oficial da Verdade Jovem.</p>
-            <p>Reservamo-nos o direito de corrigir, modificar ou remover qualquer conteúdo a qualquer momento, sem aviso prévio.</p>
+            <p>O conteúdo publicado no nosso Site, incluindo artigos, notícias, fotografias, vídeos e outros materiais,
+                é destinado exclusivamente a fins jornalísticos e informativos.</p>
+            <p>Embora nos esforcemos para garantir a precisão e a atualização das informações, não garantimos a sua
+                total exatidão, fiabilidade ou integridade. As opiniões expressas nos artigos são dos respetivos autores
+                e não refletem necessariamente a posição oficial da Verdade Jovem.</p>
+            <p>Reservamo-nos o direito de corrigir, modificar ou remover qualquer conteúdo a qualquer momento, sem aviso
+                prévio.</p>
 
             <h2>©️ Direitos de Propriedade Intelectual</h2>
-            <p>Todo o conteúdo e materiais presentes na Verdade Jovem, incluindo, mas não se limitando a textos, gráficos, logotipos, ícones, clipes de áudio e vídeos, são propriedade do Grupo Armindo ou dos seus respetivos licenciadores e estão protegidos pelas leis de direitos de autor e outras leis de propriedade intelectual.</p>
-            <p>A reprodução, distribuição, modificação ou uso não autorizado de qualquer conteúdo da Verdade Jovem é estritamente proibida sem a nossa prévia autorização por escrito. Exceções incluem citações breves para fins de crítica, comentário ou notícia, desde que a fonte seja devidamente creditada.</p>
+            <p>Todo o conteúdo e materiais presentes na Verdade Jovem, incluindo, mas não se limitando a textos,
+                gráficos, logotipos, ícones, clipes de áudio e vídeos, são propriedade do Grupo Armindo ou dos seus
+                respetivos licenciadores e estão protegidos pelas leis de direitos de autor e outras leis de propriedade
+                intelectual.</p>
+            <p>A reprodução, distribuição, modificação ou uso não autorizado de qualquer conteúdo da Verdade Jovem é
+                estritamente proibida sem a nossa prévia autorização por escrito. Exceções incluem citações breves para
+                fins de crítica, comentário ou notícia, desde que a fonte seja devidamente creditada.</p>
 
             <h2>🔗 Links para Sites de Terceiros</h2>
-            <p>A Verdade Jovem pode conter links para sites de terceiros. Estes links são fornecidos apenas para conveniência e não implicam endosso ou responsabilidade pelo conteúdo desses sites.</p>
-            <p>Não somos responsáveis pelas práticas de privacidade, termos de uso ou conteúdo de sites externos. Recomendamos que reveja as políticas desses sites antes de fornecer qualquer informação pessoal.</p>
+            <p>A Verdade Jovem pode conter links para sites de terceiros. Estes links são fornecidos apenas para
+                conveniência e não implicam endosso ou responsabilidade pelo conteúdo desses sites.</p>
+            <p>Não somos responsáveis pelas práticas de privacidade, termos de uso ou conteúdo de sites externos.
+                Recomendamos que reveja as políticas desses sites antes de fornecer qualquer informação pessoal.</p>
 
             <h2>👤 Conduta do Utilizador</h2>
             <p>Ao utilizar o nosso Site, você concorda em não:</p>
-            <p>• Publicar ou transmitir conteúdo ilegal, ofensivo, difamatório ou prejudicial<br>
-            • Interferir com o funcionamento do Site ou servidores<br>
-            • Tentar obter acesso não autorizado a qualquer parte do Site<br>
-            • Utilizar o Site para fins comerciais sem autorização prévia<br>
-            • Violar direitos de propriedade intelectual ou privacidade de terceiros</p>
+            <p>Publicar ou transmitir conteúdo ilegal, ofensivo, difamatório ou prejudicial<br>
+                Interferir com o funcionamento do Site ou servidores<br>
+                Tentar obter acesso não autorizado a qualquer parte do Site<br>
+                Utilizar o Site para fins comerciais sem autorização prévia<br>
+                Violar direitos de propriedade intelectual ou privacidade de terceiros</p>
 
             <h2>⚠️ Exclusão de Garantias e Limitação de Responsabilidade</h2>
-            <p>A Verdade Jovem é fornecida "como está" e "conforme disponível", sem garantias de qualquer tipo, expressas ou implícitas. Não garantimos que o Site estará sempre disponível, livre de erros ou vírus.</p>
-            <p>Na medida máxima permitida pela lei, o Grupo Armindo não será responsável por quaisquer danos diretos, indiretos, incidentais, consequenciais ou punitivos resultantes do uso ou da incapacidade de usar o Site da Verdade Jovem.</p>
-            <p>Isso inclui, mas não se limita a, perda de dados, lucros, ou outras perdas intangíveis, mesmo que tenhamos sido avisados da possibilidade de tais danos.</p>
+            <p>A Verdade Jovem é fornecida "como está" e "conforme disponível", sem garantias de qualquer tipo,
+                expressas ou implícitas. Não garantimos que o Site estará sempre disponível, livre de erros ou vírus.
+            </p>
+            <p>Na medida máxima permitida pela lei, o Grupo Armindo não será responsável por quaisquer danos diretos,
+                indiretos, incidentais, consequenciais ou punitivos resultantes do uso ou da incapacidade de usar o Site
+                da Verdade Jovem.</p>
+            <p>Isso inclui, mas não se limita a, perda de dados, lucros, ou outras perdas intangíveis, mesmo que
+                tenhamos sido avisados da possibilidade de tais danos.</p>
 
             <h2>🌍 Legislação Aplicável</h2>
-            <p>Estes Termos são regidos pelas leis de Portugal. Qualquer disputa decorrente destes Termos será resolvida exclusivamente nos tribunais competentes de Portugal.</p>
+            <p>Estes Termos são regidos pelas leis de Portugal. Qualquer disputa decorrente destes Termos será resolvida
+                exclusivamente nos tribunais competentes de Portugal.</p>
 
             <h2>📝 Alterações aos Termos</h2>
-            <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. Quaisquer alterações entrarão em vigor imediatamente após a sua publicação na Verdade Jovem.</p>
-            <p>O seu uso continuado da Verdade Jovem após a publicação das alterações constitui a sua aceitação dos Termos revisados. A data da última atualização será sempre indicada no topo desta página.</p>
+            <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. Quaisquer alterações entrarão em
+                vigor imediatamente após a sua publicação na Verdade Jovem.</p>
+            <p>O seu uso continuado da Verdade Jovem após a publicação das alterações constitui a sua aceitação dos
+                Termos revisados. A data da última atualização será sempre indicada no topo desta página.</p>
 
             <h2>📧 Contacto</h2>
-            <p>Se tiver dúvidas ou preocupações sobre estes Termos e Condições, entre em contacto connosco através do email: <strong>armindo.news@grupoarmindo.site</strong></p>
+            <p>Se tiver dúvidas ou preocupações sobre estes Termos e Condições, entre em contacto connosco através do
+                email: <strong>contacto@grupoarmindo.site</strong></p>
         </article>
     </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <img src="VJ_l.webp" id="footer-logo" style="height:60px; margin-bottom:25px;" alt="Logo Verdade Jovem">
+                <p style="color:var(--muted); line-height:1.6; font-size:0.95rem;">Um jornal para jovens, feito por
+                    jovens.<br><br>Verdade Jovem é um meio de comunicação social independente, fundado a 20 de abril de
+                    2024.</p>
+            </div>
+            <div>
+                <h4 style="color:var(--p); margin-bottom:15px;">Explorar</h4>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="equipe.html" style="color:var(--muted); text-decoration:none;">Equipa</a>
+                    <a href="privacidade.html" style="color:var(--muted); text-decoration:none;">Política de
+                        Privacidade</a>
+                    <a href="termos.html" style="color:var(--muted); text-decoration:none;">Termos e Condições</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="color:var(--p); margin-bottom:15px;">Contacto</h4>
+                <p><strong>Verdade Jovem</strong></p>
+                <div style="color:var(--muted); display:flex; flex-direction:column; gap:12px; font-size:0.9rem;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:inherit; text-decoration:none;">contacto@grupoarmindo.site</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <a href="https://www.instagram.com/Verdade.Jovem/" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@Verdade.Jovem</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path
+                                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.42 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.42-5.58z">
+                            </path>
+                            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon>
+                        </svg>
+                        <a href="https://www.youtube.com/@VerdadeJovem" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@VerdadeJovem</a>
+                    </div>
+                </div>
+                <br>
+                <p><strong>Grupo Armindo</strong></p>
+                <div style="color:var(--muted); display:flex; flex-direction:column; gap:8px; font-size:0.9rem;">
+                    <div>📧 <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:inherit; text-decoration:none;">contacto@grupoarmindo.site</a></div>
+                    <div>🌐 <a href="https://grupoarmindo.site" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">https://grupoarmindo.site</a></div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:50px; opacity:0.5; font-size:0.8rem;">
+            &copy; 2026 Grupo Armindo. Todos os direitos reservados.
+        </div>
+    </footer>
     <script>
         function toggleTheme() {
             const b = document.body;
@@ -90,7 +278,8 @@
             icon.innerText = isDark ? '☀️' : '🌙';
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
-        if(localStorage.getItem('theme') === 'light') toggleTheme();
+        if (localStorage.getItem('theme') === 'light') toggleTheme();
     </script>
 </body>
+
 </html>

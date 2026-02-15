@@ -1,13 +1,245 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
-    <title>Verdade Jovem | Portal de Notícias</title>
-    <link rel="icon" href="favicon.png">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <link rel="preconnect" href="https://aawards-default-rtdb.firebaseio.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://aawards-default-rtdb.firebaseio.com">
+
+    <title>Verdade Jovem | Portal de Notícias Independente para Jovens</title>
+    <meta name="description"
+        content="Verdade Jovem é um portal de notícias independente fundado em 2024. Informação de qualidade, jornalismo sério e as últimas notícias de política, tecnologia, desporto e muito mais.">
+    <meta name="keywords"
+        content="notícias, jornalismo, jovem, política, tecnologia, desporto, mundo, entrevistas, crítica, Verdade Jovem, Grupo Armindo">
+    <meta name="author" content="Verdade Jovem">
+    <link rel="canonical" href="https://armindonews.site/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://armindonews.site/">
+    <meta property="og:title" content="Verdade Jovem | Portal de Notícias Independente para Jovens">
+    <meta property="og:description"
+        content="Jornalismo de qualidade feito por jovens para jovens. Explore notícias de política, tecnologia, desporto e muito mais.">
+    <meta property="og:image" content="https://armindonews.site/VJ_l.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://armindonews.site/">
+    <meta property="twitter:title" content="Verdade Jovem | Portal de Notícias Independente para Jovens">
+    <meta property="twitter:description"
+        content="Jornalismo de qualidade feito por jovens para jovens. Explore notícias de política, tecnologia, desporto e muito mais.">
+    <meta property="twitter:image" content="https://armindonews.site/VJ_l.webp">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "Verdade Jovem",
+      "alternateName": "VJ",
+      "url": "https://armindonews.site/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://armindonews.site/VJ_l.webp",
+        "width": 600,
+        "height": 60
+      },
+      "sameAs": [
+        "https://www.instagram.com/Verdade.Jovem/",
+        "https://www.youtube.com/@VerdadeJovem"
+      ],
+      "foundingDate": "2024-04-20",
+      "founder": {
+        "@type": "Person",
+        "name": "Rafael Diogo"
+      },
+      "description": "Um jornal para jovens, feito por jovens. Um meio de comunicação social independente, focado em política, tecnologia e cultura.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contacto@grupoarmindo.site",
+        "contactType": "editorial"
+      },
+      "ethicsPolicy": "https://armindonews.site/termos.html",
+      "factCheckingPolicy": "https://armindonews.site/privacidade.html",
+      "correctionsPolicy": "https://armindonews.site/termos.html",
+      "diversityPolicy": "https://armindonews.site/privacidade.html",
+      "publishingPrinciples": "https://armindonews.site/termos.html"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://armindonews.site/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://armindonews.site/index.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
+
+    <script defer>
+        const cfg = { apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc", authDomain: "aawards.firebaseapp.com", databaseURL: "https://aawards-default-rtdb.firebaseio.com", projectId: "aawards" };
+        const cats = [
+            { id: 'all', n: 'Início' }, { id: 'critica', n: 'Crítica' }, { id: 'politica', n: 'Política' },
+            { id: 'Entrevista', n: 'Entrevista' }, { id: 'desporto', n: 'Desporto' }, { id: 'tecnologia', n: 'Tecnologia' }, { id: 'mundo', n: 'Mundo' }
+        ];
+
+        let all = [], disp = [], cat = 'all', page = 1;
+
+        function toggleTheme() {
+            const b = document.body;
+            const logo = document.getElementById('main-logo');
+            const fLogo = document.getElementById('footer-logo');
+            const icon = document.getElementById('theme-icon');
+            if (!b || !logo || !fLogo || !icon) return;
+            b.classList.toggle('dark-mode');
+            const isDark = b.classList.contains('dark-mode');
+            logo.src = fLogo.src = isDark ? 'VJ_l.webp' : 'VJ_D.webp';
+            icon.innerHTML = isDark
+                ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+                : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        function init() {
+            const pc = document.getElementById('pc-menu');
+            if (pc && pc.innerHTML === "") {
+                cats.forEach(c => {
+                    pc.innerHTML += `<li><a href="#" class="nav-link ${c.id === 'all' ? 'active' : ''}" data-cat="${c.id}" onclick="showCat('${c.id}');return false">${c.n}</a></li>`;
+                });
+            }
+
+            const lastFetch = localStorage.getItem('vj_last_fetch');
+            const now = Date.now();
+            if (all.length > 0 && lastFetch && (now - lastFetch < 30000)) return;
+
+            db.ref('articles').limitToLast(15).on('value', s => {
+                const d = s.val();
+                all = d ? Object.keys(d).map(k => ({ id: k, ...d[k] })) : [];
+                all.sort((a, b) => b.date - a.date);
+                localStorage.setItem('vj_last_fetch', Date.now());
+                try {
+                    const thin = all.map(a => { const { content, contentText, ...rest } = a; return rest; });
+                    localStorage.setItem('vj_articles', JSON.stringify(thin));
+                } catch (e) { }
+                renderCarousel();
+                filter();
+                checkUH();
+            });
+        }
+
+        function renderCarousel() {
+            let slides = all.filter(a => a.published && a.carouselOrder).sort((a, b) => a.carouselOrder - b.carouselOrder);
+            if (slides.length < 3) {
+                const extra = all.filter(a => a.published && !slides.find(s => s.id === a.id)).slice(0, 3 - slides.length);
+                slides = [...slides, ...extra];
+            }
+            slides = slides.slice(0, 3);
+            const track = document.getElementById('carousel');
+            if (!track) return;
+            track.innerHTML = slides.map(a => `
+            <div class="carousel-slide" onclick="location.href='article.html?id=${a.id}'">
+                <img src="${a.image || 'VJ_l.webp'}" class="carousel-image">
+                <div class="carousel-content">
+                    <span class="article-cat" style="color:#fff; background:var(--p); padding:5px 12px; border-radius:8px;">${a.category}</span>
+                    <h2 class="carousel-title">${a.title}</h2>
+                </div>
+            </div>`).join('');
+            let cur = 0;
+            if (window.carTimer) clearInterval(window.carTimer);
+            window.carTimer = setInterval(() => {
+                cur = (cur + 1) % slides.length;
+                track.scrollTo({ left: track.offsetWidth * cur, behavior: 'smooth' });
+            }, 5000);
+        }
+
+        function filter() {
+            disp = all.filter(a => a.published && (cat === 'all' || a.category === cat));
+            page = 1; render();
+        }
+
+        function render() {
+            const grid = document.getElementById('articles');
+            if (!grid) return;
+            grid.innerHTML = disp.slice(0, page * 9).map(a => `
+            <article class="article-card" onclick="location.href='article.html?id=${a.id}'">
+                <div class="article-image-wrap"><img src="${a.image || 'VJ_l.webp'}" class="article-image" loading="lazy"></div>
+                <div class="article-body">
+                    <span class="article-cat">${a.category}</span>
+                    <h3 class="article-title">${a.title}</h3>
+                    <div class="article-meta">${new Date(a.date).toLocaleDateString()}</div>
+                </div>
+            </article>`).join('');
+            const lm = document.getElementById('load-more');
+            if (lm) lm.style.display = disp.length > page * 9 ? 'inline-block' : 'none';
+        }
+
+        function checkUH() {
+            const uh = all.find(a => a.published && a.isUH);
+            const b = document.getElementById('uh-banner');
+            if (!b) return;
+            if (uh) {
+                b.innerHTML = `<span class="uh-label">Última Hora</span> ${uh.title}`;
+                b.style.display = 'block';
+                b.onclick = () => location.href = `article.html?id=${uh.id}`;
+            } else { b.style.display = 'none'; }
+        }
+
+        function showCat(c) {
+            cat = c; filter();
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.cat === c));
+        }
+
+        function loadMore() { page++; render(); }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'light') toggleTheme();
+            const cache = localStorage.getItem('vj_articles');
+            if (cache) {
+                all = JSON.parse(cache);
+                renderCarousel();
+                filter();
+                checkUH();
+            }
+            document.getElementById('yr').innerText = new Date().getFullYear();
+        });
+
+        function startFirebase() {
+            if (typeof firebase === 'undefined') {
+                setTimeout(startFirebase, 50); return;
+            }
+            firebase.initializeApp(cfg);
+            window.db = firebase.database();
+
+            if (document.readyState === 'loading') {
+                window.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        }
+        startFirebase();
+    </script>
+
+
+
+
+
     <style>
         :root {
             --p: #dd0000;
@@ -15,9 +247,9 @@
             --card: #ffffff;
             --text: #121212;
             --text-sec: #555b66;
-            --border: rgba(0,0,0,0.06);
+            --border: rgba(0, 0, 0, 0.06);
             --header-bg: #dedcd2;
-            --shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
             --d: #0a0a0a;
         }
 
@@ -26,302 +258,563 @@
             --card: #181b2d;
             --text: #ffffff;
             --text-sec: #a0a6b1;
-            --border: rgba(255,255,255,0.05);
+            --border: rgba(255, 255, 255, 0.05);
             --header-bg: rgba(16, 18, 30, 0.85);
-            --shadow: 0 15px 35px -12px rgba(0,0,0,0.5);
+            --shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.5);
             --d: #ffffff;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            line-height: 1.6; 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
             transition: background 0.4s ease, color 0.4s ease;
         }
 
         /* Banner Última Hora */
-        .uh-banner { 
-            background: var(--p); color: #fff; padding: 12px; text-align: center; 
-            font-size: 0.85rem; font-weight: 600; cursor: pointer; display: none;
+        .uh-banner {
+            background: var(--p);
+            color: #fff;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
             letter-spacing: 0.5px;
         }
-        .uh-label { background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; margin-right: 10px; font-size: 0.7rem; font-weight: 800; }
+
+        .uh-label {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-right: 10px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
 
         /* Header */
-        .header { 
-            background: var(--header-bg); 
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            position: sticky; top: 0; z-index: 1000; 
+        .header {
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid var(--border);
         }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .nav-top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
-        .logo img { height: 60px; width: auto; transition: transform 0.3s ease; }
-        
-        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .theme-toggle {
-            background: var(--card); border: 1px solid var(--border); color: var(--text);
-            cursor: pointer; width: 40px; height: 40px; border-radius: 12px; display: flex; 
-            align-items: center; justify-content: center; transition: 0.3s; font-size: 1.1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            font-size: 1.1rem;
             box-shadow: var(--shadow);
         }
 
         /* Navegação */
-        .nav-main { border-top: 1px solid var(--border); padding: 8px 0; }
-        .nav-menu { display: flex; list-style: none; justify-content: center; gap: 8px; }
-        .nav-link { 
-            text-decoration: none; color: var(--text-sec); font-weight: 700; padding: 8px 16px; 
-            border-radius: 10px; transition: 0.2s; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px;
+        .nav-main {
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
         }
-        .nav-link:hover, .nav-link.active { color: var(--p); background: rgba(221, 0, 0, 0.05); }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-sec);
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--p);
+            background: rgba(221, 0, 0, 0.05);
+        }
 
         /* Carrossel */
-        .carousel-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .carousel-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 24px; scroll-behavior: smooth; }
-        .carousel-track::-webkit-scrollbar { display: none; }
-        .carousel-slide { flex: 0 0 100%; scroll-snap-align: start; position: relative; aspect-ratio: 16 / 7; background: #000; cursor: pointer; overflow: hidden; border-radius: 24px; }
-        .carousel-image { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: 0.8s ease; }
-        .carousel-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 50px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: #fff; }
-        .carousel-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; line-height: 1.1; margin-top: 10px; }
+        .carousel-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            border-radius: 24px;
+            scroll-behavior: smooth;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            position: relative;
+            aspect-ratio: 16 / 7;
+            background: #000;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+            transition: 0.8s ease;
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 50px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            color: #fff;
+        }
+
+        .carousel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-top: 10px;
+        }
 
         /* Grid */
-        .section-header { max-width: 1200px; margin: 50px auto 25px; padding: 0 20px; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; }
-        .articles-grid { display: grid; max-width: 1200px; margin: 0 auto; padding: 0 20px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-        
-        .article-card { 
-            background: var(--card); border-radius: 24px; overflow: hidden; 
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-            cursor: pointer; border: 1px solid var(--border);
-            display: flex; flex-direction: column; box-shadow: var(--shadow);
+        .section-header {
+            max-width: 1200px;
+            margin: 50px auto 25px;
+            padding: 0 20px;
         }
-        .article-card:hover { transform: translateY(-10px); }
-        .article-image-wrap { overflow: hidden; aspect-ratio: 16/10; }
-        .article-image { width: 100%; height: 100%; object-fit: cover; }
-        .article-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-        .article-cat { color: var(--p); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; }
-        .article-title { font-size: 1.25rem; font-weight: 800; line-height: 1.4; color: var(--text); margin-bottom: 15px; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .articles-grid {
+            display: grid;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background: var(--card);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            content-visibility: auto;
+            contain-intrinsic-size: 320px 400px;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .article-image-wrap {
+            overflow: hidden;
+            aspect-ratio: 16/10;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-cat {
+            color: var(--p);
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.4;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
 
         .btn-load {
-            background: var(--card); border: 1px solid var(--border); padding: 14px 40px; 
-            font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius: 15px; color: var(--text);
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 14px 40px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 15px;
+            color: var(--text);
         }
 
-        footer { background: var(--card); border-top: 1px solid var(--border); padding: 80px 20px 40px; margin-top: 80px; }
-        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
+        /* Skeletons */
+        .skeleton {
+            background: var(--border);
+            overflow: hidden;
+            position: relative;
+            border-radius: 24px;
+        }
+
+        .skeleton::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: skel 1.5s infinite;
+        }
+
+        @keyframes skel {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .skeleton-img {
+            aspect-ratio: 16/10;
+            width: 100%;
+        }
+
+
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 80px 20px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 60px;
+        }
 
         /* AJUSTES PARA MOBILE (Apenas Telefone) */
         @media (max-width: 600px) {
-            .carousel-slide { 
-                aspect-ratio: 4 / 5; /* Formato mais vertical, melhor para telemóveis */
+            .carousel-slide {
+                aspect-ratio: 4 / 5;
+                /* Formato mais vertical, melhor para telemóveis */
             }
-            .carousel-content { 
-                padding: 30px 20px; 
-                background: linear-gradient(transparent, rgba(0,0,0,0.8) 50%, rgba(0,0,0,1));
+
+            .carousel-content {
+                padding: 30px 20px;
+                background: linear-gradient(transparent, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 1));
             }
-            .carousel-title { 
-                font-size: 1.6rem; 
+
+            .carousel-title {
+                font-size: 1.6rem;
             }
+
             .carousel-container {
                 padding: 0 15px;
                 margin: 20px auto;
             }
-            .nav-main { display: none; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 1.5rem; }
+
+            .nav-main {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
         }
 
         /* Ajuste para Tablets */
         @media (min-width: 601px) and (max-width: 900px) {
-            .carousel-slide { aspect-ratio: 16 / 9; }
-            .carousel-title { font-size: 1.8rem; }
-            .nav-main { display: none; }
-            .footer-grid { grid-template-columns: 1fr; }
+            .carousel-slide {
+                aspect-ratio: 16 / 9;
+            }
+
+            .carousel-title {
+                font-size: 1.8rem;
+            }
+
+            .nav-main {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
+        /* Skip Link para Acessibilidade (Sinal de Alta Qualidade Google) */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--p);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0 0 10px 10px;
+            z-index: 9999;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
-</head>
-<body class="dark-mode">
-
-<div id="uh-banner" class="uh-banner"></div>
-
-<header class="header">
-    <div class="nav-container">
-        <div class="nav-top">
-            <a href="index.html" class="logo">
-                <img src="VJ_l.webp" id="main-logo" alt="Verdade Jovem">
-            </a>
-            <div class="header-actions">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <span id="theme-icon">☀️</span>
-                </button>
-            </div>
-        </div>
-        <nav class="nav-main">
-            <ul class="nav-menu" id="pc-menu"></ul>
-        </nav>
-    </div>
-</header>
-
-<div class="carousel-container">
-    <div class="carousel-track" id="carousel"></div>
-</div>
-
-<div class="section-header">
-    <h2 class="section-title">Destaques</h2>
-</div>
-
-<main class="articles-grid" id="articles"></main>
-
-<div style="text-align:center; margin: 60px 0;">
-    <button id="load-more" class="btn-load" onclick="loadMore()">Descobrir mais artigos</button>
-</div>
-
-<footer>
-    <div class="footer-grid">
-        <div>
-            <img src="VJ_l.webp" id="footer-logo" style="height:70px; margin-bottom:20px;">
-            <p style="color:var(--text-sec);">Um jornal para jovens, feito por jovens<br><br>Verdade Jovem, um meio de comunicação social independente, fundado no dia 20 de abril de 2024. Jornalismo de qualidade e independente.</p>
-        </div>
-        <div>
-            <h4 style="color:var(--p); margin-bottom:15px;">Explorar</h4>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <a href="equipe.html" style="color:var(--text-sec); text-decoration:none;">Equipa</a>
-                <a href="privacidade.html" style="color:var(--text-sec); text-decoration:none;">Política de Privacidade</a>
-                <a href="termos.html" style="color:var(--text-sec); text-decoration:none;">Termos e Condições</a>
-            </div>
-        </div>
-        <div>
-            <h4 style="color:var(--p); margin-bottom:15px;">Contacto</h4>
-            <p><strong>Verdade Jovem</strong></p>
-            <li>📧 <a href="mailto:armindo.news@grupoarmindo.site" style="color:var(--text-sec); text-decoration:none;">armindo.news@grupoarmindo.site</a></li>
-            <li>Ig: <a href="https://www.instagram.com/armindo_news/" target="_blank" rel="noopener" style="color:var(--text-sec); text-decoration:none;">@Armindo_News</a></li>
-            <li>YT: <a href="https://www.youtube.com/@ArmindoNews" target="_blank" rel="noopener" style="color:var(--text-sec); text-decoration:none;">@ArmindoNews</a></li>
-            <li>TTK: <a href="https://www.tiktok.com/@armindonews" target="_blank" rel="noopener" style="color:var(--text-sec); text-decoration:none;">@armindonews</a></li><br>
-            <p><strong>Grupo Armindo</strong></p>
-            <li>📧 <a href="mailto:contacto@grupoarmindo.site" style="color:var(--text-sec); text-decoration:none;">contacto@grupoarmindo.site</a></li>
-            <li>🌐 <a href="https://grupoarmindo.site" target="_blank" rel="noopener" style="color:var(--text-sec); text-decoration:none;">https://grupoarmindo.site</a></li>
-        </div>
-    </div>
-    <div style="text-align:center; margin-top:50px; opacity:0.5; font-size:0.8rem;">
-        &copy; <span id="yr"></span> Grupo Armindo. Todos os direitos reservados.
-    </div>
-</footer>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-<script>
-    const cfg = { apiKey: "AIzaSyBmaIc7aA25g5WVP_DTGHOCEtnW1ZXuyNc", authDomain: "aawards.firebaseapp.com", databaseURL: "https://aawards-default-rtdb.firebaseio.com", projectId: "aawards" };
-    firebase.initializeApp(cfg);
-    const db = firebase.database();
-
-    const cats = [
-        {id:'all', n:'Início'}, {id:'critica', n:'Crítica'}, {id:'politica', n:'Política'}, 
-        {id:'Entrevista', n:'Entrevista'}, {id:'desporto', n:'Desporto'}, {id:'tecnologia', n:'Tecnologia'}, {id:'mundo', n:'Mundo'}
-    ];
-
-    let all = [], disp = [], cat = 'all', page = 1;
-
-    function toggleTheme() {
-        const b = document.body;
-        const logo = document.getElementById('main-logo');
-        const fLogo = document.getElementById('footer-logo');
-        const icon = document.getElementById('theme-icon');
-        b.classList.toggle('dark-mode');
-        const isDark = b.classList.contains('dark-mode');
-        logo.src = fLogo.src = isDark ? 'VJ_l.webp' : 'VJ_D.webp';
-        icon.innerText = isDark ? '☀️' : '🌙';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
-
-    if(localStorage.getItem('theme') === 'light') toggleTheme();
-
-    function init() {
-        const pc = document.getElementById('pc-menu');
-        cats.forEach(c => {
-            pc.innerHTML += `<li><a href="#" class="nav-link ${c.id==='all'?'active':''}" data-cat="${c.id}" onclick="showCat('${c.id}');return false">${c.n}</a></li>`;
-        });
-
-        db.ref('articles').on('value', s => {
-            const d = s.val();
-            all = d ? Object.keys(d).map(k => ({id:k, ...d[k]})) : [];
-            all.sort((a,b) => b.date - a.date);
-            renderCarousel();
-            filter();
-            checkUH();
-        });
-    }
-
-    function renderCarousel() {
-        let slides = all.filter(a => a.published && a.carouselOrder).sort((a,b) => a.carouselOrder - b.carouselOrder);
-        if(slides.length < 3) {
-            const extra = all.filter(a => a.published && !slides.find(s => s.id === a.id)).slice(0, 3 - slides.length);
-            slides = [...slides, ...extra];
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered'));
+            });
         }
-        slides = slides.slice(0, 3);
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Navegação Principal",
+      "itemListElement": [
+        { "@type": "SiteNavigationElement", "position": 1, "name": "Início", "url": "https://armindonews.site/index.html" },
+        { "@type": "SiteNavigationElement", "position": 2, "name": "Equipa", "url": "https://armindonews.site/equipe.html" },
+        { "@type": "SiteNavigationElement", "position": 3, "name": "Privacidade", "url": "https://armindonews.site/privacidade.html" },
+        { "@type": "SiteNavigationElement", "position": 4, "name": "Termos", "url": "https://armindonews.site/termos.html" }
+      ]
+    }
+    </script>
+</head>
 
-        const track = document.getElementById('carousel');
-        track.innerHTML = slides.map(a => `
-            <div class="carousel-slide" onclick="location.href='article.html?id=${a.id}'">
-                <img src="${a.image || 'VJ_l.webp'}" class="carousel-image">
-                <div class="carousel-content">
-                    <span class="article-cat" style="color:#fff; background:var(--p); padding:5px 12px; border-radius:8px;">${a.category}</span>
-                    <h2 class="carousel-title">${a.title}</h2>
+
+<body class="dark-mode">
+    <a href="#articles" class="skip-link">Pular para o conteúdo</a>
+
+    <div id="uh-banner" class="uh-banner"></div>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="nav-top">
+                <a href="index.html" class="logo">
+                    <h1 style="margin:0; line-height:0;"><img src="VJ_l.webp" id="main-logo"
+                            alt="Verdade Jovem - Portal de Notícias"></h1>
+                </a>
+
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alterar Tema">
+                        <span id="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5" />
+                                <line x1="12" y1="1" x2="12" y2="3" />
+                                <line x1="12" y1="21" x2="12" y2="23" />
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                <line x1="1" y1="12" x2="3" y2="12" />
+                                <line x1="21" y1="12" x2="23" y2="12" />
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                            </svg></span>
+                    </button>
                 </div>
             </div>
-        `).join('');
+            <nav class="nav-main">
+                <ul class="nav-menu" id="pc-menu"></ul>
+            </nav>
+        </div>
+    </header>
 
-        let cur = 0;
-        if(window.carTimer) clearInterval(window.carTimer);
-        window.carTimer = setInterval(() => {
-            cur = (cur + 1) % slides.length;
-            track.scrollTo({ left: track.offsetWidth * cur, behavior: 'smooth' });
-        }, 5000);
-    }
+    <div class="carousel-container">
+        <div class="carousel-track" id="carousel"></div>
+    </div>
 
-    function filter() {
-        disp = all.filter(a => a.published && (cat === 'all' || a.category === cat));
-        page = 1; render();
-    }
+    <div class="section-header">
+        <h2 class="section-title">Destaques</h2>
+    </div>
+    <main class="articles-grid" id="articles">
+        <!-- Articles will be injected here by Flash Injection or Firebase -->
+    </main>
 
-    function render() {
-        const grid = document.getElementById('articles');
-        grid.innerHTML = disp.slice(0, page * 9).map(a => `
-            <article class="article-card" onclick="location.href='article.html?id=${a.id}'">
-                <div class="article-image-wrap"><img src="${a.image || 'VJ_l.webp'}" class="article-image" loading="lazy"></div>
-                <div class="article-body">
-                    <span class="article-cat">${a.category}</span>
-                    <h3 class="article-title">${a.title}</h3>
-                    <div class="article-meta">${new Date(a.date).toLocaleDateString()}</div>
+    <div style="text-align:center; margin: 60px 0;">
+        <button id="load-more" class="btn-load" onclick="loadMore()">Descobrir mais artigos</button>
+    </div>
+
+    <script>
+        (function () {
+            try {
+                const cache = localStorage.getItem('vj_articles');
+                if (cache) {
+                    const data = JSON.parse(cache);
+                    if (data && data.length > 0) {
+                        const track = document.getElementById('carousel');
+                        if (track) {
+                            const slides = data.filter(a => a.published && a.carouselOrder).sort((a, b) => a.carouselOrder - b.carouselOrder).slice(0, 3);
+                            if (slides.length > 0) track.innerHTML = slides.map(a => `<div class="carousel-slide" onclick="location.href='article.html?id=${a.id}'"><img src="${a.image || 'VJ_l.webp'}" class="carousel-image"><div class="carousel-content"><span class="article-cat" style="color:#fff; background:var(--p); padding:5px 12px; border-radius:8px;">${a.category}</span><h2 class="carousel-title">${a.title}</h2></div></div>`).join('');
+                        }
+                        const grid = document.getElementById('articles');
+                        if (grid) {
+                            grid.innerHTML = data.slice(0, 9).map(a => `<article class="article-card" onclick="location.href='article.html?id=${a.id}'"><div class="article-image-wrap"><img src="${a.image || 'VJ_l.webp'}" class="article-image" loading="lazy"></div><div class="article-body"><span class="article-cat">${a.category}</span><h3 class="article-title">${a.title}</h3><div class="article-meta">${new Date(a.date).toLocaleDateString()}</div></div></article>`).join('');
+                        }
+                    }
+                }
+            } catch (e) { }
+        })();
+    </script>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <img src="VJ_l.webp" id="footer-logo" style="height:70px; margin-bottom:20px;" alt="Logo Verdade Jovem">
+
+                <p style="color:var(--text-sec);">Um jornal para jovens, feito por jovens<br><br>Verdade Jovem, um meio
+                    de comunicação social independente, fundado no dia 20 de abril de 2024. Jornalismo de qualidade e
+                    independente.</p>
+            </div>
+            <div>
+                <h4 style="color:var(--p); margin-bottom:15px;">Explorar</h4>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="equipe.html" style="color:var(--text-sec); text-decoration:none;">Equipa</a>
+                    <a href="privacidade.html" style="color:var(--text-sec); text-decoration:none;">Política de
+                        Privacidade</a>
+                    <a href="termos.html" style="color:var(--text-sec); text-decoration:none;">Termos e Condições</a>
                 </div>
-            </article>
-        `).join('');
-        document.getElementById('load-more').style.display = disp.length > page*9 ? 'inline-block' : 'none';
-    }
+            </div>
+            <div>
+                <h4 style="color:var(--p); margin-bottom:15px;">Contacto</h4>
+                <p><strong>Verdade Jovem</strong></p>
+                <div style="color:var(--text-sec); display:flex; flex-direction:column; gap:12px; font-size:0.9rem;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:inherit; text-decoration:none;">contacto@grupoarmindo.site</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <a href="https://www.instagram.com/Verdade.Jovem/" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@Verdade.Jovem</a>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+                            <path
+                                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.42 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.42-5.58z">
+                            </path>
+                            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon>
+                        </svg>
+                        <a href="https://www.youtube.com/@VerdadeJovem" target="_blank" rel="noopener"
+                            style="color:inherit; text-decoration:none;">@VerdadeJovem</a>
+                    </div>
+                </div><br>
+                <p><strong>Grupo Armindo</strong></p>
+                <div style="color:var(--text-sec); display:flex; flex-direction:column; gap:8px; font-size:0.9rem;">
+                    <div>📧 <a href="mailto:contacto@grupoarmindo.site"
+                            style="color:var(--text-sec); text-decoration:none;">contacto@grupoarmindo.site</a></div>
+                    <div>🌐 <a href="https://grupoarmindo.site" target="_blank" rel="noopener"
+                            style="color:var(--text-sec); text-decoration:none;">https://grupoarmindo.site</a></div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:50px; opacity:0.5; font-size:0.8rem;">
+            &copy; <span id="yr"></span> Grupo Armindo. Todos os direitos reservados.
+        </div>
+    </footer>
 
-    function checkUH() {
-        const uh = all.find(a => a.published && a.isUH);
-        const b = document.getElementById('uh-banner');
-        if(uh) {
-            b.innerHTML = `<span class="uh-label">Última Hora</span> ${uh.title}`;
-            b.style.display = 'block';
-            b.onclick = () => location.href = `article.html?id=${uh.id}`;
-        } else { b.style.display = 'none'; }
-    }
-
-    function showCat(c) {
-        cat = c; filter();
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.cat === c));
-    }
-
-    function loadMore() { page++; render(); }
-    document.getElementById('yr').innerText = new Date().getFullYear();
-    init();
-</script>
+    <script>
+        // Consolidated logic is now in the head
+    </script>
 </body>
+
 </html>
