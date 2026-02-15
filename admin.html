@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
     <title>Admin | Verdade Jovem</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary: #dd0000;
@@ -15,89 +18,289 @@
             --sidebar-bg: #0f172a;
             --text: #1e293b;
             --glass: #ffffff;
-            --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         @media (prefers-color-scheme: dark) {
-            :root { --bg: #020617; --text: #f1f5f9; --glass: #1e293b; --sidebar-bg: #020617; }
-            .glass-card, .stat-item, .login-card, .input, .ql-toolbar, #editor-quill { 
-                background: #1e293b !important; color: white !important; border-color: #334155 !important; 
+            :root {
+                --bg: #020617;
+                --text: #f1f5f9;
+                --glass: #1e293b;
+                --sidebar-bg: #020617;
+            }
+
+            .glass-card,
+            .stat-item,
+            .login-card,
+            .input,
+            .ql-toolbar,
+            #editor-quill {
+                background: #1e293b !important;
+                color: white !important;
+                border-color: #334155 !important;
             }
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
-
-        #login { position: fixed; inset: 0; background: var(--sidebar-bg); z-index: 20000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; padding: 2.5rem; border-radius: 28px; width: 100%; max-width: 400px; text-align: center; }
-
-        .app-layout { display: flex; min-height: 100vh; width: 100%; }
-        
-        .sidebar { 
-            width: 280px; min-width: 280px; background: var(--sidebar-bg); color: white; 
-            padding: 2rem 1.2rem; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .nav-item { 
-            display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; 
-            color: #94a3b8; margin-bottom: 8px; cursor: pointer; transition: 0.2s; font-weight: 600; width: 100%; 
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        .nav-item.active { background: var(--primary); color: white; }
 
-        .main-content { flex-grow: 1; padding: 2.5rem; max-width: calc(100vw - 280px); }
+        #login {
+            position: fixed;
+            inset: 0;
+            background: var(--sidebar-bg);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-        .editor-grid { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start; }
-        .glass-card { background: var(--glass); border-radius: 24px; padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
 
-        .input-group { margin-bottom: 1.2rem; }
-        .label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
-        .input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; outline: none; }
-        
-        .btn { padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
-        .btn-p { background: var(--primary); color: white; }
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 2rem 1.2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            max-width: calc(100vw - 280px);
+        }
+
+        .editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .btn-p {
+            background: var(--primary);
+            color: white;
+        }
 
         .ultima-hora-toggle {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px; background: #fff1f2; border: 2px solid #fecdd3;
-            border-radius: 15px; margin-bottom: 1.5rem; cursor: pointer; color: #991b1b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #fff1f2;
+            border: 2px solid #fecdd3;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            color: #991b1b;
         }
 
-        .upload-area { border: 2px dashed #e2e8f0; border-radius: 16px; padding: 1.5rem; text-align: center; cursor: pointer; background: rgba(0,0,0,0.01); }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .stat-item { background: var(--glass); padding: 1.5rem; border-radius: 20px; text-align: center; box-shadow: var(--shadow); }
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: var(--glass);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
 
         .carousel-slot {
-            display: flex; align-items: center; gap: 15px; padding: 15px;
-            background: rgba(0,0,0,0.02); border-radius: 18px; margin-bottom: 12px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .carousel-number {
-            background: var(--primary); color: white; width: 32px; height: 32px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .mobile-nav { display: none; }
+        .carousel-number {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
 
         @media (max-width: 900px) {
-            .sidebar { display: none; }
-            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--glass); border-top: 1px solid rgba(0,0,0,0.1); justify-content: space-around; padding: 10px 5px calc(10px + env(safe-area-inset-bottom)); z-index: 1000; }
-            .m-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.65rem; font-weight: 700; }
-            .m-nav-item.active { color: var(--primary); }
-            .m-nav-item span { font-size: 1.3rem; }
-            .main-content { padding: 1rem; padding-bottom: 100px; max-width: 100vw; }
-            .editor-grid { grid-template-columns: 1fr; }
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--glass);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                justify-content: space-around;
+                padding: 10px 5px calc(10px + env(safe-area-inset-bottom));
+                z-index: 1000;
+            }
+
+            .m-nav-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #94a3b8;
+                font-size: 0.65rem;
+                font-weight: 700;
+            }
+
+            .m-nav-item.active {
+                color: var(--primary);
+            }
+
+            .m-nav-item span {
+                font-size: 1.3rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 100px;
+                max-width: 100vw;
+            }
+
+            .editor-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div id="toast" style="position:fixed; top:20px; right:20px; padding:15px 25px; border-radius:12px; color:white; z-index:30000; font-weight:700; display:none;"></div>
+    <div id="toast"
+        style="position:fixed; top:20px; right:20px; padding:15px 25px; border-radius:12px; color:white; z-index:30000; font-weight:700; display:none;">
+    </div>
 
     <div id="login">
         <div class="login-card">
             <h1 style="color:var(--primary); margin-bottom: 2rem;">Admin<br>Verdade Jovem</h1>
-            <input type="password" id="pass" class="input" placeholder="Palavra-passe" style="text-align: center; margin-bottom: 1rem">
+            <input type="password" id="pass" class="input" placeholder="Palavra-passe"
+                style="text-align: center; margin-bottom: 1rem">
             <button onclick="login()" class="btn btn-p">Aceder</button>
         </div>
     </div>
@@ -115,10 +318,14 @@
         </aside>
 
         <nav class="mobile-nav">
-            <div class="m-nav-item active" id="m-nav-dash" onclick="showSection('dash', this)"><span>📊</span>Painel</div>
+            <div class="m-nav-item active" id="m-nav-dash" onclick="showSection('dash', this)"><span>📊</span>Painel
+            </div>
             <div class="m-nav-item" id="m-nav-write" onclick="showSection('write', this)"><span>✏️</span>Redigir</div>
-            <div class="m-nav-item" id="m-nav-manage" onclick="showSection('manage', this)"><span>📰</span>Biblioteca</div>
-            <div class="m-nav-item" id="m-nav-carousel" onclick="showSection('carousel', this)"><span>🎞️</span>Carrossel</div>
+            <div class="m-nav-item" id="m-nav-manage" onclick="showSection('manage', this)"><span>📰</span>Biblioteca
+            </div>
+            <div class="m-nav-item" id="m-nav-carousel" onclick="showSection('carousel', this)">
+                <span>🎞️</span>Carrossel
+            </div>
             <div class="m-nav-item" onclick="logout()"><span>🚪</span>Sair</div>
         </nav>
 
@@ -126,9 +333,18 @@
             <section id="sect-dash">
                 <h1 style="margin-bottom: 1.5rem">Estatísticas</h1>
                 <div class="stats-grid">
-                    <div class="stat-item"><h2 id="stat-total">0</h2><p>Total</p></div>
-                    <div class="stat-item"><h2 id="stat-pub" style="color:#10b981">0</h2><p>Online</p></div>
-                    <div class="stat-item"><h2 id="stat-uh" style="color:var(--primary)">0</h2><p>Última Hora</p></div>
+                    <div class="stat-item">
+                        <h2 id="stat-total">0</h2>
+                        <p>Total</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2 id="stat-pub" style="color:#10b981">0</h2>
+                        <p>Online</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2 id="stat-uh" style="color:var(--primary)">0</h2>
+                        <p>Última Hora</p>
+                    </div>
                 </div>
             </section>
 
@@ -152,7 +368,8 @@
                         <div class="glass-card">
                             <label class="ultima-hora-toggle">
                                 <span>🚨 ÚLTIMA HORA</span>
-                                <input type="checkbox" id="is-ultima-hora" style="width:20px; height:20px; cursor:pointer">
+                                <input type="checkbox" id="is-ultima-hora"
+                                    style="width:20px; height:20px; cursor:pointer">
                             </label>
                             <div class="input-group">
                                 <label class="label">Autor</label>
@@ -174,13 +391,17 @@
                                 <label class="label">Capa</label>
                                 <div class="upload-area" onclick="document.getElementById('file-input').click()">
                                     <span id="up-label">📷 Foto</span>
-                                    <input type="file" id="file-input" hidden accept="image/*" onchange="processImage(this)">
+                                    <input type="file" id="file-input" hidden accept="image/*"
+                                        onchange="processImage(this)">
                                 </div>
                                 <input type="hidden" id="image-data">
-                                <img id="img-render" src="" style="width:100%; border-radius:10px; margin-top:10px; display:none;">
+                                <img id="img-render" src=""
+                                    style="width:100%; border-radius:10px; margin-top:10px; display:none;">
                             </div>
-                            <button onclick="savePost(true)" class="btn btn-p" style="margin-bottom:10px">🚀 Publicar</button>
-                            <button onclick="savePost(false)" class="btn" style="background:#e2e8f0; color:#475569">💾 Rascunho</button>
+                            <button onclick="savePost(true)" class="btn btn-p" style="margin-bottom:10px">🚀
+                                Publicar</button>
+                            <button onclick="savePost(false)" class="btn" style="background:#e2e8f0; color:#475569">💾
+                                Rascunho</button>
                         </div>
                     </div>
                 </div>
@@ -189,16 +410,18 @@
             <section id="sect-manage" style="display:none">
                 <h1 style="margin-bottom: 1.5rem">Biblioteca</h1>
                 <div class="glass-card">
-                    <input type="text" id="search" class="input" placeholder="🔍 Pesquisar por título..." oninput="renderLibrary()" style="margin-bottom:1.5rem">
+                    <input type="text" id="search" class="input" placeholder="🔍 Pesquisar por título..."
+                        oninput="renderLibrary()" style="margin-bottom:1.5rem">
                     <div id="library-list"></div>
                 </div>
             </section>
 
             <section id="sect-carousel" style="display:none">
                 <h1 style="margin-bottom: 0.5rem">🎞️ Destaques do Carrossel</h1>
-                <p style="margin-bottom: 2rem; opacity: 0.7;">Escolha as notícias que ficarão fixas no topo do index.</p>
+                <p style="margin-bottom: 2rem; opacity: 0.7;">Escolha as notícias que ficarão fixas no topo do index.
+                </p>
                 <div class="glass-card" id="carousel-manager-content">
-                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -221,7 +444,7 @@
         let db, quill, articles = [];
 
         function login() {
-            if(document.getElementById('pass').value === "ArmindoNews2024") {
+            if (document.getElementById('pass').value === "ArmindoNews2024") {
                 sessionStorage.setItem('vj_in', 'ok');
                 start();
             } else { showToast("Erro!", "#ef4444"); }
@@ -232,11 +455,11 @@
             document.getElementById('panel').style.display = 'flex';
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-            quill = new Quill('#editor-quill', { theme: 'snow', modules: { toolbar: [[{'header': [1, 2, false]}], ['bold', 'italic', 'link'], [{'list': 'bullet'}]] }});
-            
+            quill = new Quill('#editor-quill', { theme: 'snow', modules: { toolbar: [[{ 'header': [1, 2, false] }], ['bold', 'italic', 'link'], [{ 'list': 'bullet' }]] } });
+
             db.ref('articles').on('value', snap => {
                 const data = snap.val();
-                articles = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+                articles = data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : [];
                 renderDashboard();
                 renderLibrary();
                 renderCarouselManager();
@@ -247,9 +470,9 @@
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const img = new Image();
-                img.onload = function() {
+                img.onload = function () {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     const scale = 800 / img.width;
@@ -268,7 +491,7 @@
         function savePost(isPub) {
             const id = document.getElementById('post-id').value;
             const title = document.getElementById('title').value;
-            if(!title) return showToast("Título obrigatório", "#ef4444");
+            if (!title) return showToast("Título obrigatório", "#ef4444");
 
             const existing = id ? articles.find(a => a.id === id) : null;
             const data = {
@@ -283,7 +506,7 @@
                 date: id ? existing.date : Date.now()
             };
 
-            const ref = id ? db.ref('articles/'+id) : db.ref('articles').push();
+            const ref = id ? db.ref('articles/' + id) : db.ref('articles').push();
             ref.set(data).then(() => {
                 showToast("Sucesso!");
                 clearEditor();
@@ -294,25 +517,35 @@
         function renderLibrary() {
             const list = document.getElementById('library-list');
             const search = document.getElementById('search').value.toLowerCase();
-            const filtered = articles.filter(a => a.title.toLowerCase().includes(search)).sort((a,b) => b.date - a.date);
-            list.innerHTML = filtered.map(a => `
+            const filtered = articles.filter(a => a.title.toLowerCase().includes(search)).sort((a, b) => b.date - a.date);
+            list.innerHTML = filtered.map(a => {
+                const metrics = a.metrics || { likes: 0, dislikes: 0 };
+                const total = metrics.likes + metrics.dislikes;
+                const ratio = total > 0 ? Math.round((metrics.likes / total) * 100) : 0;
+
+                return `
                 <div style="display:flex; align-items:center; gap:15px; padding:12px; border-bottom:1px solid rgba(0,0,0,0.05)">
                     <img src="${a.image || 'VJ_l.webp'}" style="width:50px; height:35px; border-radius:4px; object-fit:cover">
                     <div style="flex:1">
                         <h4 style="font-size:0.85rem">${a.isUH ? '🚨 ' : ''}${a.title}</h4>
-                        <small style="opacity:0.6">${a.published ? '🟢 No Ar' : '⚪ Rascunho'}</small>
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:4px;">
+                            <small style="opacity:0.6">${a.published ? '🟢 No Ar' : '⚪ Rascunho'}</small>
+                            <span style="font-size:0.75rem; font-weight:700; color:${ratio >= 70 ? '#10b981' : ratio >= 40 ? '#f59e0b' : '#ef4444'}">
+                                👍 ${metrics.likes} | 👎 ${metrics.dislikes} (${ratio}%)
+                            </span>
+                        </div>
                     </div>
                     <button onclick="editPost('${a.id}')" style="background:none; border:none; cursor:pointer; font-size:1.1rem">✏️</button>
                     <button onclick="deletePost('${a.id}')" style="background:none; border:none; cursor:pointer; font-size:1.1rem">🗑️</button>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderCarouselManager() {
             const container = document.getElementById('carousel-manager-content');
             const pubs = articles.filter(a => a.published);
-            const inCarousel = pubs.filter(a => a.carouselOrder).sort((a,b) => a.carouselOrder - b.carouselOrder);
-            const available = pubs.filter(a => !a.carouselOrder).sort((a,b) => b.date - a.date);
+            const inCarousel = pubs.filter(a => a.carouselOrder).sort((a, b) => a.carouselOrder - b.carouselOrder);
+            const available = pubs.filter(a => !a.carouselOrder).sort((a, b) => b.date - a.date);
 
             let html = '<div style="margin-bottom:30px">';
             [1, 2, 3].forEach(num => {
@@ -351,11 +584,11 @@
         }
 
         function updateCarouselOrder(id, pos) {
-            if(pos !== null) {
+            if (pos !== null) {
                 const old = articles.find(a => a.carouselOrder == pos);
-                if(old) db.ref('articles/'+old.id+'/carouselOrder').set(null);
+                if (old) db.ref('articles/' + old.id + '/carouselOrder').set(null);
             }
-            db.ref('articles/'+id+'/carouselOrder').set(pos).then(() => showToast("Carrossel atualizado!"));
+            db.ref('articles/' + id + '/carouselOrder').set(pos).then(() => showToast("Carrossel atualizado!"));
         }
 
         function editPost(id) {
@@ -372,21 +605,21 @@
             showSection('write', document.getElementById('m-nav-write'));
         }
 
-        function deletePost(id) { if(confirm("Apagar definitivamente?")) db.ref('articles/'+id).remove(); }
+        function deletePost(id) { if (confirm("Apagar definitivamente?")) db.ref('articles/' + id).remove(); }
 
         function renderDashboard() {
             document.getElementById('stat-total').innerText = articles.length;
-            document.getElementById('stat-pub').innerText = articles.filter(a=>a.published).length;
-            document.getElementById('stat-uh').innerText = articles.filter(a=>a.isUH).length;
+            document.getElementById('stat-pub').innerText = articles.filter(a => a.published).length;
+            document.getElementById('stat-uh').innerText = articles.filter(a => a.isUH).length;
         }
 
         function showSection(name, el) {
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-            document.getElementById('sect-'+name).style.display = 'block';
+            document.getElementById('sect-' + name).style.display = 'block';
             document.querySelectorAll('.nav-item, .m-nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
-            const mobEl = document.getElementById('m-nav-'+name);
-            if(mobEl) mobEl.classList.add('active');
+            if (el) el.classList.add('active');
+            const mobEl = document.getElementById('m-nav-' + name);
+            if (mobEl) mobEl.classList.add('active');
         }
 
         function clearEditor() {
@@ -406,7 +639,8 @@
         }
 
         function logout() { sessionStorage.clear(); location.reload(); }
-        if(sessionStorage.getItem('vj_in')) start();
+        if (sessionStorage.getItem('vj_in')) start();
     </script>
 </body>
+
 </html>

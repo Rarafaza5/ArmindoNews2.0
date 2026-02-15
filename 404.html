@@ -4,64 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página não encontrada | Verdade Jovem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>404 - Página Não Encontrada | Verdade Jovem - Jornalismo Independente</title>
+    <meta name="description"
+        content="A página que você procura não foi encontrada. Explore as últimas notícias de política, tecnologia e mundo no portal Verdade Jovem.">
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#dd0000">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap"
+        rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
+        :root {
+            --p: #dd0000;
+            --bg: #0f172a;
+            --text: #ffffff;
+            --text-sec: #94a3b8;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0f172a;
-            color: #fff;
+            background: var(--bg);
+            color: var(--text);
             height: 100vh;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            font-size: 8rem;
+            font-size: clamp(8rem, 20vw, 12rem);
             margin: 0;
-            color: #dd0000;
-            letter-spacing: -5px;
+            color: var(--p);
+            line-height: 1;
+            font-weight: 800;
+            opacity: 0.1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 800;
         }
 
         p {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin: 1rem 0 2rem;
+            font-size: 1.1rem;
+            color: var(--text-sec);
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.6;
         }
 
         .btn {
-            background: #dd0000;
+            background: var(--p);
             color: #fff;
             text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: bold;
-            transition: 0.3s;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 800;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(221, 0, 0, 0.2);
         }
 
         .btn:hover {
-            background: #ff3333;
-            transform: scale(1.05);
+            background: #ff2222;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(221, 0, 0, 0.4);
+        }
+
+        .links {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .links a {
+            color: var(--text-sec);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .links a:hover {
+            color: var(--p);
+            border-bottom-color: var(--p);
         }
     </style>
 </head>
 
 <body>
+    <h1>404</h1>
     <div class="container">
-        <h1>404</h1>
-        <h2>Oops! Página Perdida.</h2>
-        <p>A notícia que você procura parece ter saído do ar ou nunca existiu.</p>
-        <a href="index.html" class="btn">Voltar para a Página Inicial</a>
+        <h2>Página Não Encontrada</h2>
+        <p>A notícia ou artigo que você procura parece ter saído de circulação ou o link está incorreto. Que tal
+            explorar nossos destaques?</p>
+        <a href="index.html" class="btn">Explorar Notícias</a>
+
+        <div class="links">
+            <a href="equipe.html">Nossa Equipa</a>
+            <a href="privacidade.html">Privacidade</a>
+            <a href="termos.html">Termos</a>
+        </div>
     </div>
 </body>
 
