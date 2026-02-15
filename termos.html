@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Termos e Condições | Verdade Jovem</title>
-    <meta name="description" content="Leia os Termos e Condições de utilização do site Verdade Jovem.">
+    <title>Termos e Condições de Uso | Verdade Jovem — Jornalismo Independente</title>
+    <meta name="description"
+        content="Leia os Termos e Condições de utilização do portal Verdade Jovem. Conheça as regras para nosso jornalismo independente.">
     <link rel="canonical" href="https://armindonews.site/termos.html">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="manifest" href="manifest.json">
@@ -130,7 +131,7 @@
     </header>
     <main class="container">
         <article class="content-box">
-            <h1>📜 Termos e Condições</h1>
+            <h1>Termos e Condições de Uso</h1>
 
             <div class="intro-text">
                 <p><strong>Última atualização:</strong> Janeiro de 2026</p>
@@ -198,6 +199,16 @@
             <p>Se tiver dúvidas ou preocupações sobre estes Termos e Condições, entre em contacto connosco através do
                 email: <strong>contacto@grupoarmindo.site</strong></p>
         </article>
+
+        <section style="margin-top: 5rem;">
+            <h2
+                style="font-family: 'Inter', sans-serif; font-size: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--p); padding-left: 15px;">
+                Continue a Ler</h2>
+            <div id="recent-news-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+                <!-- To be filled by script -->
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -279,6 +290,28 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
         if (localStorage.getItem('theme') === 'light') toggleTheme();
+
+        // Load recent news for UX
+        (function () {
+            try {
+                const cache = localStorage.getItem('vj_articles');
+                if (cache) {
+                    const articles = JSON.parse(cache).filter(a => a.published).slice(0, 3);
+                    const grid = document.getElementById('recent-news-grid');
+                    if (grid && articles.length > 0) {
+                        grid.innerHTML = articles.map(a => `
+                            <article class="content-box" style="padding: 0; overflow: hidden; text-align: left; cursor: pointer;" onclick="location.href='article.html?id=${a.id}'">
+                                <img src="${a.image || 'VJ_l.webp'}" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+                                <div style="padding: 1.5rem;">
+                                    <span style="color:var(--p); font-size:0.75rem; font-weight:800; text-transform:uppercase;">${a.category}</span>
+                                    <h4 style="margin: 10px 0; line-height:1.4; color:var(--text);">${a.title}</h4>
+                                </div>
+                            </article>
+                        `).join('');
+                    }
+                }
+            } catch (e) { }
+        })();
     </script>
 </body>
 
